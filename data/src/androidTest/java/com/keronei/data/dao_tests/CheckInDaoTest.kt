@@ -1,4 +1,4 @@
-package com.keronei.data
+package com.keronei.data.dao_tests
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,11 +1,8 @@
-package com.keronei.data
+package com.keronei.data.dao_tests
 
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import com.keronei.data.local.KODatabase
-import com.keronei.data.local.dao.CheckInDao
-import com.keronei.data.local.dao.MemberDao
-import com.keronei.data.local.dao.RegionsDao
 import com.keronei.data.local.entities.RegionDBO
 import com.keronei.domain.entities.MemberEntity
 

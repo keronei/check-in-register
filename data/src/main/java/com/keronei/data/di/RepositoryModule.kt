@@ -27,11 +27,9 @@ object RepositoryModule {
     ): AttendanceDataRepositoryImpl {
 
         return AttendanceDataRepositoryImpl(
-            memberDao,
             attendanceDao,
             memberLocalEntityMapper,
-            checkInEntityLocalMapper,
-            memberDBOToEntityMapper
+            checkInEntityLocalMapper
         )
     }
 }

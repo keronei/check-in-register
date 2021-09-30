@@ -9,22 +9,15 @@ import com.keronei.domain.usecases.base.Either
 import kotlinx.coroutines.flow.Flow
 
 interface AttendanceDataRepository {
-    suspend fun addNewMember(memberEntity: MemberEntity) : Either<Failure, MemberEntity>
 
     suspend fun sendAttendanceData(): Either<Failure, SyncSuccessEntity>
-
-    fun getAllMembers(): Flow<List<MemberEntity>>
-
-    suspend fun updateMemberDetails(memberEntity: MemberEntity): Either<Failure, MemberEntity>
-
-    suspend fun removeMemberFromRegister(memberEntity: MemberEntity): Either<Failure, MemberEntity>
 
     suspend fun checkInMember(
         memberEntity: MemberEntity,
         checkInEntity: CheckInEntity
-    ): Either<Failure, MemberEntity>
+    )
 
-    suspend fun undoCheckingForMember(checkInEntity: CheckInEntity) : Either<Failure, CheckInEntity>
+    suspend fun undoCheckingForMember(checkInEntity: CheckInEntity)
 
     suspend fun authenticateUser(phoneNumber: String, password: String): Either<Failure, UserEntity>
 
