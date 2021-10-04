@@ -1,6 +1,6 @@
 package com.keronei.domain.entities
 
 data class RegionEntity(
-    val id: String,
+    val id: Int,
     val name: String
 )

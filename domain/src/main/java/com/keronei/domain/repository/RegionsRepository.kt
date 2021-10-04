@@ -5,13 +5,13 @@ import com.keronei.domain.entities.RegionEntity
 import kotlinx.coroutines.flow.Flow
 
 interface RegionsRepository {
-    suspend fun createNewRegion(regionEntity: RegionEntity) : Int
+    suspend fun createNewRegion(regionEntity: RegionEntity)
 
     suspend fun getAllRegions(): Flow<List<RegionEntity>>
 
-    suspend fun getMembersInARegion(): Flow<List<MemberEntity>>
+    suspend fun getMembersInARegion(regionId : Int): Flow<List<MemberEntity>>
 
-    suspend fun updateRegion(regionEntity: RegionEntity) : Int
+    suspend fun updateRegion(regionEntity: RegionEntity)
 
-    suspend fun deleteRegion(regionEntity: RegionEntity) : Int
+    suspend fun deleteRegion(regionEntity: RegionEntity)
 }
