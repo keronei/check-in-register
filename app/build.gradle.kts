@@ -54,6 +54,7 @@ dependencies {
 
     //Local Modules
     implementation(project(LocalModules.dataModule))
+    implementation(project(LocalModules.domainModule))
 
     //Dagger Hilt
     implementation(Dependencies.daggerHilt)

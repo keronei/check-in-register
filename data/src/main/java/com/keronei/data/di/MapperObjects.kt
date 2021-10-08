@@ -1,8 +1,6 @@
 package com.keronei.data.di
 
-import com.keronei.data.repository.mapper.CheckInEntityLocalMapper
-import com.keronei.data.repository.mapper.MemberDBOToEntityMapper
-import com.keronei.data.repository.mapper.MemberLocalEntityMapper
+import com.keronei.data.repository.mapper.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,5 +18,23 @@ object MapperObjects {
 
     @Provides
     fun providesMemberLocalEntity(): MemberLocalEntityMapper = MemberLocalEntityMapper()
+
+    @Provides
+    fun providesCheckInDBOToEntity(): CheckInDBOToEntityMapper = CheckInDBOToEntityMapper()
+
+    @Provides
+    fun providesRegionDBOToRegionEntityMapper(): RegionDBOToRegionEntityMapper =
+        RegionDBOToRegionEntityMapper()
+
+    @Provides
+    fun providesAttendanceEmbedToAttendanceEntityMapper(
+        memberDBOToEntityMapper: MemberDBOToEntityMapper,
+        checkInDBOToEntityMapper: CheckInDBOToEntityMapper,
+        regionDBOToRegionEntityMapper: RegionDBOToRegionEntityMapper
+    ) = AttendanceEmbedToAttendanceEntityMapper(
+        memberDBOToEntityMapper,
+        checkInDBOToEntityMapper,
+        regionDBOToRegionEntityMapper
+    )
 
 }

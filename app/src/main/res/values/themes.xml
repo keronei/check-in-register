@@ -22,4 +22,11 @@
     <style name="Theme.KIRegister.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.KIRegister.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="avatarShape">@string/circle</item>
+    </style>
+    <style name="AnotherTheme" parent="AppTheme">
+        <item name="avatarShape">@string/circle</item>
+    </style>
 </resources>

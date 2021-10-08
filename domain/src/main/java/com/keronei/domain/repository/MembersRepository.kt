@@ -1,5 +1,6 @@
 package com.keronei.domain.repository
 
+import com.keronei.domain.entities.AttendanceEntity
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.exception.Failure
 import com.keronei.domain.usecases.base.Either
@@ -13,5 +14,7 @@ interface MembersRepository {
     suspend fun updateMemberDetails(memberEntity: MemberEntity)
 
     suspend fun removeMemberFromRegister(memberEntity: MemberEntity)
+
+    suspend fun getAllAttendanceData(): Flow<List<AttendanceEntity>>
 
 }
