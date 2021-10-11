@@ -58,6 +58,9 @@ dependencies {
 
     //Dagger Hilt
     implementation(Dependencies.daggerHilt)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
     kapt(Dependencies.hiltCompiler)
 
     implementation(Dependencies.kotlinCore)

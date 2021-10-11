@@ -48,16 +48,15 @@ class TestAttendanceRepo {
         attendanceDataRepositoryImpl =
             AttendanceDataRepositoryImpl(
                 checkInDao,
-                memberLocalEntityMapper,
-                checkInEntityLocalMapper
+                checkInEntityLocalMapper,
+                //memberLocalEntityMapper,
+
             )
     }
 
     @Test
     fun create_region_creates_region(){
-        runBlocking {
-            attendanceDataRepositoryImpl.
-        }
+
     }
 
     @After
