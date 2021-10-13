@@ -12,4 +12,5 @@
 
     <string name="circle">Circle</string>
     <string name="rectangle">Rectangle</string>
+    <string name="create_new_member_fab">Create new member fab.</string>
 </resources>

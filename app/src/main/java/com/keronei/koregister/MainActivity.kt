@@ -18,6 +18,10 @@ import com.keronei.kiregister.databinding.ActivityMainBinding
 import com.keronei.koregister.adapter.AttendanceTabsAdapter
 import com.keronei.koregister.fragments.AllMembersFragment
 import com.keronei.koregister.fragments.YetToCheckedInFragment
+import android.widget.FrameLayout
+
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mIndicator: View
     private lateinit var mUnselectedIndicator: View
     private lateinit var mViewPager: ViewPager
+    private var indicatorWidth : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,19 +40,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        //setSupportActionBar(binding.toolbar)
 
         mTabs = binding.tabs
         mViewPager = binding.viewpager
+       // mIndicator = binding.indicator
 
         val adapter = AttendanceTabsAdapter(supportFragmentManager)
 
         adapter.addFragment(AllMembersFragment(), "All")
         adapter.addFragment(YetToCheckedInFragment(), "Yet to check in")
 
+        mTabs.setupWithViewPager(mViewPager)
+
         mViewPager.adapter = adapter
 
-        mTabs.setupWithViewPager(mViewPager)
 
 //        val navController = findNavController(R.id.nav_host_fragment_content_main)
 //        appBarConfiguration = AppBarConfiguration(navController.graph)

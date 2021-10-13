@@ -10,6 +10,8 @@ class AttendanceTabsAdapter(fm: FragmentManager?) : FragmentPagerAdapter(
 ) {
     private val fragmentList: MutableList<Fragment> = ArrayList()
     private val fragmentTitleList: MutableList<String> = ArrayList()
+
+
     override fun getItem(i: Int): Fragment {
         return fragmentList[i]
     }
