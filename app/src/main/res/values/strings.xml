@@ -13,4 +13,5 @@
     <string name="circle">Circle</string>
     <string name="rectangle">Rectangle</string>
     <string name="create_new_member_fab">Create new member fab.</string>
+    <string name="no_member_attendance_data">Looks like you haven\'t registered any member yet.</string>
 </resources>

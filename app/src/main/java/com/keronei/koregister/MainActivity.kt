@@ -19,10 +19,10 @@ import com.keronei.koregister.adapter.AttendanceTabsAdapter
 import com.keronei.koregister.fragments.AllMembersFragment
 import com.keronei.koregister.fragments.YetToCheckedInFragment
 import android.widget.FrameLayout
+import dagger.hilt.android.AndroidEntryPoint
 
 
-
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration

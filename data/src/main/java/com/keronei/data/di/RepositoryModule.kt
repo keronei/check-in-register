@@ -7,6 +7,9 @@ import com.keronei.data.repository.AttendanceDataRepositoryImpl
 import com.keronei.data.repository.MembersRepositoryImpl
 import com.keronei.data.repository.RegionsRepositoryImpl
 import com.keronei.data.repository.mapper.*
+import com.keronei.domain.repository.AttendanceDataRepository
+import com.keronei.domain.repository.MembersRepository
+import com.keronei.domain.repository.RegionsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +25,7 @@ object RepositoryModule {
     fun providesAttendanceRepository(
         attendanceDao: CheckInDao,
         checkInEntityLocalMapper: CheckInEntityLocalMapper
-    ): AttendanceDataRepositoryImpl {
+    ): AttendanceDataRepository {
 
         return AttendanceDataRepositoryImpl(
             attendanceDao,
@@ -36,7 +39,7 @@ object RepositoryModule {
         memberDBOToEntityMapper: MemberDBOToEntityMapper,
         regionDBOToRegionEntityMapper: RegionDBOToRegionEntityMapper,
         regionEntityToRegionDBOMapper: RegionEntityToRegionDBOMapper,
-    ): RegionsRepositoryImpl {
+    ): RegionsRepository {
         return RegionsRepositoryImpl(
             regionsDao,
             regionDBOToRegionEntityMapper,
@@ -51,7 +54,7 @@ object RepositoryModule {
         attendanceEmbedToAttendanceEntityMapper: AttendanceEmbedToAttendanceEntityMapper,
         memberDBOToEntityMapper: MemberDBOToEntityMapper,
         memberLocalEntityMapper: MemberLocalEntityMapper
-    ): MembersRepositoryImpl {
+    ): MembersRepository {
         return MembersRepositoryImpl(
             memberDao,
             memberLocalEntityMapper,

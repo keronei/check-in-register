@@ -63,6 +63,11 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
     kapt(Dependencies.hiltCompiler)
 
+    //Room
+    implementation(Dependencies.room)
+    kapt(Dependencies.room_compiler)
+    androidTestImplementation(Dependencies.room_testing)
+
     implementation(Dependencies.kotlinCore)
     implementation(Dependencies.androidxAppCompat)
     implementation (Dependencies.androidMaterial)

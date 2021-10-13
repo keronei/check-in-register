@@ -1,6 +1,7 @@
 package com.keronei.koregister.di
 
 import com.keronei.data.repository.RegionsRepositoryImpl
+import com.keronei.domain.repository.RegionsRepository
 import com.keronei.domain.usecases.CreateRegionUseCase
 import com.keronei.domain.usecases.DeleteRegionUseCase
 import com.keronei.domain.usecases.QueryAllRegionsUseCase
@@ -14,22 +15,22 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object RegionsUseCaseModule {
     @Provides
-    fun providesCreateRegionUseCase(regionsRepositoryImpl: RegionsRepositoryImpl): CreateRegionUseCase {
+    fun providesCreateRegionUseCase(regionsRepositoryImpl: RegionsRepository): CreateRegionUseCase {
         return CreateRegionUseCase(regionsRepositoryImpl)
     }
 
     @Provides
-    fun providesQueryAllRegionsUseCase(regionsRepositoryImpl: RegionsRepositoryImpl): QueryAllRegionsUseCase {
+    fun providesQueryAllRegionsUseCase(regionsRepositoryImpl: RegionsRepository): QueryAllRegionsUseCase {
         return QueryAllRegionsUseCase(regionsRepositoryImpl)
     }
 
     @Provides
-    fun providesUpdateRegionUseCase(regionsRepositoryImpl: RegionsRepositoryImpl): UpdateRegionUseCase {
+    fun providesUpdateRegionUseCase(regionsRepositoryImpl: RegionsRepository): UpdateRegionUseCase {
         return UpdateRegionUseCase(regionsRepositoryImpl)
     }
 
     @Provides
-    fun providesDeleteRegionUseCase(regionsRepositoryImpl: RegionsRepositoryImpl): DeleteRegionUseCase {
+    fun providesDeleteRegionUseCase(regionsRepositoryImpl: RegionsRepository): DeleteRegionUseCase {
         return DeleteRegionUseCase(regionsRepositoryImpl)
     }
 }
