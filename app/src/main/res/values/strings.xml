@@ -14,4 +14,6 @@
     <string name="rectangle">Rectangle</string>
     <string name="create_new_member_fab">Create new member fab.</string>
     <string name="no_member_attendance_data">Looks like you haven\'t registered any member yet.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

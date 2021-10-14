@@ -26,4 +26,11 @@
     <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
     </style>
+
+    <style name="Widget.KO.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemTextColor">@color/purple_500</item>
+        <item name="itemIconTint">@color/purple_200</item>
+        <item name="labelVisibilityMode">labeled</item>
+    </style>
+
 </resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/baseMembersFragment">
+    <fragment
+        android:id="@+id/baseMembersFragment"
+        android:name="com.keronei.koregister.fragments.BaseFragment"
+        android:label="fragment_base_members"
+        tools:layout="@layout/fragment_base_members" />
+</navigation>
