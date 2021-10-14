@@ -1,6 +1,7 @@
 package com.keronei.data.local.dao
 
 import androidx.room.*
+import com.keronei.data.local.embeds.RegionEmbed
 import com.keronei.data.local.entities.MemberDBO
 import com.keronei.data.local.entities.RegionDBO
 import kotlinx.coroutines.flow.Flow
@@ -12,6 +13,9 @@ interface RegionsDao {
 
     @Query("SELECT * FROM RegionDBO ORDER BY name DESC")
     fun queryAllRegions(): Flow<List<RegionDBO>>
+
+    @Query("SELECT * FROM RegionDBO ORDER BY name DESC")
+    fun queryAllRegionsWithMemberCount(): Flow<List<RegionEmbed>>
 
     @Query("SELECT * FROM MemberDBO WHERE regionId = :regionId ORDER BY firstName DESC")
     fun queryMembersInARegion(regionId: Int): Flow<List<MemberDBO>>

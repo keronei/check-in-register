@@ -1,6 +1,7 @@
 package com.keronei.domain.repository
 
 import com.keronei.domain.entities.MemberEntity
+import com.keronei.domain.entities.RegionEmbedEntity
 import com.keronei.domain.entities.RegionEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -8,6 +9,8 @@ interface RegionsRepository {
     suspend fun createNewRegion(regionEntity: RegionEntity)
 
     suspend fun getAllRegions(): Flow<List<RegionEntity>>
+
+    suspend fun getAllRegionsWithMembersData(): Flow<List<RegionEmbedEntity>>
 
     suspend fun getMembersInARegion(regionId : Int): Flow<List<MemberEntity>>
 

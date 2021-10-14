@@ -3,8 +3,10 @@ package com.keronei.data.repository
 import com.keronei.data.local.dao.RegionsDao
 import com.keronei.data.repository.mapper.MemberDBOToEntityMapper
 import com.keronei.data.repository.mapper.RegionDBOToRegionEntityMapper
+import com.keronei.data.repository.mapper.RegionEmbedToRegionEmbedEntityMapper
 import com.keronei.data.repository.mapper.RegionEntityToRegionDBOMapper
 import com.keronei.domain.entities.MemberEntity
+import com.keronei.domain.entities.RegionEmbedEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.domain.repository.RegionsRepository
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +16,8 @@ class RegionsRepositoryImpl(
     private val regionsDao: RegionsDao,
     private val regionDBOToRegionEntityMapper: RegionDBOToRegionEntityMapper,
     private val regionEntityToRegionDBOMapper: RegionEntityToRegionDBOMapper,
-    private val memberDBOToEntityMapper: MemberDBOToEntityMapper
+    private val memberDBOToEntityMapper: MemberDBOToEntityMapper,
+    private val regionEmbedToRegionEmbedEntityMapper: RegionEmbedToRegionEmbedEntityMapper
 ) : RegionsRepository {
     override suspend fun createNewRegion(regionEntity: RegionEntity) {
         regionsDao.createRegion(regionEntityToRegionDBOMapper.map(regionEntity))
@@ -23,6 +26,12 @@ class RegionsRepositoryImpl(
     override suspend fun getAllRegions(): Flow<List<RegionEntity>> {
         return regionsDao.queryAllRegions()
             .map { dbo -> regionDBOToRegionEntityMapper.mapList(dbo) }
+    }
+
+    override suspend fun getAllRegionsWithMembersData(): Flow<List<RegionEmbedEntity>> {
+        return regionsDao.queryAllRegionsWithMemberCount().map { entry ->
+            regionEmbedToRegionEmbedEntityMapper.mapList(entry)
+        }
     }
 
     override suspend fun getMembersInARegion(regionId: Int): Flow<List<MemberEntity>> {

@@ -2,10 +2,7 @@ package com.keronei.koregister.di
 
 import com.keronei.data.repository.RegionsRepositoryImpl
 import com.keronei.domain.repository.RegionsRepository
-import com.keronei.domain.usecases.CreateRegionUseCase
-import com.keronei.domain.usecases.DeleteRegionUseCase
-import com.keronei.domain.usecases.QueryAllRegionsUseCase
-import com.keronei.domain.usecases.UpdateRegionUseCase
+import com.keronei.domain.usecases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,5 +29,10 @@ object RegionsUseCaseModule {
     @Provides
     fun providesDeleteRegionUseCase(regionsRepositoryImpl: RegionsRepository): DeleteRegionUseCase {
         return DeleteRegionUseCase(regionsRepositoryImpl)
+    }
+
+    @Provides
+    fun providesQueryAllRegionsWithMemberDataUseCase(regionsRepositoryImpl: RegionsRepository): QueryAllRegionsWithMembersUseCase {
+        return QueryAllRegionsWithMembersUseCase(regionsRepositoryImpl)
     }
 }

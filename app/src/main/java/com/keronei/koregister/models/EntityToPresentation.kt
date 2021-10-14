@@ -1,6 +1,7 @@
 package com.keronei.koregister.models
 
 import com.keronei.domain.entities.AttendanceEntity
+import com.keronei.domain.entities.RegionEmbedEntity
 
 fun AttendanceEntity.toPresentation(): AttendeePresentation {
     return AttendeePresentation(
@@ -13,4 +14,8 @@ fun AttendanceEntity.toPresentation(): AttendeePresentation {
         regionEntity.name,
         checkIns
     )
+}
+
+fun RegionEmbedEntity.toPresentation(): RegionPresentation {
+    return RegionPresentation(regionEntity.id, regionEntity.name, members.size)
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="regionInfo"
+            type="com.keronei.koregister.models.RegionPresentation" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/region_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="@{regionInfo.name}"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Manyatta" />
+
+    <TextView
+        android:id="@+id/region_member_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{regionInfo.memberCount}"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/region_name"
+        app:layout_constraintStart_toStartOf="@+id/region_name"
+        app:layout_constraintTop_toBottomOf="@id/region_name"
+        tools:text="13" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
