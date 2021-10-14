@@ -27,7 +27,10 @@
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_view_regions"
-            tools:listitem="@layout/item_region_layout" />
+            tools:listitem="@layout/item_region_layout"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

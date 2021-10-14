@@ -1,6 +1,7 @@
 package com.keronei.koregister.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.RegionFragmentBinding
 import com.keronei.koregister.adapter.RegionsRecyclerAdapter
+import com.keronei.koregister.models.toPresentation
 import com.keronei.koregister.viewmodels.RegionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -44,12 +46,13 @@ class RegionFragment : Fragment() {
     private fun watchRegions() {
         lifecycleScope.launch {
 
-            viewModel.queryAllRegionsWithMembersData()
+            viewModel.queryAllRegionsWithMembersData().collect { info ->
 
-            viewModel.regionsInformation.collect { freshList ->
-                regionsAdapter.submitList(freshList)
+                Log.d("RegionFragment", "Collected $info")
 
+                regionsAdapter.submitList(info.map { regionEmbedEntity -> regionEmbedEntity.toPresentation() })
             }
+
         }
     }
 

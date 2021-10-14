@@ -10,15 +10,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import com.keronei.kiregister.R
-import com.keronei.kiregister.databinding.FragmentBaseMembersBinding
-import com.keronei.koregister.adapter.AttendanceTabsAdapter
+import com.keronei.kiregister.databinding.BaseFragmentBinding
+
 
 class BaseFragment : Fragment() {
 
-    private lateinit var baseMembersBinding: FragmentBaseMembersBinding
+    private lateinit var baseMembersBinding: BaseFragmentBinding
 
     private var navController: NavController? = null
 
@@ -28,7 +26,7 @@ class BaseFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         baseMembersBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_base_members, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.base_fragment, container, false)
 
         setUpBottomNav()
 

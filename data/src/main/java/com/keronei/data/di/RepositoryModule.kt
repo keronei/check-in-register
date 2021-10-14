@@ -39,12 +39,14 @@ object RepositoryModule {
         memberDBOToEntityMapper: MemberDBOToEntityMapper,
         regionDBOToRegionEntityMapper: RegionDBOToRegionEntityMapper,
         regionEntityToRegionDBOMapper: RegionEntityToRegionDBOMapper,
+        regionEmbedToRegionEmbedEntityMapper: RegionEmbedToRegionEmbedEntityMapper
     ): RegionsRepository {
         return RegionsRepositoryImpl(
             regionsDao,
             regionDBOToRegionEntityMapper,
             regionEntityToRegionDBOMapper,
             memberDBOToEntityMapper,
+            regionEmbedToRegionEmbedEntityMapper
         )
     }
 

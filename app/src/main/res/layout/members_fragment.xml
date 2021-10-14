@@ -6,7 +6,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.keronei.koregister.MainActivity">
+    tools:context="com.keronei.koregister.fragments.MembersFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"

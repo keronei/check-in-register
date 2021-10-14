@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.host.HostFragment">
+        tools:context="com.keronei.koregister.fragments.BaseFragment">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
@@ -22,9 +22,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navGraph="@navigation/base_nav_graph" />
+            app:navGraph="@navigation/bottom_nav_graph" />
 
-        <include layout="@layout/members_content"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"

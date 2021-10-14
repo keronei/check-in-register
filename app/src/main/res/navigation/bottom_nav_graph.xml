@@ -3,21 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_nav_graph"
-    app:startDestination="@id/regionFragment">
+    app:startDestination="@id/membersFragment">
 
     <fragment
-        android:id="@+id/regionFragment"
+        android:id="@+id/membersFragment"
+        android:name="com.keronei.koregister.fragments.MembersFragment"
+        tools:layout="@layout/members_fragment"
+        android:label="BaseMembersFragment" />
+
+    <fragment
+        android:id="@+id/regionsFragment"
         android:name="com.keronei.koregister.fragments.RegionFragment"
         tools:layout="@layout/region_fragment"
         android:label="RegionFragment" />
+
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.keronei.koregister.fragments.ReportsFragment"
         android:label="reports_fragment"
         tools:layout="@layout/reports_fragment" />
-    <fragment
-        android:id="@+id/baseMembersFragment2"
-        android:name="com.keronei.koregister.fragments.MembersFragment"
-        tools:layout="@layout/members_content"
-        android:label="BaseMembersFragment" />
+
 </navigation>

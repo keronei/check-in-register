@@ -1,5 +1,6 @@
 package com.keronei.koregister.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.keronei.domain.entities.RegionEntity
@@ -23,6 +24,7 @@ class RegionViewModel @Inject constructor(
 ) : ViewModel() {
 
     val regionsInformation = MutableStateFlow<List<RegionPresentation>>(emptyList())
+
     init {
 
     }
@@ -41,16 +43,8 @@ class RegionViewModel @Inject constructor(
 
     suspend fun queryAllRegions() = queryAllRegionsUseCase(UseCaseParams.Empty)
 
-    suspend fun queryAllRegionsWithMembersData() {
-        queryAllRegionsWithMembersUseCase(UseCaseParams.Empty).collect { info ->
-            val asPresentations = mutableListOf<RegionPresentation>()
-
-            info.forEach { regionEmbedEntity -> asPresentations.add(regionEmbedEntity.toPresentation()) }
-
-            regionsInformation.emit(asPresentations)
-
-        }
-    }
+    suspend fun queryAllRegionsWithMembersData()  =
+        queryAllRegionsWithMembersUseCase(UseCaseParams.Empty)
 
     fun deleteRegion(defectedRegion: RegionEntity) {
         viewModelScope.launch {

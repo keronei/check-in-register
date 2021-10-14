@@ -27,17 +27,29 @@ object MapperObjects {
         RegionDBOToRegionEntityMapper()
 
     @Provides
-    fun provideRegionEntityToRegionDBOMapper() : RegionEntityToRegionDBOMapper = RegionEntityToRegionDBOMapper()
+    fun provideRegionEntityToRegionDBOMapper(): RegionEntityToRegionDBOMapper =
+        RegionEntityToRegionDBOMapper()
 
     @Provides
     fun providesAttendanceEmbedToAttendanceEntityMapper(
         memberDBOToEntityMapper: MemberDBOToEntityMapper,
         checkInDBOToEntityMapper: CheckInDBOToEntityMapper,
         regionDBOToRegionEntityMapper: RegionDBOToRegionEntityMapper
-    ) : AttendanceEmbedToAttendanceEntityMapper = AttendanceEmbedToAttendanceEntityMapper(
+    ): AttendanceEmbedToAttendanceEntityMapper = AttendanceEmbedToAttendanceEntityMapper(
         memberDBOToEntityMapper,
         checkInDBOToEntityMapper,
         regionDBOToRegionEntityMapper
     )
+
+    @Provides
+    fun providesRegionEmbedToRegionEmbedEntityMapper(
+        regionDBOToRegionEntityMapper: RegionDBOToRegionEntityMapper,
+        memberDBOToEntityMapper: MemberDBOToEntityMapper
+    ): RegionEmbedToRegionEmbedEntityMapper {
+        return RegionEmbedToRegionEmbedEntityMapper(
+            regionDBOToRegionEntityMapper,
+            memberDBOToEntityMapper
+        )
+    }
 
 }
