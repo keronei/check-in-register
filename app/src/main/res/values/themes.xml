@@ -2,16 +2,21 @@
     <!-- Base application theme. -->
     <style name="Theme.KIRegister" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+<!--        <item name="colorSecondary">@color/secondaryColor</item>-->
+<!--        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>-->
+<!--        <item name="colorOnSecondary">@color/secondaryTextColor</item>-->
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.KO.SmallComponent </item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.KO.MediumComponent </item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.KO.LargeComponent </item>
+
     </style>
 
     <style name="Theme.KIRegister.NoActionBar">
@@ -28,9 +33,37 @@
     </style>
 
     <style name="Widget.KO.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemTextColor">@color/purple_500</item>
-        <item name="itemIconTint">@color/purple_200</item>
+        <item name="itemTextColor">@color/primaryTextColor</item>
+
         <item name="labelVisibilityMode">labeled</item>
     </style>
+
+    <!--shape appearance -->
+    <style name="ShapeAppearance.KO.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="ShapeAppearance.KO.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerFamilyTopRight">cut</item>
+    </style>
+
+    <style name="ShapeAppearance.KO.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="ButtonTheme" parent="TextAppearance.MaterialComponents.Button">
+        <item name="materialThemeOverlay">@style/DeleteButtonTheme</item>
+    </style>
+
+    <style name="DeleteButtonTheme" >
+        <item name="colorPrimary">@android:color/holo_red_dark</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+
 
 </resources>

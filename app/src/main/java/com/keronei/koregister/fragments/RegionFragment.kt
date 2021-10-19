@@ -5,13 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.RegionFragmentBinding
+import com.keronei.kiregister.databinding.SelectedRegonOptionsBinding
 import com.keronei.koregister.adapter.RegionsRecyclerAdapter
+import com.keronei.koregister.models.RegionPresentation
 import com.keronei.koregister.models.toPresentation
 import com.keronei.koregister.viewmodels.RegionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +34,9 @@ class RegionFragment : Fragment() {
     private val viewModel: RegionViewModel by activityViewModels()
     lateinit var regionsAdapter: RegionsRecyclerAdapter
     lateinit var regionFragmentBinding: RegionFragmentBinding
+    lateinit var selectedRegionOptions : SelectedRegonOptionsBinding
+    private var navController: NavController? = null
+    private lateinit var searchView: androidx.appcompat.widget.SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,12 +44,56 @@ class RegionFragment : Fragment() {
     ): View {
         regionFragmentBinding =
             DataBindingUtil.inflate(inflater, R.layout.region_fragment, container, false)
+
+        searchView = regionFragmentBinding.searchViewRegions
+
+
+
+        setupOnClickListeners()
+
+        navController = childFragmentManager.findFragmentById(R.id.nav_host_fragment)
+            ?.findNavController()
+
         return regionFragmentBinding.root
     }
 
+    private fun setupOnClickListeners() {
+        regionFragmentBinding.createNewEntryFab.setOnClickListener {
+            Log.d("Launching Fab", navController.toString())
+
+            findNavController().navigate(R.id.action_regionsFragment_to_createRegionFragment)
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                regionsAdapter.filter(newText)
+                return true
+            }
+
+        })
+    }
+
     private fun setupRegionsList() {
-        regionsAdapter = RegionsRecyclerAdapter()
+        regionsAdapter = RegionsRecyclerAdapter(::itemSelected)
         regionFragmentBinding.regionsRecycler.adapter = regionsAdapter
+    }
+
+    private fun itemSelected(region : RegionPresentation){
+
+        selectedRegionOptions = SelectedRegonOptionsBinding.inflate(layoutInflater)
+
+        val optionsPrompt = MaterialAlertDialogBuilder(requireContext()).setView(selectedRegionOptions.root).show()
+
+        val params = optionsPrompt?.window?.attributes
+        params?.width = ViewGroup.LayoutParams.MATCH_PARENT
+
+        optionsPrompt?.window?.attributes = params
+
     }
 
     private fun watchRegions() {
@@ -50,7 +103,9 @@ class RegionFragment : Fragment() {
 
                 Log.d("RegionFragment", "Collected $info")
 
-                regionsAdapter.submitList(info.map { regionEmbedEntity -> regionEmbedEntity.toPresentation() })
+                val list = info.map { regionEmbedEntity -> regionEmbedEntity.toPresentation() }
+
+                regionsAdapter.modifyList(list)
             }
 
         }

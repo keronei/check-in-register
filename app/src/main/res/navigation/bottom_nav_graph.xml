@@ -15,12 +15,22 @@
         android:id="@+id/regionsFragment"
         android:name="com.keronei.koregister.fragments.RegionFragment"
         tools:layout="@layout/region_fragment"
-        android:label="RegionFragment" />
+        android:label="RegionFragment" >
+        <action
+            android:id="@+id/action_regionsFragment_to_createRegionFragment"
+            app:destination="@id/createRegionFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.keronei.koregister.fragments.ReportsFragment"
         android:label="reports_fragment"
         tools:layout="@layout/reports_fragment" />
+
+    <dialog
+        android:id="@+id/createRegionFragment"
+        tools:layout="@layout/create_region_fragment"
+        android:name="com.keronei.koregister.fragments.CreateRegionFragment"
+        android:label="CreateRegionFragment" />
 
 </navigation>

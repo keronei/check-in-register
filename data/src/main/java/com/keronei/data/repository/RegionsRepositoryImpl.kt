@@ -28,11 +28,11 @@ class RegionsRepositoryImpl(
             .map { dbo -> regionDBOToRegionEntityMapper.mapList(dbo) }
     }
 
-    override suspend fun getAllRegionsWithMembersData(): Flow<List<RegionEmbedEntity>> {
-        return regionsDao.queryAllRegionsWithMemberCount().map { entry ->
+    override suspend fun getAllRegionsWithMembersData() =
+        regionsDao.queryAllRegionsWithMemberCount().map { entry ->
             regionEmbedToRegionEmbedEntityMapper.mapList(entry)
+
         }
-    }
 
     override suspend fun getMembersInARegion(regionId: Int): Flow<List<MemberEntity>> {
         return regionsDao.queryMembersInARegion(regionId)

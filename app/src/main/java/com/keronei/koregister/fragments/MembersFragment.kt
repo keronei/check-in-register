@@ -32,7 +32,8 @@ class MembersFragment : Fragment() {
 
         mTabs = membersContentBinding.tabs
         mViewPager = membersContentBinding.viewpager
-        // mIndicator = binding.indicator
+
+        onClickListeners()
 
         val adapter = AttendanceTabsAdapter(childFragmentManager)
 
@@ -44,6 +45,12 @@ class MembersFragment : Fragment() {
         mViewPager.adapter = adapter
 
         return membersContentBinding.root
+    }
+
+    private fun onClickListeners() {
+        membersContentBinding.createNewMember.setOnClickListener {
+
+        }
     }
 
 }

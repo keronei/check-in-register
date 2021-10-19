@@ -9,5 +9,8 @@
         android:id="@+id/baseMembersFragment"
         android:name="com.keronei.koregister.fragments.BaseFragment"
         android:label="fragment_base_members"
-        tools:layout="@layout/base_fragment" />
+        tools:layout="@layout/base_fragment" >
+    </fragment>
+
+
 </navigation>
