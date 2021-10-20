@@ -11,6 +11,10 @@ object Dependencies {
 
     const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigationFragment}"
 
+    const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigationFragment}"
+
+    const val androidExtensionsRuntime = "org.jetbrains.kotlin:kotlin-android-extensions-runtime:${Versions.androidExtensions}"
+
     //DI
     const val hiltGradlePlugin =  "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt_version}"
 

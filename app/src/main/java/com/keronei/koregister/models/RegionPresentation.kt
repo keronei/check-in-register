@@ -1,3 +1,7 @@
 package com.keronei.koregister.models
 
-data class RegionPresentation(val id: Int, val name: String, val memberCount : String)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class RegionPresentation(val id: String, val name: String, val memberCount : String) : Parcelable

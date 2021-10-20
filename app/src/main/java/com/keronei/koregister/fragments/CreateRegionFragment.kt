@@ -1,23 +1,30 @@
 package com.keronei.koregister.fragments
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.CreateRegionFragmentBinding
+import com.keronei.koregister.models.RegionPresentation
 import com.keronei.koregister.viewmodels.RegionViewModel
+import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CreateRegionFragment : DialogFragment() {
+
+    private val args: CreateRegionFragmentArgs by navArgs()
+
+    var isEditing = true
+
+    var selectedRegion: RegionPresentation? = null
 
     companion object {
         fun newInstance() = CreateRegionFragment()
@@ -25,6 +32,20 @@ class CreateRegionFragment : DialogFragment() {
 
     val viewModel: RegionViewModel by activityViewModels()
     lateinit var createRegionFragmentBindings: CreateRegionFragmentBinding
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        isEditing = args.editing
+
+        selectedRegion = args.selectedRegion
+
+        if (isEditing) {
+            createRegionFragmentBindings.createRegionButton.text = getString(R.string.action_update)
+
+            createRegionFragmentBindings.regionNameEdittext.setText(selectedRegion?.name)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,22 +64,26 @@ class CreateRegionFragment : DialogFragment() {
         createRegionFragmentBindings.createRegionButton.setOnClickListener {
             val providedName = createRegionFragmentBindings.regionNameEdittext.text.toString()
 
-            if (providedName.isNotEmpty() && providedName.length > 2) {
-                viewModel.createRegion(RegionEntity(0, providedName))
+            if (providedName.trim().isNotEmpty() && providedName.trim().length > 2) {
+                if (isEditing) {
+
+                    if (selectedRegion == null) return@setOnClickListener
+
+                    viewModel.updateRegion(RegionEntity(selectedRegion!!.id.toInt(), providedName))
+                    ToastUtils.showLongToastOnTop(R.string.entry_updated)
+                } else {
+                    viewModel.createRegion(RegionEntity(0, providedName.trim()))
+                    ToastUtils.showLongToastOnTop(R.string.entry_added)
+                }
                 this.dismiss()
 
-                showToast("$providedName added.")
+
             } else {
-                showToast("Name too short!")
+                ToastUtils.showLongToastInMiddle(R.string.name_too_short)
             }
         }
     }
 
-   private fun showToast(message: String) {
-        val toast = Toast.makeText(context, message, Toast.LENGTH_LONG)
-        toast.setGravity(Gravity.TOP, 0, 0)
-        toast.show()
-    }
 
     override fun onResume() {
         super.onResume()

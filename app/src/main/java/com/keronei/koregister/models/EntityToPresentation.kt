@@ -17,5 +17,5 @@ fun AttendanceEntity.toPresentation(): AttendeePresentation {
 }
 
 fun RegionEmbedEntity.toPresentation(): RegionPresentation {
-    return RegionPresentation(regionEntity.id, regionEntity.name, members.size.toString())
+    return RegionPresentation(regionEntity.id.toString(), regionEntity.name, members.size.toString())
 }

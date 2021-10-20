@@ -4,6 +4,7 @@ object Versions {
     const val androidMaterial = "1.4.0"
     const val constrainLayout = "2.1.0"
     const val navigationFragment = "2.3.5"
+    const val androidExtensions = "1.4.0"
 
     //Room
     const val room_version = "2.3.0"

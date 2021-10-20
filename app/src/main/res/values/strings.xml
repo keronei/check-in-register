@@ -16,4 +16,11 @@
     <string name="no_member_attendance_data">Looks like you haven\'t registered any member yet.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="name_too_short">Name too short!</string>
+    <string name="entry_added">Created !</string>
+    <string name="entry_updated">Updated !</string>
+    <string name="still_has_members">This region still has members, edit instead.</string>
+    <string name="region_deleted">Region deleted.</string>
+    <string name="action_update">Update</string>
 </resources>

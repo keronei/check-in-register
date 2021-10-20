@@ -3,6 +3,8 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-android-extensions")
 }
 
 android {
@@ -74,6 +76,7 @@ dependencies {
     implementation (Dependencies.constrainLayout)
     implementation (Dependencies.navigationFragment)
     implementation (Dependencies.navigationUiKtx)
+    //implementation(Dependencies.androidExtensionsRuntime)
 
     testImplementation("junit:junit:4.0.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
