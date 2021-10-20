@@ -23,7 +23,7 @@ class RegionViewModel @Inject constructor(
     private val queryAllRegionsWithMembersUseCase: QueryAllRegionsWithMembersUseCase
 ) : ViewModel() {
 
-    val regionsInformation = MutableStateFlow<List<RegionPresentation>>(emptyList())
+    val regionsInformation = MutableStateFlow<List<RegionEntity>>(emptyList())
 
     init {
 
@@ -43,7 +43,7 @@ class RegionViewModel @Inject constructor(
 
     suspend fun queryAllRegions() = queryAllRegionsUseCase(UseCaseParams.Empty)
 
-    suspend fun queryAllRegionsWithMembersData()  =
+    suspend fun queryAllRegionsWithMembersData() =
         queryAllRegionsWithMembersUseCase(UseCaseParams.Empty)
 
     fun deleteRegion(defectedRegion: RegionEntity) {

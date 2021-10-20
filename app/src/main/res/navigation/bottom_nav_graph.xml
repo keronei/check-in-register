@@ -9,7 +9,11 @@
         android:id="@+id/membersFragment"
         android:name="com.keronei.koregister.fragments.MembersFragment"
         tools:layout="@layout/members_fragment"
-        android:label="BaseMembersFragment" />
+        android:label="BaseMembersFragment" >
+        <action
+            android:id="@+id/action_membersFragment_to_createMemberFragment"
+            app:destination="@id/createMemberFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/regionsFragment"
@@ -42,5 +46,11 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </dialog>
+
+    <dialog
+        android:id="@+id/createMemberFragment"
+        android:name="com.keronei.koregister.fragments.CreateMemberFragment"
+        tools:layout="@layout/create_member_fragment"
+        android:label="CreateMemberFragment" />
 
 </navigation>

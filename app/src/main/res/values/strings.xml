@@ -23,4 +23,12 @@
     <string name="still_has_members">This region still has members, edit instead.</string>
     <string name="region_deleted">Region deleted.</string>
     <string name="action_update">Update</string>
+    <string name="first_name">First Name</string>
+    <string name="second_name">Second Name</string>
+    <string name="other_names">Other Names (Optional)</string>
+    <string name="age">Age</string>
+    <string name="phone_number">Phone Number (Optional)</string>
+    <string name="add_member">Add Member</string>
+    <string name="create_new_member">Create new member</string>
+    <string name="member_created">Member added!</string>
 </resources>

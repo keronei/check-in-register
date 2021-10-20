@@ -53,7 +53,8 @@ object Dependencies {
     //coroutines
     const val coroutinesCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutinesCore}"
 
-
+    //Helpers
+    const val searchableDropDown = "com.github.chivorns:smartmaterialspinner:${Versions.searchable}"
 
     //Room
     const val room = "androidx.room:room-ktx:${Versions.room_version}"

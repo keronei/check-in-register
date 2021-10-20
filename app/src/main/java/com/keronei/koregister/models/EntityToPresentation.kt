@@ -2,6 +2,7 @@ package com.keronei.koregister.models
 
 import com.keronei.domain.entities.AttendanceEntity
 import com.keronei.domain.entities.RegionEmbedEntity
+import com.keronei.domain.entities.RegionEntity
 
 fun AttendanceEntity.toPresentation(): AttendeePresentation {
     return AttendeePresentation(

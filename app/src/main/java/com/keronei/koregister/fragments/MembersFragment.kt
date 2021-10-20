@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.keronei.kiregister.R
@@ -28,7 +29,8 @@ class MembersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        membersContentBinding = DataBindingUtil.inflate(inflater, R.layout.members_fragment, container, false)
+        membersContentBinding =
+            DataBindingUtil.inflate(inflater, R.layout.members_fragment, container, false)
 
         mTabs = membersContentBinding.tabs
         mViewPager = membersContentBinding.viewpager
@@ -49,7 +51,10 @@ class MembersFragment : Fragment() {
 
     private fun onClickListeners() {
         membersContentBinding.createNewMember.setOnClickListener {
+            val openCreateMemberAction =
+                MembersFragmentDirections.actionMembersFragmentToCreateMemberFragment()
 
+            findNavController().navigate(openCreateMemberAction)
         }
     }
 
