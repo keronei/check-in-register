@@ -19,17 +19,18 @@
 
         <FrameLayout
             android:id="@+id/speaker_avatar_container"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
 
             android:layout_gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/attendee_picture">
+            app:layout_constraintStart_toStartOf="parent"
+          >
 
             <ImageView
                 android:id="@+id/avatar"
-                android:layout_width="43dp"
-                android:layout_height="43dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:background="@drawable/circle" />
 
             <ImageView
@@ -37,19 +38,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                android:background="@drawable/circle_check_background"
-                android:src="@drawable/ic_baseline_check_circle_outline_24" />
+
+                android:src="@drawable/ic_baseline_radio_button_unchecked_24" />
 
         </FrameLayout>
 
-        <ImageView
-            android:id="@+id/attendee_picture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Attendee picture."
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/attendee_name"
@@ -79,7 +72,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="@{}"
+            android:text=""
             tools:text="7:43 AM" />
 
         <View

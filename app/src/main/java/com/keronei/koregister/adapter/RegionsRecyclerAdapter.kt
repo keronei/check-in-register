@@ -10,18 +10,18 @@ import com.keronei.koregister.models.RegionPresentation
 import java.util.*
 
 class RegionsRecyclerAdapter(private val itemSelected: (region: RegionPresentation) -> Unit) :
-    ListAdapter<RegionPresentation, RegionsRecyclerAdapter.FilmViewHolder>(FilmDiffUtil()) {
+    ListAdapter<RegionPresentation, RegionsRecyclerAdapter.RegionsViewHolder>(FilmDiffUtil()) {
 
     var untouchedList = listOf<RegionPresentation>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): FilmViewHolder {
-        return FilmViewHolder.from(parent)
+    ): RegionsViewHolder {
+        return RegionsViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RegionsViewHolder, position: Int) {
         val film = getItem(position)
         holder.bind(film)
 
@@ -52,7 +52,7 @@ class RegionsRecyclerAdapter(private val itemSelected: (region: RegionPresentati
     }
 
 
-    class FilmViewHolder(val binding: ItemRegionLayoutBinding) :
+    class RegionsViewHolder(val binding: ItemRegionLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
 
@@ -62,11 +62,11 @@ class RegionsRecyclerAdapter(private val itemSelected: (region: RegionPresentati
         }
 
         companion object {
-            fun from(parent: ViewGroup): FilmViewHolder {
+            fun from(parent: ViewGroup): RegionsViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
                 val itemFilmBinding = ItemRegionLayoutBinding.inflate(inflater, parent, false)
 
-                return FilmViewHolder(itemFilmBinding)
+                return RegionsViewHolder(itemFilmBinding)
             }
         }
 

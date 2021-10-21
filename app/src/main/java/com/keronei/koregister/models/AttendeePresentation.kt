@@ -1,7 +1,9 @@
 package com.keronei.koregister.models
 
-import com.keronei.domain.entities.CheckInEntity
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class AttendeePresentation(
     val memberId : Int,
     val name: String,
@@ -10,5 +12,5 @@ data class AttendeePresentation(
     val isActive : Boolean,
     val regionId : Int,
     val regionName : String,
-    val checkIns: List<CheckInEntity>
-)
+    val lastCheckIn: String?
+) : Parcelable

@@ -51,6 +51,16 @@
         android:id="@+id/createMemberFragment"
         android:name="com.keronei.koregister.fragments.CreateMemberFragment"
         tools:layout="@layout/create_member_fragment"
-        android:label="CreateMemberFragment" />
+        android:label="CreateMemberFragment" >
+        <argument
+            android:name="isEditing"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="selectedMember"
+            app:argType="com.keronei.koregister.models.AttendeePresentation"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
 
 </navigation>

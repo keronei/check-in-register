@@ -10,17 +10,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.CreateMemberFragmentBinding
+import com.keronei.koregister.models.AttendeePresentation
 import com.keronei.koregister.viewmodels.MemberViewModel
 import com.keronei.koregister.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 @AndroidEntryPoint
 class CreateMemberFragment : DialogFragment() {
@@ -29,6 +32,12 @@ class CreateMemberFragment : DialogFragment() {
     lateinit var regionsSpinner: SmartMaterialSpinner<RegionEntity>
 
     private var selectedRegion: RegionEntity? = null
+
+    private var selectedAttendee: AttendeePresentation? = null
+
+    private var isEditing = false
+
+    private val args: CreateMemberFragmentArgs by navArgs()
 
     companion object {
         fun newInstance() = CreateMemberFragment()
@@ -50,13 +59,25 @@ class CreateMemberFragment : DialogFragment() {
         regionsSpinner =
             layoutBinding.searchRegionSpinner as SmartMaterialSpinner<RegionEntity>
 
+        isEditing = args.isEditing
+
+        selectedAttendee = args.selectedMember
+
         watchRegions()
 
         prepareSpinner()
 
         setUpOnClickListeners()
 
+        if(isEditing){
+            populateEditFields()
+        }
+
         return layoutBinding.root
+    }
+
+    private fun populateEditFields() {
+
     }
 
     private fun setUpOnClickListeners() {
@@ -129,6 +150,23 @@ class CreateMemberFragment : DialogFragment() {
 
         regionsSpinner.item = regionsList
 
+        if (isEditing) {
+
+            try {
+                val userRegion =
+                    regionsList.first { regionEntity -> regionEntity.id == selectedAttendee?.regionId }
+
+                val position = regionsList.indexOf(userRegion)
+
+                regionsSpinner.setSelection(position)
+
+            } catch (exception: Exception) {
+
+            }
+
+
+        }
+
         regionsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 Toast.makeText(
@@ -138,6 +176,8 @@ class CreateMemberFragment : DialogFragment() {
                 ).show()
 
                 selectedRegion = regionsList[p2]
+
+                regionsSpinner.errorText = ""
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

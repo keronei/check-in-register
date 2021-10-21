@@ -8,10 +8,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.keronei.domain.entities.RegionEntity
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.AllMembersFragmentBinding
+import com.keronei.kiregister.databinding.SelectedAttendeeOptionsBinding
+import com.keronei.kiregister.databinding.SelectedRegonOptionsBinding
 import com.keronei.koregister.adapter.AttendanceRecyclerAdapter
+import com.keronei.koregister.models.AttendeePresentation
 import com.keronei.koregister.models.toPresentation
+import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,6 +29,7 @@ class AllMembersFragment : Fragment() {
     private val allMembersViewModel: AllMembersViewModel by activityViewModels()
     lateinit var allMembersAdapter: AttendanceRecyclerAdapter
     lateinit var allMembersFragmentBinding: AllMembersFragmentBinding
+    lateinit var selectedAttendeeOptions : SelectedAttendeeOptionsBinding
 
     companion object {
         fun newInstance() = AllMembersFragment()
@@ -48,8 +56,38 @@ class AllMembersFragment : Fragment() {
     }
 
     private fun setupList() {
-        allMembersAdapter = AttendanceRecyclerAdapter()
+        allMembersAdapter = AttendanceRecyclerAdapter(::selectedAttendee, requireContext())
         allMembersFragmentBinding.recyclerAllMembers.adapter = allMembersAdapter
+    }
+
+    private fun selectedAttendee(member : AttendeePresentation){
+        selectedAttendeeOptions = SelectedAttendeeOptionsBinding.inflate(layoutInflater)
+
+        selectedAttendeeOptions.selectedRegionName.text = member.name
+
+        val optionsPrompt =
+            MaterialAlertDialogBuilder(requireContext()).setView(selectedAttendeeOptions.root).show()
+
+        val params = optionsPrompt?.window?.attributes
+        params?.width = ViewGroup.LayoutParams.MATCH_PARENT
+
+        optionsPrompt?.window?.attributes = params
+
+        selectedAttendeeOptions.editRegion.setOnClickListener {
+            val navigateToEdit = MembersFragmentDirections.actionMembersFragmentToCreateMemberFragment(true, member)
+
+            findNavController().navigate(navigateToEdit)
+
+            optionsPrompt.dismiss()
+        }
+
+        selectedAttendeeOptions.deleteRegion.setOnClickListener {
+
+
+            optionsPrompt.dismiss()
+
+        }
+
     }
 
     private fun watchStatuses() {
