@@ -1,6 +1,7 @@
 package com.keronei.koregister.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,13 +64,12 @@ class CreateMemberFragment : DialogFragment() {
 
         selectedAttendee = args.selectedMember
 
-        watchRegions()
 
-        prepareSpinner()
+        watchRegions()
 
         setUpOnClickListeners()
 
-        if(isEditing){
+        if (isEditing) {
             populateEditFields()
         }
 
@@ -77,6 +77,14 @@ class CreateMemberFragment : DialogFragment() {
     }
 
     private fun populateEditFields() {
+        layoutBinding.deleteMemberButton.visibility = View.VISIBLE
+        layoutBinding.createMemberButton.text = "Update"
+
+        layoutBinding.firstNameEdittext.setText(selectedAttendee?.firstName)
+        layoutBinding.secondNameEdittext.setText(selectedAttendee?.secondName)
+        layoutBinding.otherNamesEdittext.setText(selectedAttendee?.otherNames)
+        layoutBinding.ageEdittext.setText(selectedAttendee?.age.toString())
+        layoutBinding.phoneEdittext.setText(selectedAttendee?.phoneNumber)
 
     }
 
@@ -112,21 +120,30 @@ class CreateMemberFragment : DialogFragment() {
 
 
             lifecycleScope.launch {
-                memberViewModel.createNewMember(
-                    MemberEntity(
-                        0,
-                        firstName!!.trim().toString(),
-                        secondName!!.trim().toString(),
-                        otherNames!!.trim().toString(),
-                        age!!.trim().toString().toInt(),
-                        phoneNumber?.trim().toString(),
-                        true,
-                        selectedRegion!!.id
-                    )
+
+                val subjectMember = MemberEntity(
+                    if (isEditing) selectedAttendee!!.memberId else 0,
+                    firstName!!.trim().toString(),
+                    secondName!!.trim().toString(),
+                    otherNames!!.trim().toString(),
+                    age!!.trim().toString().toInt(),
+                    phoneNumber?.trim().toString(),
+                    true,
+                    selectedRegion!!.id
                 )
+
+                if (isEditing) {
+                    memberViewModel.updateMember(
+                        subjectMember
+                    )
+                } else {
+                    memberViewModel.createNewMember(
+                        subjectMember
+                    )
+                }
             }
 
-            ToastUtils.showLongToastInMiddle(R.string.member_created)
+            ToastUtils.showLongToastInMiddle(if (isEditing) R.string.member_updated else R.string.member_created)
 
             this.dismiss()
         }
@@ -139,14 +156,13 @@ class CreateMemberFragment : DialogFragment() {
 
                 regionsList.addAll(collectedRegionsList)
 
+                prepareSpinner()
             }
         }
     }
 
 
     private fun prepareSpinner() {
-
-        Toast.makeText(requireContext(), "$regionsList", Toast.LENGTH_SHORT).show()
 
         regionsSpinner.item = regionsList
 
@@ -160,8 +176,9 @@ class CreateMemberFragment : DialogFragment() {
 
                 regionsSpinner.setSelection(position)
 
-            } catch (exception: Exception) {
 
+            } catch (exception: Exception) {
+                exception.printStackTrace()
             }
 
 
@@ -169,11 +186,6 @@ class CreateMemberFragment : DialogFragment() {
 
         regionsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                Toast.makeText(
-                    requireContext(),
-                    "${regionsList[p2].name} selected.",
-                    Toast.LENGTH_SHORT
-                ).show()
 
                 selectedRegion = regionsList[p2]
 

@@ -1,15 +1,20 @@
 package com.keronei.koregister.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.ItemRegionLayoutBinding
 import com.keronei.koregister.models.RegionPresentation
 import java.util.*
 
-class RegionsRecyclerAdapter(private val itemSelected: (region: RegionPresentation) -> Unit) :
+class RegionsRecyclerAdapter(
+    private val itemSelected: (region: RegionPresentation) -> Unit,
+    private val context: Context
+) :
     ListAdapter<RegionPresentation, RegionsRecyclerAdapter.RegionsViewHolder>(FilmDiffUtil()) {
 
     var untouchedList = listOf<RegionPresentation>()
@@ -22,11 +27,11 @@ class RegionsRecyclerAdapter(private val itemSelected: (region: RegionPresentati
     }
 
     override fun onBindViewHolder(holder: RegionsViewHolder, position: Int) {
-        val film = getItem(position)
-        holder.bind(film)
+        val region = getItem(position)
+        holder.bind(region, context)
 
         holder.binding.root.setOnClickListener {
-            itemSelected(getItem(position))
+            itemSelected(region)
         }
     }
 
@@ -56,8 +61,21 @@ class RegionsRecyclerAdapter(private val itemSelected: (region: RegionPresentati
         RecyclerView.ViewHolder(binding.root) {
 
 
-        fun bind(attendeePresentation: RegionPresentation) {
+        fun bind(attendeePresentation: RegionPresentation, context: Context) {
             binding.regionInfo = attendeePresentation
+            val count = attendeePresentation.memberCount
+            when {
+                count.toInt() < 1 -> {
+                    binding.regionMemberCount.text = context.getString(R.string.no_member_in_region)
+                }
+                count.toInt() > 1 -> {
+                    binding.regionMemberCount.text = "$count members."
+                }
+                else -> {
+                    binding.regionMemberCount.text = context.getString(R.string.one_member)
+                }
+            }
+
             binding.executePendingBindings()
         }
 

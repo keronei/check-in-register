@@ -4,47 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="regionInfo"
             type="com.keronei.koregister.models.RegionPresentation" />
     </data>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_margin="8dp">
-
-    <TextView
-        android:id="@+id/region_name"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="@{regionInfo.name}"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:text="Manyatta" />
-
-    <TextView
-        android:id="@+id/region_member_count"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="textEnd"
-        android:textSize="18sp"
-        android:text="@{regionInfo.memberCount}"
         android:layout_marginTop="8dp"
-        tools:text="13" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:paddingTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@android:color/black"
-/>
+        android:layout_marginBottom="0dp"
+        app:cardBackgroundColor="@color/list_item_card_color">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/region_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{regionInfo.name}"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Manyatta" />
+
+            <TextView
+                android:id="@+id/region_member_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textAlignment="textEnd"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                tools:text="13" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

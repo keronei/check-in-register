@@ -81,7 +81,7 @@ class RegionFragment : Fragment() {
     }
 
     private fun setupRegionsList() {
-        regionsAdapter = RegionsRecyclerAdapter(::itemSelected)
+        regionsAdapter = RegionsRecyclerAdapter(::itemSelected, requireContext())
         regionFragmentBinding.regionsRecycler.adapter = regionsAdapter
     }
 
@@ -100,7 +100,8 @@ class RegionFragment : Fragment() {
         optionsPrompt?.window?.attributes = params
 
         selectedRegionOptions.editRegion.setOnClickListener {
-            val navigateToEdit = RegionFragmentDirections.actionRegionsFragmentToCreateRegionFragment(true, region)
+            val navigateToEdit =
+                RegionFragmentDirections.actionRegionsFragmentToCreateRegionFragment(true, region)
 
             findNavController().navigate(navigateToEdit)
 

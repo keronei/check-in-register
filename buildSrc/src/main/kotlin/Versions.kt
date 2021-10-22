@@ -1,4 +1,5 @@
 object Versions {
+    const val circular_image: String = "3.1.0"
     const val searchable: String = "1.5.0"
     const val androidxCoreKtx = "1.6.0"
     const val androidxAppCompat = "1.3.1"

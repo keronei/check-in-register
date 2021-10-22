@@ -61,5 +61,8 @@ object Dependencies {
     const val room_compiler = "androidx.room:room-compiler:${Versions.room_version}"
     const val room_testing = "androidx.room:room-testing:${Versions.room_version}"
 
+    //Circle Image
+    const val circle_image = "de.hdodenhof:circleimageview:${Versions.circular_image}"
+
 
 }

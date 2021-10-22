@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -29,7 +30,8 @@ class AllMembersFragment : Fragment() {
     private val allMembersViewModel: AllMembersViewModel by activityViewModels()
     lateinit var allMembersAdapter: AttendanceRecyclerAdapter
     lateinit var allMembersFragmentBinding: AllMembersFragmentBinding
-    lateinit var selectedAttendeeOptions : SelectedAttendeeOptionsBinding
+    lateinit var selectedAttendeeOptions: SelectedAttendeeOptionsBinding
+    lateinit var searchView: androidx.appcompat.widget.SearchView
 
     companion object {
         fun newInstance() = AllMembersFragment()
@@ -43,6 +45,8 @@ class AllMembersFragment : Fragment() {
         allMembersFragmentBinding =
             DataBindingUtil.inflate(inflater, R.layout.all_members_fragment, container, false)
 
+        searchView = allMembersFragmentBinding.searchViewAllMembers
+
         return allMembersFragmentBinding.root
     }
 
@@ -53,6 +57,23 @@ class AllMembersFragment : Fragment() {
 
         watchStatuses()
 
+        setOnClickListeners()
+
+    }
+
+    private fun setOnClickListeners() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                allMembersAdapter.filter(newText)
+                return true
+            }
+
+        })
     }
 
     private fun setupList() {
@@ -60,30 +81,30 @@ class AllMembersFragment : Fragment() {
         allMembersFragmentBinding.recyclerAllMembers.adapter = allMembersAdapter
     }
 
-    private fun selectedAttendee(member : AttendeePresentation){
+    private fun selectedAttendee(member: AttendeePresentation) {
         selectedAttendeeOptions = SelectedAttendeeOptionsBinding.inflate(layoutInflater)
 
         selectedAttendeeOptions.selectedRegionName.text = member.name
 
         val optionsPrompt =
-            MaterialAlertDialogBuilder(requireContext()).setView(selectedAttendeeOptions.root).show()
+            MaterialAlertDialogBuilder(requireContext()).setView(selectedAttendeeOptions.root)
+                .show()
 
         val params = optionsPrompt?.window?.attributes
         params?.width = ViewGroup.LayoutParams.MATCH_PARENT
 
         optionsPrompt?.window?.attributes = params
 
-        selectedAttendeeOptions.editRegion.setOnClickListener {
-            val navigateToEdit = MembersFragmentDirections.actionMembersFragmentToCreateMemberFragment(true, member)
+        selectedAttendeeOptions.editAttendee.setOnClickListener {
+            val navigateToEdit =
+                MembersFragmentDirections.actionMembersFragmentToCreateMemberFragment(true, member)
 
             findNavController().navigate(navigateToEdit)
 
             optionsPrompt.dismiss()
         }
 
-        selectedAttendeeOptions.deleteRegion.setOnClickListener {
-
-
+        selectedAttendeeOptions.checkInAttendee.setOnClickListener {
             optionsPrompt.dismiss()
 
         }
@@ -101,7 +122,7 @@ class AllMembersFragment : Fragment() {
                     allMembersFragmentBinding.searchViewAllMembers.visibility = View.VISIBLE
 
 
-                    allMembersAdapter.submitList(membersAttendance.map { entry -> entry.toPresentation() })
+                    allMembersAdapter.modifyList(membersAttendance.map { entry -> entry.toPresentation() })
                 }
             }
         }

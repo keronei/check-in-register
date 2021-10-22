@@ -74,6 +74,9 @@ dependencies {
     kapt(Dependencies.room_compiler)
     androidTestImplementation(Dependencies.room_testing)
 
+    //Circle Image
+    implementation(Dependencies.circle_image)
+
     implementation(Dependencies.kotlinCore)
     implementation(Dependencies.androidxAppCompat)
     implementation (Dependencies.androidMaterial)

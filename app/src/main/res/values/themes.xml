@@ -32,16 +32,16 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="Widget.KO.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemTextColor">@color/primaryTextColor</item>
-
-        <item name="labelVisibilityMode">labeled</item>
-    </style>
 
     <!--shape appearance -->
     <style name="ShapeAppearance.KO.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">4dp</item>
+    </style>
+
+   <style name="ShapeAppearance.KO.ProfileImageComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+
     </style>
 
     <style name="ShapeAppearance.KO.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">

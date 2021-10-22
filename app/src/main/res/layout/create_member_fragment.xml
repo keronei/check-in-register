@@ -3,148 +3,167 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="12dp"
-    tools:context="com.keronei.koregister.fragments.CreateMemberFragment">
 
-    <TextView
-        android:id="@+id/create_member_header"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/create_new_member"
-        android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        tools:context="com.keronei.koregister.fragments.CreateMemberFragment">
 
-    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-        android:id="@+id/search_region_spinner"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/create_member_header"
-        app:smsp_errorText=""
-        app:smsp_floatingLabelColor="#1976D2"
-        app:smsp_floatingLabelText="Floating Label Text"
-        app:smsp_hint="Select region for member"
-        app:smsp_itemColor="@android:color/black"
-        app:smsp_itemListColor="@android:color/black"
-        app:smsp_itemListHintBackgroundColor="#808080"
-        app:smsp_itemListHintColor="#FFFFFF"
-        app:smsp_multilineError="false"
-        app:smsp_isSearchable="true"
-        app:smsp_searchHint="Type to filter"
-        app:smsp_isOutlined="true"
-        app:smsp_selectedItemListColor="#FF5252" />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/first_name_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/first_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_region_spinner">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/first_name_edittext"
-            android:inputType="textPersonName"
+        <TextView
+            android:id="@+id/create_member_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/create_new_member"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/second_name_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/second_name"
-        app:layout_constraintTop_toBottomOf="@id/first_name_layout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/second_name_edittext"
-            android:inputType="textPersonName"
+        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+            android:id="@+id/search_region_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/create_member_header"
+            app:smsp_errorText=""
+            app:smsp_floatingLabelColor="#1976D2"
+            app:smsp_floatingLabelText="Floating Label Text"
+            app:smsp_hint="Select region for member"
+            app:smsp_isOutlined="true"
+            app:smsp_isSearchable="true"
+            app:smsp_itemColor="@android:color/black"
+            app:smsp_itemListColor="@android:color/black"
+            app:smsp_itemListHintBackgroundColor="#808080"
+            app:smsp_itemListHintColor="#FFFFFF"
+            app:smsp_multilineError="false"
+            app:smsp_searchHint="Type to filter"
+            app:smsp_selectedItemListColor="#FF5252" />
 
-    </com.google.android.material.textfield.TextInputLayout>
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/other_names_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/other_names"
-        app:layout_constraintTop_toBottomOf="@id/second_name_layout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/other_names_edittext"
-            android:inputType="textPersonName"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/first_name_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/first_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_region_spinner">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/first_name_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+             />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/age_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/age"
-        app:layout_constraintTop_toBottomOf="@id/other_names_layout">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/age_edittext"
-            android:inputType="number"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/second_name_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/second_name"
+            app:layout_constraintTop_toBottomOf="@id/first_name_layout">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/second_name_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phone_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/phone_number"
-        app:layout_constraintTop_toBottomOf="@id/age_layout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phone_edittext"
-            android:inputType="phone"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/other_names_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/other_names"
+            app:layout_constraintTop_toBottomOf="@id/second_name_layout">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/other_names_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/age_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/age"
+            app:layout_constraintTop_toBottomOf="@id/other_names_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/age_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/create_member_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/add_member"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/phone_layout"
-        tools:text="Add Member" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phone_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/phone_number"
+            app:layout_constraintTop_toBottomOf="@id/age_layout">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phone_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phone_layout">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_member_button"
+                style="@style/ButtonTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Delete Member"
+                android:visibility="invisible"
+                android:layout_alignParentStart="true"
+                android:textColor="@android:color/white"
+                tools:text="Remove Member" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/create_member_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/add_member"
+                android:layout_alignParentEnd="true"
+                tools:text="Add Member" />
+
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

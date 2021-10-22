@@ -31,4 +31,11 @@
     <string name="add_member">Add Member</string>
     <string name="create_new_member">Create new member</string>
     <string name="member_created">Member added!</string>
+    <string name="checkin_status_icon">CheckIn status icon</string>
+    <string name="checkin">CheckIn</string>
+    <string name="edit">Edit</string>
+    <string name="member_updated">Member Updated!</string>
+    <string name="all_regions">All Regions</string>
+    <string name="no_member_in_region">No member.</string>
+    <string name="one_member">One member.</string>
 </resources>

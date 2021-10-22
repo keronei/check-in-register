@@ -4,89 +4,124 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="attendee"
             type="com.keronei.koregister.models.AttendeePresentation" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="8dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="8dp"
+        app:cardBackgroundColor="@color/list_item_card_color"
+        app:cardCornerRadius="4dp">
 
-        <FrameLayout
-            android:id="@+id/speaker_avatar_container"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp">
 
-            android:layout_gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-          >
+            <FrameLayout
+                android:id="@+id/member_avatar_container"
+                android:layout_width="58dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/avatar"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/circle" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_profile_image"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
 
-            <ImageView
-                android:id="@+id/checkin_status"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/image_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:civ_border_color="@android:color/black"
+                        app:civ_border_width="1dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/layout_initials"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="visible"
+                        app:cardBackgroundColor="?attr/colorPrimary"
+                        app:cardCornerRadius="28dp"
+                        app:shapeAppearance="@style/ShapeAppearance.KO.ProfileImageComponent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/text_user_initials"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textColor="?attr/colorOnPrimary"
+                            android:textSize="19sp"
+                            android:textStyle="bold"
+                            tools:text="JP" />
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <ImageView
+                    android:id="@+id/checkin_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/circle"
+                    android:contentDescription="@string/checkin_status_icon"
+                    android:src="@drawable/ic_baseline_radio_button_unchecked_24" />
+
+            </FrameLayout>
+
+
+            <TextView
+                android:id="@+id/attendee_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
+                android:text="@{attendee.name}"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginStart="4dp"
+                app:layout_constraintStart_toEndOf="@id/member_avatar_container"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Maina Mucheru" />
 
-                android:src="@drawable/ic_baseline_radio_button_unchecked_24" />
+            <TextView
+                android:id="@+id/attendee_region"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{attendee.regionName}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/attendee_name"
+                app:layout_constraintTop_toBottomOf="@id/attendee_name"
+                tools:text="Airport" />
 
-        </FrameLayout>
+            <TextView
+                android:id="@+id/attendee_arrival_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="146dp"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/attendee_name"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="7:43 AM" />
 
-
-        <TextView
-            android:id="@+id/attendee_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@{attendee.name}"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/speaker_avatar_container"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Maina Mucheru" />
-
-        <TextView
-            android:id="@+id/attendee_region"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{attendee.regionName}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/attendee_name"
-            tools:text="Airport" />
-
-        <TextView
-            android:id="@+id/attendee_arrival_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text=""
-            tools:text="7:43 AM" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:paddingTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/attendee_region" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

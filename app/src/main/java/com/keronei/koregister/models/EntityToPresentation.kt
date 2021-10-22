@@ -22,6 +22,9 @@ fun AttendanceEntity.toPresentation(): AttendeePresentation {
     val parser = SimpleDateFormat("hh:mm a", Locale.US)
 
     return AttendeePresentation(
+        memberEntity.firstName,
+        memberEntity.secondName,
+        memberEntity.otherNames,
         memberEntity.id,
         memberEntity.firstName + " " + memberEntity.secondName + " " + memberEntity.otherNames,
         memberEntity.age,

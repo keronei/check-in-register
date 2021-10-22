@@ -1,28 +1,21 @@
 package com.keronei.koregister.adapter
 
 import android.content.Context
-import android.graphics.*
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-
+import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.LayoutAttendeeItemBinding
 import com.keronei.koregister.models.AttendeePresentation
-
-import android.graphics.drawable.Drawable
-import android.text.Layout
-import android.text.StaticLayout
-import android.text.TextPaint
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toDrawable
-import com.keronei.kiregister.R
+import java.util.*
 
 
 class AttendanceRecyclerAdapter(private val selectedMember: (member: AttendeePresentation) -> Unit, private val context: Context) :
     ListAdapter<AttendeePresentation, AttendanceRecyclerAdapter.AttendanceViewHolder>(FilmDiffUtil()) {
+
+    var untouchedList = listOf<AttendeePresentation>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -32,12 +25,33 @@ class AttendanceRecyclerAdapter(private val selectedMember: (member: AttendeePre
     }
 
     override fun onBindViewHolder(holder: AttendanceViewHolder, position: Int) {
-        val film = getItem(position)
-        holder.bind(film, context)
+        val attendee = getItem(position)
+        holder.bind(attendee, context)
 
         holder.binding.root.setOnClickListener {
-            selectedMember(getItem(position))
+            selectedMember(attendee)
         }
+    }
+
+    fun modifyList(list: List<AttendeePresentation>) {
+        untouchedList = list
+        submitList(list)
+    }
+
+    fun filter(query: CharSequence?) {
+        val list = mutableListOf<AttendeePresentation>()
+
+        if (!query.isNullOrEmpty()) {
+            list.addAll(untouchedList.filter { item ->
+                item.name.toLowerCase(Locale.getDefault())
+                    .contains(query.toString().toLowerCase(Locale.getDefault()))
+
+            })
+        } else {
+            list.addAll(untouchedList)
+        }
+
+        submitList(list)
     }
 
     class AttendanceViewHolder(val binding: LayoutAttendeeItemBinding) :
@@ -50,9 +64,7 @@ class AttendanceRecyclerAdapter(private val selectedMember: (member: AttendeePre
                 binding.checkinStatus.setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
             }
 
-            val iv: ImageView = binding.avatar
-
-            iv.setImageBitmap(drawUserNameOnCanvas(getUserInitials( attendeePresentation.name).uppercase(), context))
+            binding.textUserInitials.text = getUserInitials( attendeePresentation.name).uppercase()
 
             binding.executePendingBindings()
         }
@@ -66,55 +78,6 @@ class AttendanceRecyclerAdapter(private val selectedMember: (member: AttendeePre
             }
         }
 
-        private fun drawUserNameOnCanvas(
-            deviceName: String,
-            context: Context
-        ): Bitmap {
-
-            val b: Bitmap =
-                Bitmap.createBitmap(90, 90, Bitmap.Config.ARGB_8888)
-
-            val markerAsDrawable = b.toDrawable(context.resources)
-
-            val textPaint = TextPaint()
-            textPaint.isAntiAlias = true
-            textPaint.textSize = 14 * context.resources.displayMetrics.density
-            textPaint.color = ContextCompat.getColor(context, R.color.primaryColor)
-            textPaint.typeface = Typeface.DEFAULT_BOLD
-
-            val width = textPaint.measureText(deviceName).toInt()
-
-            val staticLayout = StaticLayout(
-                deviceName, textPaint,
-                width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0F, false
-            )
-
-            val resultingWidthFromDisplayName = staticLayout.width
-            val resultingHeightFromDisplayName = staticLayout.height
-
-            val patchedBitmap = Bitmap.createBitmap(
-                (resultingWidthFromDisplayName*1.7).toInt(), (resultingHeightFromDisplayName*1.7).toInt(),
-                        //markerAsDrawable.intrinsicHeight + (resultingHeightFromDisplayName * 2),
-                Bitmap.Config.ARGB_8888
-            )
-
-            val canvas = Canvas(patchedBitmap)
-
-            val paint = Paint()
-
-            paint.color = Color.TRANSPARENT
-
-            paint.style = Paint.Style.FILL
-
-            canvas.drawPaint(paint)
-
-
-            staticLayout.draw(canvas)
-
-            markerAsDrawable.draw(canvas)
-
-            return patchedBitmap
-        }
 
         fun getUserInitials(username: String): String {
             var initials = ""

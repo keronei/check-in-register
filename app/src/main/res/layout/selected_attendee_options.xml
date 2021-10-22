@@ -22,10 +22,10 @@
             android:textColor="@android:color/black"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/edit_region"
+            android:id="@+id/check_in_attendee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CheckIn"
+            android:text="@string/checkin"
             android:layout_marginTop="10dp"
             app:icon="@drawable/ic_baseline_check_circle_outline_24" />
 
@@ -34,10 +34,10 @@
             android:layout_height="16dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/delete_region"
+            android:id="@+id/edit_attendee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit"
+            android:text="@string/edit"
             android:textColor="@android:color/white"
             app:icon="@drawable/ic_baseline_edit_24" />
 
