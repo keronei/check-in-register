@@ -1,24 +1,11 @@
 package com.keronei.koregister
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.ActivityMainBinding
-import com.keronei.koregister.adapter.AttendanceTabsAdapter
-import com.keronei.koregister.fragments.AllMembersFragment
-import com.keronei.koregister.fragments.YetToCheckedInFragment
-import android.widget.FrameLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint

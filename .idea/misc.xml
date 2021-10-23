@@ -29,6 +29,7 @@
         <entry key="app/src/main/res/layout/fragment_base_members.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_region_layout.xml" value="0.33" />
         <entry key="app/src/main/res/layout/layout_attendee_item.xml" value="0.4932301740812379" />
+        <entry key="app/src/main/res/layout/layout_check_in_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/layout_create_region.xml" value="0.28072916666666664" />
         <entry key="app/src/main/res/layout/members_content.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/members_fragment.xml" value="0.2953125" />

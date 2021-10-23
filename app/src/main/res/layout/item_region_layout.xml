@@ -39,11 +39,11 @@
                 android:id="@+id/region_member_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="2dp"
                 android:textAlignment="textEnd"
                 android:textSize="16sp"
                 android:textStyle="italic"
-                tools:text="13" />
+                tools:text="13 members." />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

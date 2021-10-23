@@ -1,4 +1,4 @@
-package com.keronei.koregister.fragments
+package com.keronei.koregister.fragments.reports
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,25 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.keronei.kiregister.R
+import com.keronei.koregister.viewmodels.ReportsViewModel
 
-class YetToCheckedInFragment : Fragment() {
+class ReportsFragment : Fragment() {
 
     companion object {
-        fun newInstance() = YetToCheckedInFragment()
+        fun newInstance() = ReportsFragment()
     }
 
-    private lateinit var viewModel: YetToCheckedInViewModel
+    private lateinit var viewModel: ReportsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.yet_to_checked_in_fragment, container, false)
+        return inflater.inflate(R.layout.reports_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(YetToCheckedInViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ReportsViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

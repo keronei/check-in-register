@@ -38,4 +38,12 @@
     <string name="all_regions">All Regions</string>
     <string name="no_member_in_region">No member.</string>
     <string name="one_member">One member.</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="delete_member">Delete Member</string>
+    <string name="confirm">Confirm</string>
+    <string name="recorded_temperature_c">Recorded temperature (ºC)</string>
+    <string name="arrival_time">Arrival time</string>
+   <string name="arrival_time_alert">Selection should be earlier than this time.</string>
+    <string name="helper_custom_arrival_time">Tap to change time if arrival is earlier than this.</string>
 </resources>

@@ -5,6 +5,7 @@ data class MemberEntity(
     val firstName: String,
     val secondName: String,
     val otherNames: String,
+    val sex : Int,
     val age: Int,
     val phoneNumber: String?,
     val isActive: Boolean,

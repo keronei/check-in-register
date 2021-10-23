@@ -1,4 +1,4 @@
-package com.keronei.koregister.fragments
+package com.keronei.koregister.fragments.regions
 
 import android.os.Bundle
 import android.view.LayoutInflater

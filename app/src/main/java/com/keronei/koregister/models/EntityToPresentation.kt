@@ -25,6 +25,7 @@ fun AttendanceEntity.toPresentation(): AttendeePresentation {
         memberEntity.firstName,
         memberEntity.secondName,
         memberEntity.otherNames,
+        memberEntity.sex,
         memberEntity.id,
         memberEntity.firstName + " " + memberEntity.secondName + " " + memberEntity.otherNames,
         memberEntity.age,
@@ -32,7 +33,8 @@ fun AttendanceEntity.toPresentation(): AttendeePresentation {
         memberEntity.isActive,
         regionEntity.id,
         regionEntity.name,
-        if (hasCheckIn) parser.format(currentTime.time) else ""
+        if (hasCheckIn) parser.format(currentTime.time) else "",
+        latestCheckIn?.timeStamp
     )
 }
 

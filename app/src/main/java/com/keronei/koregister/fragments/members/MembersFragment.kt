@@ -1,4 +1,4 @@
-package com.keronei.koregister.fragments
+package com.keronei.koregister.fragments.members
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

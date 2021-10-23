@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/membersFragment"
-        android:name="com.keronei.koregister.fragments.MembersFragment"
+        android:name="com.keronei.koregister.fragments.members.MembersFragment"
         tools:layout="@layout/members_fragment"
         android:label="BaseMembersFragment" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/regionsFragment"
-        android:name="com.keronei.koregister.fragments.RegionFragment"
+        android:name="com.keronei.koregister.fragments.regions.RegionFragment"
         tools:layout="@layout/region_fragment"
         android:label="RegionFragment" >
         <action
@@ -27,14 +27,14 @@
 
     <fragment
         android:id="@+id/reportsFragment"
-        android:name="com.keronei.koregister.fragments.ReportsFragment"
+        android:name="com.keronei.koregister.fragments.reports.ReportsFragment"
         android:label="reports_fragment"
         tools:layout="@layout/reports_fragment" />
 
     <dialog
         android:id="@+id/createRegionFragment"
         tools:layout="@layout/create_region_fragment"
-        android:name="com.keronei.koregister.fragments.CreateRegionFragment"
+        android:name="com.keronei.koregister.fragments.regions.CreateRegionFragment"
         android:label="CreateRegionFragment" >
         <argument
             android:name="editing"
@@ -49,7 +49,7 @@
 
     <dialog
         android:id="@+id/createMemberFragment"
-        android:name="com.keronei.koregister.fragments.CreateMemberFragment"
+        android:name="com.keronei.koregister.fragments.members.CreateMemberFragment"
         tools:layout="@layout/create_member_fragment"
         android:label="CreateMemberFragment" >
         <argument

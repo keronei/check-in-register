@@ -24,6 +24,8 @@ data class MemberDBO(
 
     val otherNames: String,
 
+    val sex : Int,
+
     val age: Int,
 
     val phoneNumber: String?,

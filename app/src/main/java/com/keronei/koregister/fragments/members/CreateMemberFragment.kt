@@ -1,12 +1,10 @@
-package com.keronei.koregister.fragments
+package com.keronei.koregister.fragments.members
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -24,7 +22,6 @@ import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 @AndroidEntryPoint
 class CreateMemberFragment : DialogFragment() {
@@ -79,10 +76,13 @@ class CreateMemberFragment : DialogFragment() {
     private fun populateEditFields() {
         layoutBinding.deleteMemberButton.visibility = View.VISIBLE
         layoutBinding.createMemberButton.text = "Update"
+        layoutBinding.createMemberHeader.text = "Update Member Info"
 
         layoutBinding.firstNameEdittext.setText(selectedAttendee?.firstName)
         layoutBinding.secondNameEdittext.setText(selectedAttendee?.secondName)
         layoutBinding.otherNamesEdittext.setText(selectedAttendee?.otherNames)
+        layoutBinding.maleSelector.isChecked = selectedAttendee?.sex == 1
+        layoutBinding.femaleSelector.isChecked = selectedAttendee?.sex == 0
         layoutBinding.ageEdittext.setText(selectedAttendee?.age.toString())
         layoutBinding.phoneEdittext.setText(selectedAttendee?.phoneNumber)
 
@@ -97,6 +97,9 @@ class CreateMemberFragment : DialogFragment() {
 
             val age = layoutBinding.ageEdittext.text
             val phoneNumber = layoutBinding.phoneEdittext.text
+            val maleSex = layoutBinding.maleSelector
+            val femaleSex = layoutBinding.femaleSelector
+
 
             if (selectedRegion == null) {
                 regionsSpinner.errorText = "Please select region!"
@@ -113,6 +116,12 @@ class CreateMemberFragment : DialogFragment() {
                 return@setOnClickListener
             }
 
+            if (!(maleSex.isChecked || femaleSex.isChecked)) {
+                ToastUtils.showShortToastInMiddle("select Male or Female")
+                return@setOnClickListener
+            }
+
+
             if (age?.isEmpty() == true) {
                 layoutBinding.ageEdittext.error = "Provider this field!"
                 return@setOnClickListener
@@ -126,6 +135,7 @@ class CreateMemberFragment : DialogFragment() {
                     firstName!!.trim().toString(),
                     secondName!!.trim().toString(),
                     otherNames!!.trim().toString(),
+                    if (maleSex.isChecked) 1 else 0,
                     age!!.trim().toString().toInt(),
                     phoneNumber?.trim().toString(),
                     true,

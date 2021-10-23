@@ -26,6 +26,7 @@ object KOTestDatabaseInstance {
         "Lemayan",
         "",
         1,
+        1,
         null,
         true,
         1

@@ -1,4 +1,4 @@
-package com.keronei.koregister.fragments
+package com.keronei.koregister.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.keronei.domain.usecases.ListAttendeesUseCase

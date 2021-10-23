@@ -24,7 +24,7 @@ class AttendanceDataRepositoryImpl(
     }
 
     override suspend fun undoCheckingForMember(checkInEntity: CheckInEntity) {
-        attendanceDao.cancelChecking(checkInEntityLocalMapper.map(checkInEntity))
+        attendanceDao.cancelChecking(checkInEntity.timeStamp)
     }
 
     override suspend fun authenticateUser(

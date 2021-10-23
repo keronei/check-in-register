@@ -64,5 +64,8 @@ object Dependencies {
     //Circle Image
     const val circle_image = "de.hdodenhof:circleimageview:${Versions.circular_image}"
 
+    //Sweet Alerts
+    const val sweetalerts = "com.github.f0ris.sweetalert:library:${Versions.sweetalerts}"
+
 
 }

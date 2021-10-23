@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.keronei.koregister.fragments.AllMembersFragment">
+        tools:context="com.keronei.koregister.fragments.members.AllMembersFragment">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view_all_members"

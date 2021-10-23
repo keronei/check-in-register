@@ -77,6 +77,9 @@ dependencies {
     //Circle Image
     implementation(Dependencies.circle_image)
 
+    //Sweet Alerts
+    implementation(Dependencies.sweetalerts)
+
     implementation(Dependencies.kotlinCore)
     implementation(Dependencies.androidxAppCompat)
     implementation (Dependencies.androidMaterial)

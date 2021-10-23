@@ -19,6 +19,6 @@ interface CheckInDao {
     @Query("SELECT * FROM CheckInDBO ORDER BY timeStamp DESC")
     fun getAllCheckIns() : Flow<List<CheckInDBO>>
 
-    @Delete
-    suspend fun cancelChecking(checkInDBO: CheckInDBO)
+    @Query("DELETE FROM CheckInDBO WHERE timeStamp = :checkInTimeStamp")
+    suspend fun cancelChecking(checkInTimeStamp: Long)
 }
