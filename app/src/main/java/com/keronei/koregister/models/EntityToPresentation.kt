@@ -33,7 +33,7 @@ fun AttendanceEntity.toPresentation(): AttendeePresentation {
         memberEntity.isActive,
         regionEntity.id,
         regionEntity.name,
-        if (hasCheckIn) parser.format(currentTime.time) else "",
+        if (hasCheckIn) parser.format(latestCheckIn!!.timeStamp) else "",
         latestCheckIn?.timeStamp
     )
 }

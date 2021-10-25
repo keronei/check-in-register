@@ -175,7 +175,7 @@ class AllMembersFragment : Fragment() {
     }
 
     private fun setupList() {
-        allMembersAdapter = AttendanceRecyclerAdapter(::selectedAttendee, requireContext())
+        allMembersAdapter = AttendanceRecyclerAdapter(::selectedAttendee)
         allMembersFragmentBinding.recyclerAllMembers.adapter = allMembersAdapter
     }
 

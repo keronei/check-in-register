@@ -21,14 +21,14 @@
         <entry key="app/src/main/res/drawable/tab_bg.xml" value="0.21354166666666666" />
         <entry key="app/src/main/res/drawable/tab_indicator.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25065138092756645" />
-        <entry key="app/src/main/res/layout/all_members_fragment.xml" value="0.30757097791798105" />
+        <entry key="app/src/main/res/layout/all_members_fragment.xml" value="0.21864406779661016" />
         <entry key="app/src/main/res/layout/base_fragment.xml" value="0.31666666666666665" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.24427083333333333" />
         <entry key="app/src/main/res/layout/create_member_fragment.xml" value="0.23645833333333333" />
         <entry key="app/src/main/res/layout/create_region_fragment.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/fragment_base_members.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_region_layout.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/layout_attendee_item.xml" value="0.4932301740812379" />
+        <entry key="app/src/main/res/layout/layout_attendee_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_check_in_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/layout_create_region.xml" value="0.28072916666666664" />
         <entry key="app/src/main/res/layout/members_content.xml" value="0.2953125" />

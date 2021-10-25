@@ -90,13 +90,16 @@
 
             <TextView
                 android:id="@+id/attendee_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:text="@{attendee.name}"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
+
                 android:textStyle="bold"
-                android:layout_marginStart="4dp"
+
+                app:layout_constraintEnd_toStartOf="@+id/attendee_arrival_time"
                 app:layout_constraintStart_toEndOf="@id/member_avatar_container"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Maina Mucheru" />
@@ -115,10 +118,8 @@
                 android:id="@+id/attendee_arrival_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="146dp"
                 android:text=""
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/attendee_name"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="7:43 AM" />
 

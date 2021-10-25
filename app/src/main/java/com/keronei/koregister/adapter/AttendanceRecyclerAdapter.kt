@@ -1,6 +1,5 @@
 package com.keronei.koregister.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -12,7 +11,7 @@ import com.keronei.koregister.models.AttendeePresentation
 import java.util.*
 
 
-class AttendanceRecyclerAdapter(private val selectedMember: (member: AttendeePresentation) -> Unit, private val context: Context) :
+class AttendanceRecyclerAdapter(private val selectedMember: (member: AttendeePresentation) -> Unit) :
     ListAdapter<AttendeePresentation, AttendanceRecyclerAdapter.AttendanceViewHolder>(FilmDiffUtil()) {
 
     var untouchedList = listOf<AttendeePresentation>()
@@ -26,7 +25,7 @@ class AttendanceRecyclerAdapter(private val selectedMember: (member: AttendeePre
 
     override fun onBindViewHolder(holder: AttendanceViewHolder, position: Int) {
         val attendee = getItem(position)
-        holder.bind(attendee, context)
+        holder.bind(attendee)
 
         holder.binding.root.setOnClickListener {
             selectedMember(attendee)
@@ -56,12 +55,15 @@ class AttendanceRecyclerAdapter(private val selectedMember: (member: AttendeePre
 
     class AttendanceViewHolder(val binding: LayoutAttendeeItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(attendeePresentation: AttendeePresentation, context: Context) {
+        fun bind(attendeePresentation: AttendeePresentation) {
             binding.attendee = attendeePresentation
 
             if (attendeePresentation.lastCheckIn != "") {
                 binding.attendeeArrivalTime.text = attendeePresentation.lastCheckIn
                 binding.checkinStatus.setImageResource(R.drawable.ic_baseline_check_circle_outline_24)
+            } else {
+                binding.checkinStatus.setImageResource(R.drawable.ic_baseline_radio_button_unchecked_24)
+                binding.attendeeArrivalTime.text = ""
             }
 
             binding.textUserInitials.text = getUserInitials( attendeePresentation.name).uppercase()
@@ -79,7 +81,7 @@ class AttendanceRecyclerAdapter(private val selectedMember: (member: AttendeePre
         }
 
 
-        fun getUserInitials(username: String): String {
+        private fun getUserInitials(username: String): String {
             var initials = ""
             username.split(" ").take(2).onEach { name ->
                 val initial = name[0]

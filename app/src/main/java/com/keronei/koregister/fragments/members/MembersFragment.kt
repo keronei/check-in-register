@@ -40,7 +40,7 @@ class MembersFragment : Fragment() {
         val adapter = AttendanceTabsAdapter(childFragmentManager)
 
         adapter.addFragment(AllMembersFragment(), "All")
-        adapter.addFragment(YetToCheckedInFragment(), "Yet to check in")
+        adapter.addFragment(YetToCheckInFragment(), "Yet to check in")
 
         mTabs.setupWithViewPager(mViewPager)
 
