@@ -11,24 +11,19 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="42dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="15dp"
             android:background="@drawable/tab_bg"
             app:tabGravity="fill"
             app:tabIndicator="@drawable/tab_indicator"
-            app:tabIndicatorColor="@null"
-            app:tabIndicatorFullWidth="true"
-            app:tabIndicatorGravity="stretch"
-            app:tabIndicatorHeight="54dp"
-            app:tabMode="fixed"
-            app:tabRippleColor="@null"
-            app:tabSelectedTextColor="@android:color/white"
-            app:tabTextAppearance="@style/MyCustomTextAppearance" />
+            app:tabIndicatorHeight="42dp"
+            app:tabMaxWidth="0dp"
+            app:tabTextColor="@drawable/tab_text_color" />
 
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -5,4 +5,5 @@
     <color name="primaryDarkColor">#0026ca</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="list_item_card_color">#E4E4E3</color>
+    <color name="background_color">#E5E5E5</color>
 </resources>

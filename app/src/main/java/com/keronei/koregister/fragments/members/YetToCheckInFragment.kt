@@ -15,7 +15,6 @@ import com.keronei.koregister.adapter.AttendanceRecyclerAdapter
 import com.keronei.koregister.models.AttendeePresentation
 import com.keronei.koregister.models.toPresentation
 import com.keronei.koregister.viewmodels.AllMembersViewModel
-import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
