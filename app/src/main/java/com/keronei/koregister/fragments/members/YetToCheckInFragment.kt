@@ -19,6 +19,7 @@ import com.keronei.koregister.viewmodels.AllMembersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -80,6 +81,15 @@ class YetToCheckInFragment : Fragment() {
     }
 
     private fun watchStatuses() {
+
+        val currentTime = Calendar.getInstance()
+
+        val hourToSet = currentTime.get(Calendar.HOUR_OF_DAY)
+
+        val finalHour = hourToSet - invalidationPeriod
+
+        currentTime.set(Calendar.HOUR_OF_DAY, finalHour)
+
         lifecycleScope.launch {
             allMembersViewModel.queryAllMembersAttendance().collect { membersAttendance ->
                 if (membersAttendance.isEmpty()) {
@@ -91,7 +101,7 @@ class YetToCheckInFragment : Fragment() {
                     membersAttendance.map { entry ->
 
                         entry.toPresentation(invalidationPeriod).takeIf { member ->
-                            member.lastCheckInStamp == null
+                            member.lastCheckInStamp == null || member.lastCheckInStamp < currentTime.timeInMillis
                         }
                     }
                         .let { finalList ->
