@@ -1,8 +1,10 @@
 package com.keronei.koregister.fragments.members
 
 import android.app.AlertDialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.format.DateUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +34,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
 import com.keronei.domain.entities.CheckInEntity
 import com.keronei.koregister.models.toMemberEntity
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -47,6 +50,10 @@ class AllMembersFragment : Fragment() {
     private val parser = SimpleDateFormat("hh:mm:ss a", Locale.US)
     private lateinit var checkInPrompt: androidx.appcompat.app.AlertDialog
     private var memberAtCheckIn: AttendeePresentation? = null
+    private var invalidationPeriod = 8
+
+    @Inject
+    lateinit var preferences: SharedPreferences
 
     companion object {
         fun newInstance() = AllMembersFragment()
@@ -61,6 +68,10 @@ class AllMembersFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.all_members_fragment, container, false)
 
         searchView = allMembersFragmentBinding.searchViewAllMembers
+
+        val key = getString(R.string.invalidate_period_key)
+
+        invalidationPeriod = preferences.getString(key, "8")?.toInt() ?: 8
 
         return allMembersFragmentBinding.root
     }
@@ -186,7 +197,11 @@ class AllMembersFragment : Fragment() {
 
         val currentTime = Calendar.getInstance()
 
-        currentTime.set(Calendar.HOUR_OF_DAY, -8)
+        val hourToSet = currentTime.get(Calendar.HOUR_OF_DAY)
+
+        val finalHour = hourToSet-invalidationPeriod
+
+        currentTime.set(Calendar.HOUR_OF_DAY, finalHour)
 
         selectedAttendeeOptions.selectedRegionName.text = member.name
 
@@ -235,7 +250,13 @@ class AllMembersFragment : Fragment() {
 
         SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
             .setTitleText("Already checked In")
-            .setContentText("${member.firstName} already checked In ${DateUtils.getRelativeTimeSpanString(member.lastCheckInStamp!!)}.")
+            .setContentText(
+                "${member.firstName} already checked In ${
+                    DateUtils.getRelativeTimeSpanString(
+                        member.lastCheckInStamp!!
+                    )
+                }."
+            )
             .setConfirmText("Undo CheckIn")
             .setConfirmClickListener { sDialog ->
 
@@ -266,8 +287,8 @@ class AllMembersFragment : Fragment() {
                     allMembersFragmentBinding.noRegisteredMemberTextView.visibility = View.GONE
                     allMembersFragmentBinding.searchViewAllMembers.visibility = View.VISIBLE
 
-
-                    allMembersAdapter.modifyList(membersAttendance.map { entry -> entry.toPresentation() })
+                    searchView.queryHint = "Filter ${membersAttendance.size} member(s)."
+                    allMembersAdapter.modifyList(membersAttendance.map { entry -> entry.toPresentation(invalidationPeriod) })
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.keronei.koregister.fragments.members
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import com.keronei.koregister.viewmodels.AllMembersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class YetToCheckInFragment : Fragment() {
@@ -30,6 +32,10 @@ class YetToCheckInFragment : Fragment() {
     private lateinit var yetToCheckInBinding: YetToCheckedInFragmentBinding
     lateinit var yetToCheckInAdapter: AttendanceRecyclerAdapter
     lateinit var searchView: androidx.appcompat.widget.SearchView
+    private var invalidationPeriod = 8
+
+    @Inject
+    lateinit var preferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +50,9 @@ class YetToCheckInFragment : Fragment() {
 
         searchView = yetToCheckInBinding.searchViewYetToCheckIn
 
+        invalidationPeriod =
+            preferences.getString(getString(R.string.invalidate_period_key), "8")?.toInt() ?: 8
+
         return yetToCheckInBinding.root
     }
 
@@ -55,7 +64,7 @@ class YetToCheckInFragment : Fragment() {
         setUpOnClickListeners()
     }
 
-    private fun setUpOnClickListeners(){
+    private fun setUpOnClickListeners() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -81,7 +90,7 @@ class YetToCheckInFragment : Fragment() {
                     yetToCheckInBinding.searchViewYetToCheckIn.visibility = View.VISIBLE
                     membersAttendance.map { entry ->
 
-                        entry.toPresentation().takeIf { member ->
+                        entry.toPresentation(invalidationPeriod).takeIf { member ->
                             member.lastCheckInStamp == null
                         }
                     }

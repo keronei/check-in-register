@@ -3,11 +3,10 @@ package com.keronei.koregister.models
 import com.keronei.domain.entities.AttendanceEntity
 import com.keronei.domain.entities.CheckInEntity
 import com.keronei.domain.entities.RegionEmbedEntity
-import com.keronei.domain.entities.RegionEntity
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun AttendanceEntity.toPresentation(): AttendeePresentation {
+fun AttendanceEntity.toPresentation(checkInInvalidationPeriod: Int): AttendeePresentation {
 
     //latest checkIn has highest timestamp value
 
@@ -15,9 +14,17 @@ fun AttendanceEntity.toPresentation(): AttendeePresentation {
 
     val currentTime = Calendar.getInstance()
 
-    currentTime.set(Calendar.HOUR_OF_DAY, -8)
+    val hourToSet = currentTime.get(Calendar.HOUR_OF_DAY)
 
-    val hasCheckIn = latestCheckIn?.timeStamp ?: 0L > currentTime.timeInMillis
+    val finalHour = hourToSet - checkInInvalidationPeriod
+
+    currentTime.set(Calendar.HOUR_OF_DAY, finalHour)
+
+    var hasCheckIn  = false
+
+    if(latestCheckIn?.timeStamp != null) {
+        hasCheckIn =  latestCheckIn.timeStamp > currentTime.timeInMillis
+    }
 
     val parser = SimpleDateFormat("hh:mm a", Locale.US)
 

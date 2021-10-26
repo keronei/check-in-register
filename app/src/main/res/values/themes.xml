@@ -6,16 +6,17 @@
         <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
         <!-- Secondary brand color. -->
-<!--        <item name="colorSecondary">@color/secondaryColor</item>-->
-<!--        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>-->
-<!--        <item name="colorOnSecondary">@color/secondaryTextColor</item>-->
+        <!--        <item name="colorSecondary">@color/secondaryColor</item>-->
+        <!--        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>-->
+        <!--        <item name="colorOnSecondary">@color/secondaryTextColor</item>-->
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
 
-        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.KO.SmallComponent </item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.KO.MediumComponent </item>
-        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.KO.LargeComponent </item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.KO.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.KO.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.KO.LargeComponent</item>
 
     </style>
 
@@ -39,7 +40,7 @@
         <item name="cornerSize">4dp</item>
     </style>
 
-   <style name="ShapeAppearance.KO.ProfileImageComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+    <style name="ShapeAppearance.KO.ProfileImageComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
 
     </style>
@@ -58,12 +59,11 @@
         <item name="materialThemeOverlay">@style/DeleteButtonTheme</item>
     </style>
 
-    <style name="DeleteButtonTheme" >
+    <style name="DeleteButtonTheme">
         <item name="colorPrimary">@android:color/holo_red_dark</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-
 
 
 </resources>

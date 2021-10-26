@@ -53,7 +53,7 @@ class CheckInViewModel @Inject constructor(
             val list = mutableListOf<AttendeePresentation>()
 
             newValues.forEach { entity ->
-                list.add(entity.toPresentation())
+                //list.add(entity.toPresentation())
             }
 
             attendanceData.emit(AttendeeViewState(list))

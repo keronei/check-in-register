@@ -58,7 +58,6 @@ class MembersFragment : Fragment() {
     }
 
 
-
 //    override fun onBackPressed() {
 //        if (viewpager.currentItem == 0) {
 //            super.onBackPressed()
@@ -73,6 +72,12 @@ class MembersFragment : Fragment() {
                 MembersFragmentDirections.actionMembersFragmentToCreateMemberFragment()
 
             findNavController().navigate(openCreateMemberAction)
+        }
+
+        membersContentBinding.settingsIcon.setOnClickListener {
+            val settingsAction = MembersFragmentDirections.actionMembersFragmentToSettingsFragment()
+
+            findNavController().navigate(settingsAction)
         }
     }
 

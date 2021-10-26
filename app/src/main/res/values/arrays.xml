@@ -1,0 +1,14 @@
+<resources>
+    <!-- Invalidate Preference -->
+    <string-array  name="invalidate_entries">
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>12 hours</item>
+    </string-array>
+
+    <string-array name="invalidate_values">
+        <item>4</item>
+        <item>8</item>
+        <item>12</item>
+    </string-array>
+</resources>

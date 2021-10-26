@@ -66,6 +66,7 @@ dependencies {
 
     //Searchable dropdown
     implementation(Dependencies.searchableDropDown)
+    implementation("androidx.preference:preference:1.1.1")
 
     kapt(Dependencies.hiltCompiler)
 
@@ -79,6 +80,9 @@ dependencies {
 
     //Sweet Alerts
     implementation(Dependencies.sweetalerts)
+
+    //DataStore
+    implementation(Dependencies.dataStore)
 
     implementation(Dependencies.kotlinCore)
     implementation(Dependencies.androidxAppCompat)

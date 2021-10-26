@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.KIRegister" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <!-- Secondary brand color. -->
+        <!--        <item name="colorSecondary">@color/secondaryColor</item>-->
+        <!--        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>-->
+        <!--        <item name="colorOnSecondary">@color/secondaryTextColor</item>-->
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Customize your theme here. -->
+
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.KO.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.KO.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.KO.LargeComponent</item>
+
+    </style>
+</resources>

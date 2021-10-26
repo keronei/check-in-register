@@ -68,4 +68,5 @@ object Dependencies {
     const val sweetalerts = "com.github.f0ris.sweetalert:library:${Versions.sweetalerts}"
 
 
+    const val dataStore = "androidx.datastore:datastore-preferences:${Versions.datastore}"
 }

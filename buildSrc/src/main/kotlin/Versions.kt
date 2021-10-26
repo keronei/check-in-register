@@ -1,4 +1,5 @@
 object Versions {
+    const val datastore: String = "1.0.0"
     const val sweetalerts  = "1.6.2"
     const val circular_image: String = "3.1.0"
     const val searchable: String = "1.5.0"

@@ -1,0 +1,39 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/general_header">
+
+        <EditTextPreference
+            app:icon="@drawable/ic_baseline_corporate_fare_24"
+            app:key="@string/organization_name_key"
+            app:title="@string/org_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="12"
+            app:entries="@array/invalidate_entries"
+            app:entryValues="@array/invalidate_values"
+            app:icon="@drawable/ic_invalidate_period_in_24"
+            app:key="@string/invalidate_period_key"
+            app:title="@string/invalidate_period"
+            app:summary="Time until next check-in can be considered fresh."
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/sync_header">
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_baseline_sync_24"
+            app:key="sync"
+            app:title="@string/sync_title" />
+
+        <Preference
+            app:icon="@drawable/ic_baseline_manage_backup_accounts_24"
+            app:key="back_up_account"
+            app:summary="Google account for data backup."
+            app:title="Set up  account" />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

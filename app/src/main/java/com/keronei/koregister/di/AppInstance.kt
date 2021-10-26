@@ -1,6 +1,10 @@
 package com.keronei.koregister.di
 
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import com.keronei.koregister.instance.KORegisterApplication
+import com.keronei.koregister.preference.DataStoreManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +19,17 @@ object AppInstance {
     @Singleton
     fun providesApplication() : KORegisterApplication{
         return KORegisterApplication()
+    }
+
+    @Provides
+    @Singleton
+    fun providesDataStoreInstance(@ApplicationContext context: Context): DataStoreManager {
+        return DataStoreManager(context)
+    }
+
+    @Provides
+    @Singleton
+    fun providesPreferenceInstance(@ApplicationContext context: Context) : SharedPreferences{
+        return PreferenceManager.getDefaultSharedPreferences(context)
     }
 }
