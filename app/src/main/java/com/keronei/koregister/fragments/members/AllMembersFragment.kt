@@ -1,10 +1,8 @@
 package com.keronei.koregister.fragments.members
 
-import android.app.AlertDialog
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.format.DateUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.keronei.domain.entities.CheckInEntity
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.AllMembersFragmentBinding
 import com.keronei.kiregister.databinding.LayoutCheckInDialogBinding
@@ -22,6 +22,10 @@ import com.keronei.kiregister.databinding.SelectedAttendeeOptionsBinding
 import com.keronei.koregister.adapter.AttendanceRecyclerAdapter
 import com.keronei.koregister.fragments.checkin.TimePickerFragment
 import com.keronei.koregister.models.AttendeePresentation
+import com.keronei.koregister.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD
+import com.keronei.koregister.models.constants.TEMPERATURE_CEIL
+import com.keronei.koregister.models.constants.TEMPERATURE_FLOOR
+import com.keronei.koregister.models.toMemberEntity
 import com.keronei.koregister.models.toPresentation
 import com.keronei.koregister.viewmodels.AllMembersViewModel
 import com.keronei.koregister.viewmodels.CheckInViewModel
@@ -30,10 +34,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import cn.pedant.SweetAlert.SweetAlertDialog
-import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
-import com.keronei.domain.entities.CheckInEntity
-import com.keronei.koregister.models.toMemberEntity
 import javax.inject.Inject
 
 
@@ -50,7 +50,7 @@ class AllMembersFragment : Fragment() {
     private val parser = SimpleDateFormat("hh:mm:ss a", Locale.US)
     private lateinit var checkInPrompt: androidx.appcompat.app.AlertDialog
     private var memberAtCheckIn: AttendeePresentation? = null
-    private var invalidationPeriod = 8
+    private var invalidationPeriod = CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
 
     @Inject
     lateinit var preferences: SharedPreferences
@@ -71,7 +71,8 @@ class AllMembersFragment : Fragment() {
 
         val key = getString(R.string.invalidate_period_key)
 
-        invalidationPeriod = preferences.getString(key, "8")?.toInt() ?: 8
+        invalidationPeriod = preferences.getString(key, CHECK_IN_INVALIDATE_DEFAULT_PERIOD)?.toInt()
+            ?: CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
 
         return allMembersFragmentBinding.root
     }
@@ -126,13 +127,13 @@ class AllMembersFragment : Fragment() {
 
 
             when {
-                providedTemperature.toDouble() > 38 -> {
+                providedTemperature.toDouble() > TEMPERATURE_CEIL -> {
                     SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
                         .setTitleText("Too high")
                         .setContentText("$providedTemperature ºC is higher than accepted.")
                         .show()
                 }
-                providedTemperature.toDouble() < 35 -> {
+                providedTemperature.toDouble() < TEMPERATURE_FLOOR -> {
                     SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
                         .setTitleText("Too low")
                         .setContentText("$providedTemperature ºC is lower than accepted.")
@@ -199,7 +200,7 @@ class AllMembersFragment : Fragment() {
 
         val hourToSet = currentTime.get(Calendar.HOUR_OF_DAY)
 
-        val finalHour = hourToSet-invalidationPeriod
+        val finalHour = hourToSet - invalidationPeriod
 
         currentTime.set(Calendar.HOUR_OF_DAY, finalHour)
 
@@ -287,8 +288,18 @@ class AllMembersFragment : Fragment() {
                     allMembersFragmentBinding.noRegisteredMemberTextView.visibility = View.GONE
                     allMembersFragmentBinding.searchViewAllMembers.visibility = View.VISIBLE
 
-                    searchView.queryHint = "Filter ${membersAttendance.size} member(s)."
-                    allMembersAdapter.modifyList(membersAttendance.map { entry -> entry.toPresentation(invalidationPeriod) })
+                    val defaultList =
+                        membersAttendance.map { entry -> entry.toPresentation(invalidationPeriod) }
+
+                    val inactiveShouldBeHidden =
+                        preferences.getBoolean(getString(R.string.inactive_members_pref_key), false)
+
+                    val filteredList =
+                        if (inactiveShouldBeHidden) defaultList.filter { memberEntry -> memberEntry.isActive } else defaultList
+
+                    searchView.queryHint = "Filter ${filteredList.size} member(s)."
+
+                    allMembersAdapter.modifyList(filteredList)
                 }
             }
         }

@@ -15,8 +15,15 @@
             app:icon="@drawable/ic_invalidate_period_in_24"
             app:key="@string/invalidate_period_key"
             app:title="@string/invalidate_period"
-            app:summary="Time until next check-in can be considered fresh."
+            app:summary="@string/invalidate_period_summary"
             app:useSimpleSummaryProvider="true" />
+
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_baseline_hide_source_24"
+            app:key="@string/inactive_members_pref_key"
+            app:summary="@string/hide_members_summary"
+            app:title="@string/hide_members_preference" />
 
     </PreferenceCategory>
 

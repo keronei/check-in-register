@@ -59,4 +59,11 @@
     <string name="organization_name_key">organization_name_key</string>
     <string name="invalidate_period_key">invalidate_period_key</string>
     <string name="too_long_ago">That\'s too long ago! Consider changing invalidation period in settings.</string>
+    <string name="hide_members_preference">Hide inactive members</string>
+    <string name="hide_members_summary">Do not show inactive members in list.</string>
+    <string name="invalidate_period_summary">Time until next check-in can be considered fresh.</string>
+    <string name="inactive_members_pref_key">inactive_members_pref_key</string>
+    <string name="minimum_accepted_temperature_key">minimum_accepted_temperature_key</string>
+    <string name="maximum_accepted_temperature_key">maximum_accepted_temperature_key</string>
+    <string name="member_is_still_active">Member is still active.</string>
 </resources>

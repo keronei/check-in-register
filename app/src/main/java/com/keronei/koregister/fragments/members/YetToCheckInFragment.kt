@@ -14,6 +14,7 @@ import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.YetToCheckedInFragmentBinding
 import com.keronei.koregister.adapter.AttendanceRecyclerAdapter
 import com.keronei.koregister.models.AttendeePresentation
+import com.keronei.koregister.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD
 import com.keronei.koregister.models.toPresentation
 import com.keronei.koregister.viewmodels.AllMembersViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +34,7 @@ class YetToCheckInFragment : Fragment() {
     private lateinit var yetToCheckInBinding: YetToCheckedInFragmentBinding
     lateinit var yetToCheckInAdapter: AttendanceRecyclerAdapter
     lateinit var searchView: androidx.appcompat.widget.SearchView
-    private var invalidationPeriod = 8
+    private var invalidationPeriod = CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
 
     @Inject
     lateinit var preferences: SharedPreferences
@@ -52,7 +53,7 @@ class YetToCheckInFragment : Fragment() {
         searchView = yetToCheckInBinding.searchViewYetToCheckIn
 
         invalidationPeriod =
-            preferences.getString(getString(R.string.invalidate_period_key), "8")?.toInt() ?: 8
+            preferences.getString(getString(R.string.invalidate_period_key), CHECK_IN_INVALIDATE_DEFAULT_PERIOD)?.toInt() ?: CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
 
         return yetToCheckInBinding.root
     }
@@ -115,7 +116,14 @@ class YetToCheckInFragment : Fragment() {
                                 }
 
                             }
-                            yetToCheckInAdapter.modifyList(temp)
+
+                            val inactiveShouldBeHidden =
+                                preferences.getBoolean(getString(R.string.inactive_members_pref_key), false)
+
+                            val filteredList =
+                                if (inactiveShouldBeHidden)  temp.filter { memberEntry -> memberEntry.isActive } else temp
+
+                            yetToCheckInAdapter.modifyList(filteredList)
 
                         }
                 }

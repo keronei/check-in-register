@@ -13,6 +13,7 @@ import com.keronei.domain.entities.RegionEntity
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.CreateRegionFragmentBinding
 import com.keronei.koregister.models.RegionPresentation
+import com.keronei.koregister.models.constants.GUEST_ENTRY
 import com.keronei.koregister.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +45,11 @@ class CreateRegionFragment : DialogFragment() {
             createRegionFragmentBindings.createRegionButton.text = getString(R.string.action_update)
 
             createRegionFragmentBindings.regionNameEdittext.setText(selectedRegion?.name)
+
+            if (selectedRegion?.name == GUEST_ENTRY){
+                createRegionFragmentBindings.regionNameEdittext.isEnabled = false
+                createRegionFragmentBindings.createRegionButton.isEnabled = false
+            }
         }
     }
 

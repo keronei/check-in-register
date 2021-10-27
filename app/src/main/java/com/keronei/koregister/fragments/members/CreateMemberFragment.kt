@@ -75,6 +75,7 @@ class CreateMemberFragment : DialogFragment() {
 
     private fun populateEditFields() {
         layoutBinding.deleteMemberButton.visibility = View.VISIBLE
+        layoutBinding.memberActivityStatus.visibility = View.VISIBLE
         layoutBinding.createMemberButton.text = "Update"
         layoutBinding.createMemberHeader.text = "Update Member Info"
 
@@ -85,6 +86,11 @@ class CreateMemberFragment : DialogFragment() {
         layoutBinding.femaleSelector.isChecked = selectedAttendee?.sex == 0
         layoutBinding.ageEdittext.setText(selectedAttendee?.age.toString())
         layoutBinding.phoneEdittext.setText(selectedAttendee?.phoneNumber)
+
+        layoutBinding.memberActivityStatus.isChecked = selectedAttendee?.isActive ?: true
+
+        layoutBinding.memberActivityStatus.textOn = selectedAttendee?.firstName + " is Active."
+        layoutBinding.memberActivityStatus.textOff = selectedAttendee?.firstName + " is no longer Active."
 
     }
 
@@ -138,7 +144,7 @@ class CreateMemberFragment : DialogFragment() {
                     if (maleSex.isChecked) 1 else 0,
                     age!!.trim().toString().toInt(),
                     phoneNumber?.trim().toString(),
-                    true,
+                    layoutBinding.memberActivityStatus.isChecked,
                     selectedRegion!!.id
                 )
 
