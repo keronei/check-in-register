@@ -25,7 +25,6 @@
     <string name="first_name">First Name</string>
     <string name="second_name">Second Name</string>
     <string name="other_names">Other Names (Optional)</string>
-    <string name="age">Age</string>
     <string name="phone_number">Phone Number (Optional)</string>
     <string name="add_member">Add Member</string>
     <string name="create_new_member">Create new member</string>
@@ -66,4 +65,19 @@
     <string name="minimum_accepted_temperature_key">minimum_accepted_temperature_key</string>
     <string name="maximum_accepted_temperature_key">maximum_accepted_temperature_key</string>
     <string name="member_is_still_active">Member is still active.</string>
+    <string name="reports">Reports</string>
+    <string name="generate_reports_for">Generate reports for</string>
+    <string name="attendance">Attendance</string>
+    <string name="present_checked_in">Present(Checked In)</string>
+    <string name="absent">Absent</string>
+    <string name="sex">Sex</string>
+    <string name="all">All</string>
+    <string name="activity">Activity</string>
+    <string name="include_inactive_members">Include inactive members</string>
+    <string name="generate">Generate</string>
+    <string name="included_fields">Included Fields</string>
+    <string name="phone">Phone</string>
+    <string name="temperature">Temperature</string>
+    <string name="age">Age</string>
+    <string name="check_in_time">Check In time</string>
 </resources>

@@ -1,13 +1,16 @@
 package com.keronei.koregister.fragments.reports
 
-import androidx.lifecycle.ViewModelProvider
+import android.app.DatePickerDialog
+import android.app.ProgressDialog.show
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.keronei.kiregister.R
-import com.keronei.koregister.viewmodels.ReportsViewModel
+import com.keronei.kiregister.databinding.ReportsFragmentBinding
+import com.keronei.koregister.fragments.checkin.DatePickerFragment
 
 class ReportsFragment : Fragment() {
 
@@ -15,19 +18,43 @@ class ReportsFragment : Fragment() {
         fun newInstance() = ReportsFragment()
     }
 
-    private lateinit var viewModel: ReportsViewModel
+    lateinit var reportsBinding: ReportsFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.reports_fragment, container, false)
+    ): View {
+        reportsBinding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.reports_fragment, container, false)
+
+        return reportsBinding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ReportsViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        onFieldsChangedListeners()
     }
+
+    private fun onFieldsChangedListeners() {
+        reportsBinding.absentSelector.setOnCheckedChangeListener { _, b ->
+            if (b) {
+                reportsBinding.temperatureField.isEnabled = false
+                reportsBinding.arrivalTimeField.isEnabled = false
+            } else {
+                reportsBinding.temperatureField.isEnabled = true
+                reportsBinding.arrivalTimeField.isEnabled = true
+            }
+        }
+
+        reportsBinding.dateSelectionTextview.setOnClickListener {
+            showDateSelectionDialog()
+        }
+    }
+
+    private fun showDateSelectionDialog() {
+        DatePickerFragment().show(childFragmentManager, "date_picker")
+    }
+
 
 }
