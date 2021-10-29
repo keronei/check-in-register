@@ -92,7 +92,7 @@ class YetToCheckInFragment : Fragment() {
         currentTime.set(Calendar.HOUR_OF_DAY, finalHour)
 
         lifecycleScope.launch {
-            allMembersViewModel.queryAllMembersAttendance().collect { membersAttendance ->
+            allMembersViewModel.allMembersData.collect { membersAttendance ->
                 if (membersAttendance.isEmpty()) {
                     yetToCheckInBinding.allMembersCheckedInTextview.visibility = View.VISIBLE
                     yetToCheckInBinding.searchViewYetToCheckIn.visibility = View.GONE

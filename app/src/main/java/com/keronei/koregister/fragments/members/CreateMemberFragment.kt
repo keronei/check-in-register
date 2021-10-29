@@ -1,6 +1,7 @@
 package com.keronei.koregister.fragments.members
 
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,15 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+import com.keronei.domain.entities.CheckInEntity
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.CreateMemberFragmentBinding
 import com.keronei.koregister.models.AttendeePresentation
+import com.keronei.koregister.models.toMemberEntity
 import com.keronei.koregister.viewmodels.MemberViewModel
 import com.keronei.koregister.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
@@ -90,7 +94,8 @@ class CreateMemberFragment : DialogFragment() {
         layoutBinding.memberActivityStatus.isChecked = selectedAttendee?.isActive ?: true
 
         layoutBinding.memberActivityStatus.textOn = selectedAttendee?.firstName + " is Active."
-        layoutBinding.memberActivityStatus.textOff = selectedAttendee?.firstName + " is no longer Active."
+        layoutBinding.memberActivityStatus.textOff =
+            selectedAttendee?.firstName + " is no longer Active."
 
     }
 
@@ -163,6 +168,42 @@ class CreateMemberFragment : DialogFragment() {
 
             this.dismiss()
         }
+
+        layoutBinding.deleteMemberButton.setOnClickListener {
+            SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Completely Delete")
+                .setContentText(
+                    "${selectedAttendee?.firstName}'s data will be completely wiped out. \n " +
+                            "This is irreversible, are you sure you want to proceed?"
+                )
+                .setConfirmText("No")
+                .setConfirmClickListener { sDialog ->
+
+                    sDialog.dismissWithAnimation()
+                }
+                .setCancelButton(
+                    "Yes"
+                ) { sDialog ->
+
+                    memberViewModel.deleteMember(selectedAttendee!!.toMemberEntity())
+
+                    sDialog.dismissWithAnimation()
+
+                    this.dismiss()
+
+                    showDeletionSuccess()
+                }
+                .show()
+        }
+    }
+
+    private fun showDeletionSuccess() {
+        SweetAlertDialog(
+            requireContext(), SweetAlertDialog.SUCCESS_TYPE
+        )
+            .setTitleText("Deleted")
+            .setContentText("${selectedAttendee!!.firstName} removed completely!")
+            .show()
     }
 
     private fun watchRegions() {

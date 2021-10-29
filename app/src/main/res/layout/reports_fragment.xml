@@ -185,7 +185,7 @@
                             android:paddingStart="20dp">
 
                             <RadioButton
-                                android:id="@+id/all_members_selector"
+                                android:id="@+id/all_sex_members_selector"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="true"
@@ -298,6 +298,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/fields">
 
@@ -326,8 +327,8 @@
 
                         <CheckBox
                             android:id="@+id/check_inactive_members"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
                             android:layout_below="@id/header_membership_status"
                             android:layout_marginStart="20dp"
                             android:text="@string/include_inactive_members" />
@@ -347,6 +348,7 @@
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+          android:id="@+id/generateReportsFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"

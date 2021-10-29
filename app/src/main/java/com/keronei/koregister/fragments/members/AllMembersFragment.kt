@@ -29,6 +29,7 @@ import com.keronei.koregister.models.toMemberEntity
 import com.keronei.koregister.models.toPresentation
 import com.keronei.koregister.viewmodels.AllMembersViewModel
 import com.keronei.koregister.viewmodels.CheckInViewModel
+import com.keronei.koregister.viewmodels.MemberViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -42,6 +43,7 @@ class AllMembersFragment : Fragment() {
 
     private val allMembersViewModel: AllMembersViewModel by activityViewModels()
     private val checkInViewModel: CheckInViewModel by activityViewModels()
+    private val memberViewModel: MemberViewModel by activityViewModels()
     lateinit var allMembersAdapter: AttendanceRecyclerAdapter
     lateinit var allMembersFragmentBinding: AllMembersFragmentBinding
     lateinit var selectedAttendeeOptions: SelectedAttendeeOptionsBinding
@@ -153,6 +155,12 @@ class AllMembersFragment : Fragment() {
                         providedTemperature.toDouble()
                     )
 
+                    if (!memberAtCheckIn!!.isActive) {
+                        checkInPrompt.dismiss()
+                        attemptingToCheckInInactiveMember(memberAtCheckIn!!, checkInInstance)
+                        return@setOnClickListener
+                    }
+
                     checkInViewModel.checkInMember(
                         checkInInstance,
                         memberAtCheckIn!!.toMemberEntity()
@@ -160,15 +168,19 @@ class AllMembersFragment : Fragment() {
 
                     checkInPrompt.dismiss()
 
-                    SweetAlertDialog(
-                        requireContext(), SweetAlertDialog.SUCCESS_TYPE
-                    )
-                        .setTitleText("Done")
-                        .setContentText("${memberAtCheckIn!!.firstName} checked In!")
-                        .show()
+                    showCheckedInSuccess()
                 }
             }
         }
+    }
+
+    private fun showCheckedInSuccess() {
+        SweetAlertDialog(
+            requireContext(), SweetAlertDialog.SUCCESS_TYPE
+        )
+            .setTitleText("Done")
+            .setContentText("${memberAtCheckIn!!.firstName} checked In!")
+            .show()
     }
 
     private fun alternateTimeSelectionForArrivalTime() {
@@ -278,9 +290,43 @@ class AllMembersFragment : Fragment() {
             .show()
     }
 
+    private fun attemptingToCheckInInactiveMember(
+        member: AttendeePresentation,
+        checkInEntity: CheckInEntity
+    ) {
+
+        val addressing = if (member.sex == 1) " him " else " her "
+
+        SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+            .setTitleText("Inactive Member")
+            .setContentText(
+                "${member.firstName} was previously marked as inactive. \n" +
+                        "Would you wish to update as active and check $addressing In?"
+            )
+            .setConfirmText("Yes")
+            .setConfirmClickListener { sDialog ->
+
+                memberViewModel.updateMember(member.toMemberEntity().copy(isActive = true))
+                checkInViewModel.checkInMember(checkInEntity, member.toMemberEntity())
+
+                sDialog.dismissWithAnimation()
+
+                showCheckedInSuccess()
+
+            }
+            .setCancelButton(
+                "No"
+            ) { sDialog ->
+
+                sDialog.dismissWithAnimation()
+
+            }
+            .show()
+    }
+
     private fun watchStatuses() {
         lifecycleScope.launch {
-            allMembersViewModel.queryAllMembersAttendance().collect { membersAttendance ->
+            allMembersViewModel.allMembersData.collect { membersAttendance ->
                 if (membersAttendance.isEmpty()) {
                     allMembersFragmentBinding.noRegisteredMemberTextView.visibility = View.VISIBLE
                     allMembersFragmentBinding.searchViewAllMembers.visibility = View.GONE
