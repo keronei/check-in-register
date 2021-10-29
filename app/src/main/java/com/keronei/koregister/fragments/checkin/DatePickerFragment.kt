@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keronei.kiregister.R
 import com.keronei.koregister.viewmodels.CheckInViewModel
+import com.keronei.koregister.viewmodels.ReportsViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -23,12 +24,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-    private val checkInViewModel: CheckInViewModel by activityViewModels()
+    private val reportsViewModel: ReportsViewModel by activityViewModels()
 
-    @Inject
-    lateinit var preferences: SharedPreferences
-
-    var invalidationPeriod = 8
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Use the current time as the default values for the picker
@@ -38,22 +35,29 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         // Create a new instance of TimePickerDialog and return it
-        return DatePickerDialog(requireContext(), this,year, month,day )
+        return DatePickerDialog(requireContext(), this, year, month, day)
 
     }
 
 
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        val currentCalendar = Calendar.getInstance()
+    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
+        val selectedCalendar = Calendar.getInstance()
+        selectedCalendar.set(Calendar.YEAR, year)
+        selectedCalendar.set(Calendar.MONTH, month)
+        selectedCalendar.set(Calendar.DAY_OF_MONTH, day)
+
 
         val controlInstance = Calendar.getInstance()
 
-        if (currentCalendar.after(controlInstance)) {
+        if (selectedCalendar.after(controlInstance)) {
             ToastUtils.showLongToastInMiddle(R.string.arrival_time_alert)
 
             return
         }
+
+        lifecycleScope.launch {
+            reportsViewModel.customSelectedDate.emit(selectedCalendar)
+        }
+
     }
-
-
 }

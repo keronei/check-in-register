@@ -13,12 +13,12 @@
             android:id="@+id/regions_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/all_regions"
+            android:layout_marginTop="6dp"
             android:gravity="center"
+            android:text="@string/all_regions"
+            android:textColor="@color/primaryColor"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginTop="6dp"
-            android:textColor="@color/primaryColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -55,7 +55,7 @@
             android:contentDescription="@string/create_new_member_fab"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@drawable/ic_baseline_add_region_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

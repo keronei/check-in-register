@@ -80,4 +80,5 @@
     <string name="temperature">Temperature</string>
     <string name="age">Age</string>
     <string name="check_in_time">Check In time</string>
+    <string name="region">Region</string>
 </resources>

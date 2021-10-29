@@ -1,336 +1,358 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context="com.keronei.koregister.fragments.reports.ReportsFragment">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/reports_header"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:gravity="center"
-            android:text="@string/reports"
-            android:textColor="@color/primaryColor"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/attendance_date_selection"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reports_header">
 
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@drawable/border" />
-
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp">
+                tools:context="com.keronei.koregister.fragments.reports.ReportsFragment">
 
                 <TextView
-                    android:id="@+id/header"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/reports_header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:color/white"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/generate_reports_for"
-                    android:textColor="@color/primaryColor" />
+                    android:layout_marginTop="6dp"
+                    android:gravity="center"
+                    android:text="@string/reports"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/date_selection_textview"
+                <FrameLayout
+                    android:id="@+id/attendance_date_selection"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/header"
-                    android:layout_centerInParent="true"
-                    android:drawablePadding="20dp"
-                    android:drawableEnd="@drawable/ic_baseline_edit_24"
-                    android:paddingTop="10dp"
-                    android:layout_marginStart="20dp"
-                    android:text="27 - Oct - 2021" />
+                    android:layout_height="100dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/reports_header">
 
-            </RelativeLayout>
-
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/attendance_status_selection"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="wrap_content"
-            android:layout_height="120dp"
-            app:expandedHintEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/attendance_date_selection">
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@drawable/border" />
-
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp">
-
-                <TextView
-                    android:id="@+id/header_attendance_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:color/white"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/attendance"
-                    android:textColor="@color/primaryColor" />
-
-                <RadioGroup
-                    android:id="@+id/attendance_selector"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/header_attendance_status"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/present_selector"
+                    <View
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="@string/present_checked_in" />
+                        android:layout_margin="20dp"
+                        android:background="@drawable/border" />
 
-                    <Space
-                        android:layout_width="40dp"
-                        android:layout_height="wrap_content" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp">
 
-                    <RadioButton
-                        android:id="@+id/absent_selector"
+                        <TextView
+                            android:id="@+id/header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:color/white"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="@string/generate_reports_for"
+                            android:textColor="@color/primaryColor" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/date_selection_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/header"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="20dp"
+                            android:drawableEnd="@drawable/ic_baseline_edit_24"
+                            android:drawablePadding="20dp"
+                            android:paddingTop="10dp"
+                            android:textSize="20sp"
+                            android:textColor="@android:color/black"
+                            android:text="27 - Oct - 2021"
+                             />
+
+                    </RelativeLayout>
+
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/attendance_status_selection"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="120dp"
+                    app:expandedHintEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/attendance_date_selection">
+
+                    <View
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/absent" />
-                </RadioGroup>
-            </RelativeLayout>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/sex_selection_header"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/attendance_status_selection">
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@drawable/border" />
+                        android:layout_margin="20dp"
+                        android:background="@drawable/border" />
 
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp">
-
-                <TextView
-                    android:id="@+id/header_sex_selection"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:color/white"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/sex"
-                    android:textColor="@color/primaryColor" />
-
-                <RadioGroup
-                    android:id="@+id/membership_sex_selector"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/header_sex_selection"
-                    android:orientation="horizontal"
-                    android:paddingStart="20dp">
-
-                    <RadioButton
-                        android:id="@+id/all_members_selector"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="@string/all" />
+                        android:layout_marginStart="20dp">
 
-                    <Space
-                        android:layout_width="40dp"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/header_attendance_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:color/white"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="@string/attendance"
+                            android:textColor="@color/primaryColor" />
 
-                    <RadioButton
-                        android:id="@+id/male_selector"
+                        <RadioGroup
+                            android:id="@+id/attendance_selector"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/header_attendance_status"
+                            android:layout_margin="10dp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/present_selector"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="@string/present_checked_in" />
+
+                            <Space
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content" />
+
+                            <RadioButton
+                                android:id="@+id/absent_selector"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/absent" />
+                        </RadioGroup>
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/sex_selection_header"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/attendance_status_selection">
+
+                    <View
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/male" />
+                        android:layout_margin="20dp"
+                        android:background="@drawable/border" />
 
-                    <Space
-                        android:layout_width="40dp"
-                        android:layout_height="wrap_content" />
 
-                    <RadioButton
-                        android:id="@+id/female_selector"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/female" />
-                </RadioGroup>
-            </RelativeLayout>
-        </FrameLayout>
+                        android:layout_marginStart="20dp">
+
+                        <TextView
+                            android:id="@+id/header_sex_selection"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:color/white"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="@string/sex"
+                            android:textColor="@color/primaryColor" />
+
+                        <RadioGroup
+                            android:id="@+id/membership_sex_selector"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/header_sex_selection"
+                            android:orientation="horizontal"
+                            android:paddingStart="20dp">
+
+                            <RadioButton
+                                android:id="@+id/all_members_selector"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="@string/all" />
+
+                            <Space
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content" />
+
+                            <RadioButton
+                                android:id="@+id/male_selector"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/male" />
+
+                            <Space
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content" />
+
+                            <RadioButton
+                                android:id="@+id/female_selector"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/female" />
+                        </RadioGroup>
+                    </RelativeLayout>
+                </FrameLayout>
 
 
-        <FrameLayout
-            android:id="@+id/fields"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sex_selection_header">
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@drawable/border" />
-
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp">
-
-                <TextView
-                    android:id="@+id/header_fields_in_report"
+                <FrameLayout
+                    android:id="@+id/fields"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:color/white"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/included_fields"
-                    android:textColor="@color/primaryColor" />
+                    android:layout_height="300dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/sex_selection_header">
 
-                <CheckBox
-                    android:id="@+id/phone_field"
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/border" />
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp">
+
+                        <TextView
+                            android:id="@+id/header_fields_in_report"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:color/white"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="@string/included_fields"
+                            android:textColor="@color/primaryColor" />
+
+                        <CheckBox
+                            android:id="@+id/phone_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/header_fields_in_report"
+                            android:layout_marginStart="20dp"
+                            android:checked="true"
+                            android:text="@string/phone" />
+
+                        <CheckBox
+                            android:id="@+id/temperature_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/age_field"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/temperature" />
+
+                        <CheckBox
+                            android:id="@+id/age_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/region_field"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/age" />
+
+                        <CheckBox
+                            android:id="@+id/region_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/phone_field"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/region" />
+
+                        <CheckBox
+                            android:id="@+id/arrival_time_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/temperature_field"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/check_in_time" />
+
+                    </RelativeLayout>
+                </FrameLayout>
+
+
+                <FrameLayout
+                    android:id="@+id/member_activity"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/header_fields_in_report"
-                    android:layout_marginStart="20dp"
-                    android:text="@string/phone" />
+                    android:layout_height="100dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fields">
 
-                <CheckBox
-                    android:id="@+id/temperature_field"
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/border" />
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp">
+
+                        <TextView
+                            android:id="@+id/header_membership_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@android:color/white"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="@string/activity"
+                            android:textColor="@color/primaryColor" />
+
+                        <CheckBox
+                            android:id="@+id/check_inactive_members"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/header_membership_status"
+                            android:layout_marginStart="20dp"
+                            android:text="@string/include_inactive_members" />
+
+                    </RelativeLayout>
+                </FrameLayout>
+
+                <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/header_fields_in_report"
-                    android:layout_toEndOf="@id/phone_field"
-                    android:text="@string/temperature" />
+                    android:layout_height="150dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/member_activity" />
 
-                <CheckBox
-                    android:id="@+id/age_field"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                 android:layout_marginStart="20dp"
-                    android:layout_below="@id/phone_field"
-                    android:text="@string/age" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <CheckBox
-                    android:id="@+id/arrival_time_field"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/temperature_field"
-                    android:layout_toEndOf="@id/age_field"
-                    android:text="@string/check_in_time" />
+        </androidx.core.widget.NestedScrollView>
 
-            </RelativeLayout>
-        </FrameLayout>
-
-
-        <FrameLayout
-            android:id="@+id/member_activity"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fields">
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@drawable/border" />
-
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp">
-
-                <TextView
-                    android:id="@+id/header_membership_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:color/white"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/activity"
-                    android:textColor="@color/primaryColor" />
-
-                <CheckBox
-                    android:id="@+id/check_inactive_members"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/header_membership_status"
-                    android:layout_marginStart="20dp"
-                    android:text="@string/include_inactive_members" />
-
-            </RelativeLayout>
-        </FrameLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/generate_reports"
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="20dp"
             android:text="@string/generate"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/member_activity" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</ScrollView>
+            app:shapeAppearance="@style/ShapeAppearance.KO.ProfileImageComponent"
+            app:icon="@drawable/ic_baseline_present_to_all_24" />
+    </FrameLayout>
 </layout>
