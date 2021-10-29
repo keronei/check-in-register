@@ -1,5 +1,6 @@
 package com.keronei.koregister.fragments.reports
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.ReportsFragmentBinding
 import com.keronei.koregister.fragments.checkin.DatePickerFragment
@@ -30,6 +32,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
 import java.lang.Exception
+import android.content.pm.PackageManager
 
 
 class ReportsFragment : Fragment() {
@@ -189,7 +192,19 @@ class ReportsFragment : Fragment() {
                 allMembersViewModel.allMembersData.value
             )
 
-        Log.d("GENERATED", "${generatedReport.size} in total.")
+
+        if (generatedReport.isEmpty()) {
+            SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("No Reports")
+                .setContentText(
+                    "No entries matching your selection criteria."
+                )
+                .setCancelButton("Yes") { dialog ->
+                    dialog.dismissWithAnimation()
+                }.show()
+
+            return
+        }
 
         val reportFileName =
             if (reportsViewModel.filterModel.value.attendance) "Members present report on ${
@@ -199,13 +214,40 @@ class ReportsFragment : Fragment() {
                 "Members absent report on ${parser.format(Date(startOfDateSelectedTimeStamp))} generated.xlsx"
 
         try {
-           val openingIntent = exportDataIntoWorkbook(
+            val openingIntent = exportDataIntoWorkbook(
                 requireContext(),
                 reportFileName,
                 allMembersViewModel.allMembersData.value
             )
 
-            startActivity(openingIntent)
+            MaterialAlertDialogBuilder(requireContext()).setMessage("Report Generated")
+                .setNegativeButton("Share") { _, i ->
+                    openingIntent.action = Intent.ACTION_SEND
+                    startActivity(Intent.createChooser(openingIntent, "Share report"))
+
+                }.setPositiveButton("View") { _, dialig ->
+
+                    openingIntent.action = Intent.ACTION_VIEW
+
+                    val packageManager = requireActivity().packageManager
+
+                    if (openingIntent.resolveActivity(packageManager) != null) {
+                        startActivity(openingIntent)
+                    } else {
+
+                        SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Error")
+                            .setContentText(
+                                "No app found in your phone that can open this Excel report."
+                            )
+                            .show()
+
+                        Log.d("TAG", "No Intent available to handle action")
+                    }
+
+                }
+                .show()
+
 
         } catch (exception: Exception) {
             SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
@@ -213,7 +255,7 @@ class ReportsFragment : Fragment() {
                 .setContentText(
                     "Could not generate report. Report this error = ${exception.message}"
                 )
-                .setCancelButton("Yes") { dialog ->
+                .setCancelButton("OK") { dialog ->
                     dialog.dismissWithAnimation()
                 }.show()
         }

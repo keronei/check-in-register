@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.webkit.MimeTypeMap
+import androidx.core.content.FileProvider
 import com.keronei.domain.entities.AttendanceEntity
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
@@ -70,13 +71,24 @@ fun exportDataIntoWorkbook(
     fillDataIntoExcel(dataList)
 
     val file = File(context.getExternalFilesDir(null), fileName)
+
+    val fileOutputStream: FileOutputStream?
+
+    fileOutputStream = FileOutputStream(file)
+    workbook.write(fileOutputStream)
+
+
     val openGeneratedReportFileIntent = Intent()
-    openGeneratedReportFileIntent.action = ACTION_SEND
+
+    val uri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
+
     openGeneratedReportFileIntent.setDataAndType(
-        Uri.fromFile(file),
+        uri,
         MimeTypeMap.getSingleton().getMimeTypeFromExtension(".xlsx")
     )
 
+    openGeneratedReportFileIntent.putExtra(Intent.EXTRA_STREAM, uri)
+    openGeneratedReportFileIntent.addFlags(FLAG_GRANT_READ_URI_PERMISSION)
 
     //isWorkbookWrittenIntoStorage = storeExcelInStorage(context, fileName)
     return openGeneratedReportFileIntent
