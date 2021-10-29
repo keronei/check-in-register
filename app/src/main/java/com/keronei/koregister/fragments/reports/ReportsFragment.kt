@@ -166,6 +166,58 @@ class ReportsFragment : Fragment() {
             showDateSelectionDialog()
         }
 
+        reportsBinding.phoneField.setOnCheckedChangeListener { _, checked ->
+
+            lifecycleScope.launch {
+                reportsViewModel.fieldsFilterModel.emit(
+                    value = reportsViewModel.fieldsFilterModel.value.copy(
+                        includePhone = checked
+                    )
+                )
+            }
+
+        }
+
+        reportsBinding.regionField.setOnCheckedChangeListener { _, checked ->
+            lifecycleScope.launch {
+                reportsViewModel.fieldsFilterModel.emit(
+                    value = reportsViewModel.fieldsFilterModel.value.copy(
+                        includeRegion = checked
+                    )
+                )
+            }
+        }
+
+        reportsBinding.ageField.setOnCheckedChangeListener { _, checked ->
+            lifecycleScope.launch {
+                reportsViewModel.fieldsFilterModel.emit(
+                    value = reportsViewModel.fieldsFilterModel.value.copy(
+                        includeAge = checked
+                    )
+                )
+            }
+        }
+
+        reportsBinding.temperatureField.setOnCheckedChangeListener { _, checked ->
+            lifecycleScope.launch {
+                reportsViewModel.fieldsFilterModel.emit(
+                    value = reportsViewModel.fieldsFilterModel.value.copy(
+                        includeTemperature = checked
+                    )
+                )
+            }
+        }
+
+        reportsBinding.arrivalTimeField.setOnCheckedChangeListener { _, checked ->
+            lifecycleScope.launch {
+                reportsViewModel.fieldsFilterModel.emit(
+                    value = reportsViewModel.fieldsFilterModel.value.copy(
+                        includeCheckInTime = checked
+                    )
+                )
+            }
+        }
+
         lifecycleScope.launch {
             reportsViewModel.customSelectedDate.collect { selectedDate ->
                 setMillis(selectedDate)
@@ -217,7 +269,8 @@ class ReportsFragment : Fragment() {
             val openingIntent = exportDataIntoWorkbook(
                 requireContext(),
                 reportFileName,
-                allMembersViewModel.allMembersData.value
+                allMembersViewModel.allMembersData.value,
+                reportsViewModel.fieldsFilterModel.value
             )
 
             MaterialAlertDialogBuilder(requireContext()).setMessage("Report Generated")
@@ -255,9 +308,7 @@ class ReportsFragment : Fragment() {
                 .setContentText(
                     "Could not generate report. Report this error = ${exception.message}"
                 )
-                .setCancelButton("OK") { dialog ->
-                    dialog.dismissWithAnimation()
-                }.show()
+                .show()
         }
     }
 

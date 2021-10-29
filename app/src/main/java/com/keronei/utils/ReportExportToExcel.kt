@@ -9,6 +9,7 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider
 import com.keronei.domain.entities.AttendanceEntity
+import com.keronei.koregister.models.FieldsFilter
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.hssf.util.HSSFColor
@@ -17,6 +18,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 const val TAG = "REPORTS GEN"
@@ -35,9 +38,12 @@ lateinit var cellStyle: CellStyle
 
 private const val EXCEL_SHEET_NAME = "Sheet1"
 
+private val parser = SimpleDateFormat("hh:mm a", Locale.US)
+
 fun exportDataIntoWorkbook(
     context: Context, fileName: String,
-    dataList: List<AttendanceEntity>
+    dataList: List<AttendanceEntity>,
+    fields: FieldsFilter
 ): Intent {
     val isWorkbookWrittenIntoStorage: Boolean
 
@@ -63,11 +69,13 @@ fun exportDataIntoWorkbook(
     row = sheet.createRow(0)
     // Creating a New Sheet and Setting width for each column
 
-    sheet.setColumnWidth(0, 15 * 400)
+    sheet.setColumnWidth(0, 15 * 400) //name - default.
     sheet.setColumnWidth(1, 15 * 400)
     sheet.setColumnWidth(2, 15 * 400)
     sheet.setColumnWidth(3, 15 * 400)
-    setHeaderRow()
+    sheet.setColumnWidth(4, 15 * 400)
+
+    setHeaderRow(fields)
     fillDataIntoExcel(dataList)
 
     val file = File(context.getExternalFilesDir(null), fileName)
@@ -127,20 +135,26 @@ private fun setHeaderCellStyle() {
 /**
  * Setup Header Row
  */
-private fun setHeaderRow() {
+private fun setHeaderRow(fields: FieldsFilter) {
+
     val headerRow: Row = sheet.createRow(0)
     row = sheet.createRow(0)
     cell = row.createCell(0)
-    cell.setCellValue("First Name")
+    cell.setCellValue("Name")
     cell.cellStyle = cellStyle
     cell = row.createCell(1)
-    cell.setCellValue("Last Name")
+    cell.setCellValue("Phone")
     cell.cellStyle = cellStyle
     cell = row.createCell(2)
-    cell.setCellValue("Phone Number")
+    cell.setCellValue("Region")
     cell.cellStyle = cellStyle
     cell = row.createCell(3)
-    cell.setCellValue("Mail ID")
+    cell.setCellValue("Temperature ºC")
+    cell.cellStyle = cellStyle
+    cell = row.createCell(4)
+    cell.setCellValue("Arrival time")
+    cell.cellStyle = cellStyle
+
 }
 
 /**
@@ -158,13 +172,15 @@ private fun fillDataIntoExcel(dataList: List<AttendanceEntity>) {
 
         // Create Cells for each row
         cell = rowData.createCell(0)
-        cell.setCellValue(dataList[i].memberEntity.firstName)
+        cell.setCellValue(dataList[i].memberEntity.firstName + " " + dataList[i].memberEntity.secondName + " " + dataList[i].memberEntity.otherNames)
         cell = rowData.createCell(1)
-        cell.setCellValue(dataList[i].memberEntity.secondName)
-        cell = rowData.createCell(2)
         cell.setCellValue(dataList[i].memberEntity.phoneNumber)
-        cell = rowData.createCell(4)
+        cell = rowData.createCell(2)
         cell.setCellValue(dataList[i].regionEntity.name)
+        cell = rowData.createCell(3)
+        cell.setCellValue(if (dataList[i].checkIns.isEmpty()) "" else dataList[i].checkIns.first().temperature.toString())
+        cell = rowData.createCell(4)
+        cell.setCellValue(if (dataList[i].checkIns.isEmpty()) "" else parser.format(Date(dataList[i].checkIns.first().timeStamp)))
     }
 }
 
