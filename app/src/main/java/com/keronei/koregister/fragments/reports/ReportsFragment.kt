@@ -9,15 +9,28 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.keronei.kiregister.R
 import com.keronei.kiregister.databinding.ReportsFragmentBinding
 import com.keronei.koregister.fragments.checkin.DatePickerFragment
 import com.keronei.koregister.viewmodels.AllMembersViewModel
 import com.keronei.koregister.viewmodels.ReportsViewModel
+import com.keronei.utils.exportDataIntoWorkbook
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import org.apache.poi.ss.usermodel.CellStyle
+
+import org.apache.poi.hssf.usermodel.HSSFCellStyle
+
+import org.apache.poi.hssf.util.HSSFColor
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
+
 
 class ReportsFragment : Fragment() {
 
@@ -77,7 +90,7 @@ class ReportsFragment : Fragment() {
 
 
             lifecycleScope.launch {
-                reportsViewModel.filterModel.emit(reportsViewModel.filterModel.value.copy(attendance = !checked ))
+                reportsViewModel.filterModel.emit(reportsViewModel.filterModel.value.copy(attendance = !checked))
             }
 
 
@@ -95,13 +108,13 @@ class ReportsFragment : Fragment() {
 
         reportsBinding.presentSelector.setOnCheckedChangeListener { _, checked ->
 
-                lifecycleScope.launch {
-                    reportsViewModel.filterModel.emit(
-                        reportsViewModel.filterModel.value.copy(
-                            attendance = checked
-                        )
+            lifecycleScope.launch {
+                reportsViewModel.filterModel.emit(
+                    reportsViewModel.filterModel.value.copy(
+                        attendance = checked
                     )
-                }
+                )
+            }
 
 
         }
@@ -177,6 +190,34 @@ class ReportsFragment : Fragment() {
             )
 
         Log.d("GENERATED", "${generatedReport.size} in total.")
+
+        val reportFileName =
+            if (reportsViewModel.filterModel.value.attendance) "Members present report on ${
+                parser.format(Date(startOfDateSelectedTimeStamp))
+            } generated.xlsx"
+            else
+                "Members absent report on ${parser.format(Date(startOfDateSelectedTimeStamp))} generated.xlsx"
+
+        try {
+           val openingIntent = exportDataIntoWorkbook(
+                requireContext(),
+                reportFileName,
+                allMembersViewModel.allMembersData.value
+            )
+
+            startActivity(openingIntent)
+
+        } catch (exception: Exception) {
+            SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("Error")
+                .setContentText(
+                    "Could not generate report. Report this error = ${exception.message}"
+                )
+                .setCancelButton("Yes") { dialog ->
+                    dialog.dismissWithAnimation()
+                }.show()
+        }
     }
+
 
 }

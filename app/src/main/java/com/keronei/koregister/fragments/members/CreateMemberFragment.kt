@@ -1,7 +1,6 @@
 package com.keronei.koregister.fragments.members
 
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-import com.keronei.domain.entities.CheckInEntity
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.kiregister.R
