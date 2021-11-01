@@ -5,13 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 
-import com.keronei.kiregister.databinding.ActivityMainBinding
+import com.keronei.keroscheckin.databinding.ActivityMainBinding
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
+
 
 
 @AndroidEntryPoint
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        navController = supportFragmentManager.findFragmentById(com.keronei.kiregister.R.id.nav_host_fragment_main)
+        navController = supportFragmentManager.findFragmentById(com.keronei.keroscheckin.R.id.nav_host_fragment_main)
             ?.findNavController()
 
         val window = this.window
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(com.keronei.kiregister.R.menu.menu_main, menu)
+        menuInflater.inflate(com.keronei.keroscheckin.R.menu.menu_main, menu)
         return true
     }
 
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            com.keronei.kiregister.R.id.action_settings -> true
+            com.keronei.keroscheckin.R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
     }

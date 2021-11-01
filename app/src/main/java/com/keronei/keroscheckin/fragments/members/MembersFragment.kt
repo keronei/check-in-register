@@ -10,11 +10,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.keronei.kiregister.R
-import com.keronei.kiregister.databinding.MembersFragmentBinding
+import com.keronei.keroscheckin.R
+import com.keronei.keroscheckin.databinding.MembersFragmentBinding
 import com.keronei.keroscheckin.adapter.AttendanceTabsAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.members_fragment.*
 
 @AndroidEntryPoint
 class MembersFragment : Fragment() {

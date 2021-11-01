@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.keronei.kiregister.R
-import com.keronei.kiregister.databinding.YetToCheckedInFragmentBinding
+import com.keronei.keroscheckin.R
+import com.keronei.keroscheckin.databinding.YetToCheckedInFragmentBinding
 import com.keronei.keroscheckin.adapter.AttendanceRecyclerAdapter
 import com.keronei.keroscheckin.models.AttendeePresentation
 import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD

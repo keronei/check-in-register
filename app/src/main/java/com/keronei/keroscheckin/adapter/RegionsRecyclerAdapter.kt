@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.keronei.kiregister.R
-import com.keronei.kiregister.databinding.ItemRegionLayoutBinding
+import com.keronei.keroscheckin.R
+import com.keronei.keroscheckin.databinding.ItemRegionLayoutBinding
 import com.keronei.keroscheckin.models.RegionPresentation
 import java.util.*
 

@@ -30,7 +30,7 @@
     <string name="create_new_member">Create new member</string>
     <string name="member_created">Member added!</string>
     <string name="checkin_status_icon">CheckIn status icon</string>
-    <string name="checkin">CheckIn</string>
+    <string name="checkin">Check-In</string>
     <string name="edit">Edit</string>
     <string name="member_updated">Member Updated!</string>
     <string name="all_regions">All Regions</string>
@@ -68,7 +68,7 @@
     <string name="reports">Reports</string>
     <string name="generate_reports_for">Generate reports for</string>
     <string name="attendance">Attendance</string>
-    <string name="present_checked_in">Present(Checked In)</string>
+    <string name="present_checked_in">Present(Checked-In)</string>
     <string name="absent">Absent</string>
     <string name="sex">Sex</string>
     <string name="all">All</string>
@@ -79,6 +79,7 @@
     <string name="phone">Phone</string>
     <string name="temperature">Temperature</string>
     <string name="age">Age</string>
-    <string name="check_in_time">Check In time</string>
+    <string name="check_in_time">Check-In time</string>
     <string name="region">Region</string>
+    <string name="other_sex">Other</string>
 </resources>

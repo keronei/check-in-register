@@ -1,4 +1,4 @@
-package com.keronei.kiregister
+package com.keronei.keroscheckin
 
 import org.junit.Test
 

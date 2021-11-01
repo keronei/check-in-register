@@ -12,8 +12,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.keronei.kiregister.R
-import com.keronei.kiregister.databinding.ReportsFragmentBinding
+import com.keronei.keroscheckin.R
+import com.keronei.keroscheckin.databinding.ReportsFragmentBinding
 import com.keronei.keroscheckin.fragments.checkin.DatePickerFragment
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.keroscheckin.viewmodels.ReportsViewModel
@@ -248,11 +248,11 @@ class ReportsFragment : Fragment() {
         }
 
         val reportFileName =
-            if (reportsViewModel.filterModel.value.attendance) "Members present report on ${
+            if (reportsViewModel.filterModel.value.attendance) "Members present on ${
                 parser.format(Date(startOfDateSelectedTimeStamp))
-            } generated.xlsx"
+            } report.xlsx"
             else
-                "Members absent report on ${parser.format(Date(startOfDateSelectedTimeStamp))} generated.xlsx"
+                "Members absent on ${parser.format(Date(startOfDateSelectedTimeStamp))} report.xlsx"
 
         try {
             val openingIntent = exportDataIntoWorkbook(
@@ -271,11 +271,11 @@ class ReportsFragment : Fragment() {
 
                     openingIntent.action = Intent.ACTION_VIEW
 
-                    val packageManager = requireActivity().packageManager
-
-                    if (openingIntent.resolveActivity(packageManager) != null) {
+                    try {
                         startActivity(openingIntent)
-                    } else {
+                    } catch (openingException: Exception) {
+
+                        openingException.printStackTrace()
 
                         SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Error")

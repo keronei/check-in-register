@@ -1,7 +1,6 @@
 package com.keronei.keroscheckin.fragments.regions
 
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +14,10 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.keronei.domain.entities.CheckInEntity
 import com.keronei.domain.entities.RegionEntity
-import com.keronei.kiregister.R
-import com.keronei.kiregister.databinding.RegionFragmentBinding
-import com.keronei.kiregister.databinding.SelectedRegonOptionsBinding
+import com.keronei.keroscheckin.R
+import com.keronei.keroscheckin.databinding.RegionFragmentBinding
+import com.keronei.keroscheckin.databinding.SelectedRegonOptionsBinding
 import com.keronei.keroscheckin.adapter.RegionsRecyclerAdapter
 import com.keronei.keroscheckin.models.RegionPresentation
 import com.keronei.keroscheckin.models.toPresentation

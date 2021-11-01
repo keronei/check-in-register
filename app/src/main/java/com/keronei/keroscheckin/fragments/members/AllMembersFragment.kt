@@ -1,6 +1,5 @@
 package com.keronei.keroscheckin.fragments.members
 
-import android.app.AlertDialog
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.format.DateUtils
@@ -16,10 +15,10 @@ import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keronei.domain.entities.CheckInEntity
-import com.keronei.kiregister.R
-import com.keronei.kiregister.databinding.AllMembersFragmentBinding
-import com.keronei.kiregister.databinding.LayoutCheckInDialogBinding
-import com.keronei.kiregister.databinding.SelectedAttendeeOptionsBinding
+import com.keronei.keroscheckin.R
+import com.keronei.keroscheckin.databinding.AllMembersFragmentBinding
+import com.keronei.keroscheckin.databinding.LayoutCheckInDialogBinding
+import com.keronei.keroscheckin.databinding.SelectedAttendeeOptionsBinding
 import com.keronei.keroscheckin.adapter.AttendanceRecyclerAdapter
 import com.keronei.keroscheckin.fragments.checkin.TimePickerFragment
 import com.keronei.keroscheckin.models.AttendeePresentation
@@ -266,15 +265,15 @@ class AllMembersFragment : Fragment() {
     private fun attemptingToCheckInAlreadyCheckedIn(member: AttendeePresentation) {
 
         SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
-            .setTitleText("Already checked In")
+            .setTitleText("Already checked-In")
             .setContentText(
-                "${member.firstName} already checked In ${
+                "${member.firstName} already checked-In ${
                     DateUtils.getRelativeTimeSpanString(
                         member.lastCheckInStamp!!
                     )
                 }."
             )
-            .setConfirmText("Undo CheckIn")
+            .setConfirmText("Undo Check-In")
             .setConfirmClickListener { sDialog ->
 
                 checkInViewModel.undoCheckInForMember(
@@ -299,7 +298,7 @@ class AllMembersFragment : Fragment() {
         checkInEntity: CheckInEntity
     ) {
 
-        val addressing = if (member.sex == 1) " him " else " her "
+        val addressing = if (member.sex == 1) " him " else if (member.sex == 0) " her " else " them "
 
         SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
             .setTitleText("Inactive Member")

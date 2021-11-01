@@ -10,8 +10,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.keronei.domain.entities.RegionEntity
-import com.keronei.kiregister.R
-import com.keronei.kiregister.databinding.CreateRegionFragmentBinding
+import com.keronei.keroscheckin.R
+import com.keronei.keroscheckin.databinding.CreateRegionFragmentBinding
 import com.keronei.keroscheckin.models.RegionPresentation
 import com.keronei.keroscheckin.models.constants.GUEST_ENTRY
 import com.keronei.keroscheckin.viewmodels.RegionViewModel

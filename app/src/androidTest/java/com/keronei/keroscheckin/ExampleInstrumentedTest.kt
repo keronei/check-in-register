@@ -1,4 +1,4 @@
-package com.keronei.kiregister
+package com.keronei.keroscheckin
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

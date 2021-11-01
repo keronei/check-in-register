@@ -14,14 +14,15 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
-import com.keronei.kiregister.R
-import com.keronei.kiregister.databinding.CreateMemberFragmentBinding
+import com.keronei.keroscheckin.R
+import com.keronei.keroscheckin.databinding.CreateMemberFragmentBinding
 import com.keronei.keroscheckin.models.AttendeePresentation
 import com.keronei.keroscheckin.models.toMemberEntity
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.create_member_fragment.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -86,6 +87,7 @@ class CreateMemberFragment : DialogFragment() {
         layoutBinding.otherNamesEdittext.setText(selectedAttendee?.otherNames)
         layoutBinding.maleSelector.isChecked = selectedAttendee?.sex == 1
         layoutBinding.femaleSelector.isChecked = selectedAttendee?.sex == 0
+        layoutBinding.otherSexSelector.isChecked = selectedAttendee?.sex == 2
         layoutBinding.ageEdittext.setText(selectedAttendee?.age.toString())
         layoutBinding.phoneEdittext.setText(selectedAttendee?.phoneNumber)
 
@@ -108,6 +110,7 @@ class CreateMemberFragment : DialogFragment() {
             val phoneNumber = layoutBinding.phoneEdittext.text
             val maleSex = layoutBinding.maleSelector
             val femaleSex = layoutBinding.femaleSelector
+            val otherSex = layoutBinding.otherSexSelector
 
 
             if (selectedRegion == null) {
@@ -125,8 +128,8 @@ class CreateMemberFragment : DialogFragment() {
                 return@setOnClickListener
             }
 
-            if (!(maleSex.isChecked || femaleSex.isChecked)) {
-                ToastUtils.showShortToastInMiddle("select Male or Female")
+            if (!(maleSex.isChecked || femaleSex.isChecked || otherSex.isChecked)) {
+                ToastUtils.showShortToastInMiddle("Select sex identity")
                 return@setOnClickListener
             }
 
@@ -139,12 +142,20 @@ class CreateMemberFragment : DialogFragment() {
 
             lifecycleScope.launch {
 
+                var sexSelection = 1
+
+                when {
+                    maleSex.isChecked -> {sexSelection = 1}
+                    femaleSex.isChecked -> sexSelection = 0
+                    otherSex.isChecked -> sexSelection = 2
+                }
+
                 val subjectMember = MemberEntity(
                     if (isEditing) selectedAttendee!!.memberId else 0,
                     firstName!!.trim().toString(),
                     secondName!!.trim().toString(),
                     otherNames!!.trim().toString(),
-                    if (maleSex.isChecked) 1 else 0,
+                    sexSelection,
                     age!!.trim().toString().toInt(),
                     phoneNumber?.trim().toString(),
                     if(isEditing) layoutBinding.memberActivityStatus.isChecked else true,

@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.keronei.kiregister.R
+import com.keronei.keroscheckin.R
 
 class SettingsFragment : PreferenceFragmentCompat(){
 

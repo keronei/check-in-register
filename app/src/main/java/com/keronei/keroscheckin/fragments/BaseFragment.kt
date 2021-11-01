@@ -10,8 +10,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import com.keronei.kiregister.R
-import com.keronei.kiregister.databinding.BaseFragmentBinding
+import com.keronei.keroscheckin.R
+import com.keronei.keroscheckin.databinding.BaseFragmentBinding
 
 
 class BaseFragment : Fragment() {
