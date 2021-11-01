@@ -70,4 +70,14 @@ object Dependencies {
     //Data Store
 
     const val dataStore = "androidx.datastore:datastore-preferences:${Versions.datastore}"
+
+    //Pin Lock
+    const val screen_lock = "com.guardanis:applock:${Versions.screenlock}"
+
+    //Firebase
+    const val firebase_bom = "com.google.firebase:firebase-bom:${Versions.firebase_bom}"
+    const val firebase_analytics = "com.google.firebase:firebase-analytics-ktx"
+
+    //Preference
+    const val shared_preference = "androidx.preference:preference-ktx:${Versions.preference}"
 }

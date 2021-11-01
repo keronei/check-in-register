@@ -1,18 +1,23 @@
 package com.keronei.keroscheckin
 
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-
-import com.keronei.keroscheckin.databinding.ActivityMainBinding
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import cn.pedant.SweetAlert.SweetAlertDialog
+import com.guardanis.applock.dialogs.LockCreationDialogBuilder
+import com.guardanis.applock.dialogs.UnlockDialogBuilder
+import com.keronei.data.remote.Constants.IS_FIRST_TIME_KEY
+import com.keronei.keroscheckin.databinding.ActivityMainBinding
+import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
-
-import android.view.WindowManager
-import androidx.core.content.ContextCompat
-
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -20,7 +25,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
     private var navController: NavController? = null
+
+    private var dismissedWithAuth = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +38,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        navController = supportFragmentManager.findFragmentById(com.keronei.keroscheckin.R.id.nav_host_fragment_main)
-            ?.findNavController()
+        //determine if it's first time, create pin
+
+        val hasRun = sharedPreferences.getBoolean(IS_FIRST_TIME_KEY, true)
+
+        if (hasRun) {
+            createAuth()
+        }
+
+        navController =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_main)
+                ?.findNavController()
 
         val window = this.window
 
@@ -61,9 +80,99 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            com.keronei.keroscheckin.R.id.action_settings -> true
+            R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val hasRun = sharedPreferences.getBoolean(IS_FIRST_TIME_KEY, false)
+
+        if (!hasRun) {
+
+            initiateAuth()
+
+        }
+    }
+
+    private fun initiateAuth() {
+        UnlockDialogBuilder(this).onUnlocked { dismissedWithAuth = true }
+            .onCanceled { onUserCancelAuth() }
+            .showIfRequiredOrSuccess(TimeUnit.MINUTES.toMillis(15))
+
+    }
+
+    private fun onUserCancelAuth() {
+        val cancelAuthAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        cancelAuthAlert.titleText = "Data Safety"
+        cancelAuthAlert.contentText =
+            "The data in this application is sensitive and cannot be accessed without authentication."
+        cancelAuthAlert.confirmText = "Proceed"
+        cancelAuthAlert.setConfirmClickListener { sDialog ->
+
+            sDialog.dismissWithAnimation()
+            initiateAuth()
+
+        }
+        cancelAuthAlert.setCancelButton(
+            "Exit"
+        ) { sDialog ->
+
+            sDialog.dismissWithAnimation()
+
+            this.finish()
+
+        }
+        cancelAuthAlert.setCanceledOnTouchOutside(false)
+        cancelAuthAlert.show()
+
+
+    }
+
+    private fun createAuth() {
+        LockCreationDialogBuilder(this).onCanceled {
+
+            onUserCancelAuthCreation()
+
+        }.onLockCreated {
+
+            dismissedWithAuth = true
+
+            val editor = sharedPreferences.edit()
+            editor.putBoolean(IS_FIRST_TIME_KEY, false)
+            editor.apply()
+        }.show()
+    }
+
+    private fun onUserCancelAuthCreation() {
+
+        val authCreationAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        authCreationAlert.titleText = "Data Safety"
+
+        authCreationAlert.contentText = "Authentication is required to secure information to be stored in this application."
+
+        authCreationAlert.confirmText = "Create"
+        authCreationAlert.setConfirmClickListener { sDialog ->
+            sDialog.dismissWithAnimation()
+
+            createAuth()
+        }
+
+        authCreationAlert.setCancelButton(
+            "Exit"
+        ) { sDialog ->
+
+            sDialog.dismissWithAnimation()
+
+            this.finish()
+
+        }
+
+        authCreationAlert.setCanceledOnTouchOutside(false)
+        authCreationAlert.show()
+
     }
 
 

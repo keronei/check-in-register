@@ -8,4 +8,6 @@ object Constants {
     const val SYNC_ENDPOINT = "api/sync"
 
     const val AUTH_ENDPOINT = "api/session"
+
+    const val IS_FIRST_TIME_KEY = "has_already_ran"
 }

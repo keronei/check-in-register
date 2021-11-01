@@ -67,7 +67,7 @@ dependencies {
 
     //Searchable dropdown
     implementation(Dependencies.searchableDropDown)
-    implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation(Dependencies.shared_preference)
     implementation(files("libs/poi-3.7.jar"))
 
     kapt(Dependencies.hiltCompiler)
@@ -86,8 +86,11 @@ dependencies {
     //DataStore
     implementation(Dependencies.dataStore)
 
-    implementation(platform("com.google.firebase:firebase-bom:28.4.2"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    //Lock
+    implementation(Dependencies.screen_lock)
+    //Google Analytics
+    implementation(platform(Dependencies.firebase_bom))
+    implementation(Dependencies.firebase_analytics)
 
     implementation(Dependencies.kotlinCore)
     implementation(Dependencies.androidxAppCompat)
@@ -95,7 +98,7 @@ dependencies {
     implementation (Dependencies.constrainLayout)
     implementation (Dependencies.navigationFragment)
     implementation (Dependencies.navigationUiKtx)
-    //implementation(Dependencies.androidExtensionsRuntime)
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")

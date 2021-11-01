@@ -1,4 +1,7 @@
 object Versions {
+    const val preference: String = "1.1.1"
+    const val firebase_bom: String = "28.4.2"
+    const val screenlock: String = "3.0.2"
     const val datastore: String = "1.0.0"
     const val sweetalerts  = "1.6.2"
     const val circular_image: String = "3.1.0"
