@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="@string/no_member_attendance_data"
+            android:text="@string/either_all_have_checked_in_or_there_s_no_registered_member"
             android:textAlignment="center"
 
             android:textSize="15sp"

@@ -88,9 +88,9 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        val hasRun = sharedPreferences.getBoolean(IS_FIRST_TIME_KEY, false)
+        val isFirstTime = sharedPreferences.getBoolean(IS_FIRST_TIME_KEY, false)
 
-        if (!hasRun) {
+        if (!isFirstTime) {
 
             initiateAuth()
 
@@ -98,9 +98,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initiateAuth() {
-        UnlockDialogBuilder(this).onUnlocked { dismissedWithAuth = true }
-            .onCanceled { onUserCancelAuth() }
-            .showIfRequiredOrSuccess(TimeUnit.MINUTES.toMillis(15))
+        val unlocker = UnlockDialogBuilder(this)
+        unlocker.onUnlocked { dismissedWithAuth = true }
+        unlocker.onCanceled { onUserCancelAuth() }
+        unlocker.showIfRequiredOrSuccess(TimeUnit.MINUTES.toMillis(15))
+        unlocker.show()
 
     }
 
@@ -132,18 +134,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createAuth() {
-        LockCreationDialogBuilder(this).onCanceled {
+        val lockCreator = LockCreationDialogBuilder(this)
+        lockCreator.onCanceled {
 
             onUserCancelAuthCreation()
 
-        }.onLockCreated {
+        }
+        lockCreator.onLockCreated {
 
             dismissedWithAuth = true
 
             val editor = sharedPreferences.edit()
             editor.putBoolean(IS_FIRST_TIME_KEY, false)
             editor.apply()
-        }.show()
+        }
+        lockCreator.show()
     }
 
     private fun onUserCancelAuthCreation() {
@@ -151,7 +156,8 @@ class MainActivity : AppCompatActivity() {
         val authCreationAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
         authCreationAlert.titleText = "Data Safety"
 
-        authCreationAlert.contentText = "Authentication is required to secure information to be stored in this application."
+        authCreationAlert.contentText =
+            "Authentication is required to secure information to be stored in this application."
 
         authCreationAlert.confirmText = "Create"
         authCreationAlert.setConfirmClickListener { sDialog ->
