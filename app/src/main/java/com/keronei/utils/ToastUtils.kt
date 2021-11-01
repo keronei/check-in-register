@@ -4,7 +4,7 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import com.keronei.koregister.instance.KORegisterApplication
+import com.keronei.keroscheckin.instance.KORegisterApplication
 
 object ToastUtils {
     fun showShortToast(message: String) {

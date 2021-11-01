@@ -7,7 +7,7 @@
 
         <variable
             name="attendee"
-            type="com.keronei.koregister.models.AttendeePresentation" />
+            type="com.keronei.keroscheckin.models.AttendeePresentation" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

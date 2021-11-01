@@ -15,7 +15,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:context="com.keronei.koregister.fragments.reports.ReportsFragment">
+                tools:context="com.keronei.keroscheckin.fragments.reports.ReportsFragment">
 
                 <TextView
                     android:id="@+id/reports_header"

@@ -3,13 +3,12 @@ package com.keronei.utils
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.*
-import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider
 import com.keronei.domain.entities.AttendanceEntity
-import com.keronei.koregister.models.FieldsFilter
+import com.keronei.keroscheckin.models.FieldsFilter
 import org.apache.poi.hssf.usermodel.HSSFCellStyle
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.hssf.util.HSSFColor

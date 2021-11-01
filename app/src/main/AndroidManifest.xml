@@ -10,12 +10,12 @@
         tools:replace="android:icon"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.keronei.koregister.instance.KORegisterApplication"
+        android:name="com.keronei.keroscheckin.instance.KORegisterApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KIRegister">
         <activity
-            android:name="com.keronei.koregister.MainActivity"
+            android:name="com.keronei.keroscheckin.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.KIRegister.NoActionBar">
@@ -28,7 +28,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.keronei.koregister.fileprovider"
+            android:authorities="com.keronei.keroscheckin.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

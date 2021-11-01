@@ -7,7 +7,7 @@
 //        jcenter() // Warning: this repository is going to shut down soon
 //    }
 //}
-rootProject.name = "KO Register"
+rootProject.name = "Keros CheckIn"
 include (":app")
 include (":domain")
 include (":data")

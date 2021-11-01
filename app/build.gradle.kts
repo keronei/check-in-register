@@ -5,6 +5,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-android-extensions")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -12,7 +13,7 @@ android {
     buildToolsVersion = AppConfig.buildToolsVersion
 
     defaultConfig {
-        applicationId = "com.keronei.koregister"
+        applicationId = "com.keronei.keroscheckin"
         minSdk = AppConfig.minSdk
         targetSdk = AppConfig.targetSdk
         versionCode = AppConfig.versionCode
@@ -66,7 +67,7 @@ dependencies {
 
     //Searchable dropdown
     implementation(Dependencies.searchableDropDown)
-    implementation("androidx.preference:preference:1.1.1")
+    implementation("androidx.preference:preference-ktx:1.1.1")
     implementation(files("libs/poi-3.7.jar"))
 
     kapt(Dependencies.hiltCompiler)
@@ -84,6 +85,9 @@ dependencies {
 
     //DataStore
     implementation(Dependencies.dataStore)
+
+    implementation(platform("com.google.firebase:firebase-bom:28.4.2"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
 
     implementation(Dependencies.kotlinCore)
     implementation(Dependencies.androidxAppCompat)

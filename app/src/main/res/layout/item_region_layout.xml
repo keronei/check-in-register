@@ -7,7 +7,7 @@
 
         <variable
             name="regionInfo"
-            type="com.keronei.koregister.models.RegionPresentation" />
+            type="com.keronei.keroscheckin.models.RegionPresentation" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
