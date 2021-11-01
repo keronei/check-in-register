@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.guardanis.applock.AppLock
 import com.guardanis.applock.dialogs.LockCreationDialogBuilder
 import com.guardanis.applock.dialogs.UnlockDialogBuilder
 import com.keronei.data.remote.Constants.IS_FIRST_TIME_KEY
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
 
     private var navController: NavController? = null
+
+    private var unlocker: UnlockDialogBuilder? = null
+
+    private var lockCreator: LockCreationDialogBuilder? = null
 
     private var dismissedWithAuth = false
 
@@ -98,11 +103,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initiateAuth() {
-        val unlocker = UnlockDialogBuilder(this)
-        unlocker.onUnlocked { dismissedWithAuth = true }
-        unlocker.onCanceled { onUserCancelAuth() }
-        unlocker.showIfRequiredOrSuccess(TimeUnit.MINUTES.toMillis(15))
-        unlocker.show()
+
+        unlocker = UnlockDialogBuilder(this)
+
+
+        unlocker?.onUnlocked { dismissedWithAuth = true }
+        unlocker?.onCanceled { onUserCancelAuth() }
+        //val necessary = unlocker?.showIfRequiredOrSuccess(TimeUnit.MINUTES.toMillis(15))
+
+        unlocker?.show()
 
     }
 
@@ -134,13 +143,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createAuth() {
-        val lockCreator = LockCreationDialogBuilder(this)
-        lockCreator.onCanceled {
+        lockCreator = LockCreationDialogBuilder(this)
+
+        lockCreator?.onCanceled {
 
             onUserCancelAuthCreation()
 
         }
-        lockCreator.onLockCreated {
+        lockCreator?.onLockCreated {
 
             dismissedWithAuth = true
 
@@ -148,7 +158,8 @@ class MainActivity : AppCompatActivity() {
             editor.putBoolean(IS_FIRST_TIME_KEY, false)
             editor.apply()
         }
-        lockCreator.show()
+
+        lockCreator?.show()
     }
 
     private fun onUserCancelAuthCreation() {
@@ -181,5 +192,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onPostResume() {
+        super.onPostResume()
+
+        AppLock.onActivityResumed(this)
+    }
 
 }
