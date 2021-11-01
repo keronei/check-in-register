@@ -210,10 +210,17 @@ class ReportsFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            reportsViewModel.customSelectedDate.collect { selectedDate ->
-                setMillis(selectedDate)
+            reportsViewModel.customSelectedDate.collect { selectedDateFromCalendar ->
+                setMillis(selectedDateFromCalendar)
 
-                displayDateSelected(selectedDate)
+                displayDateSelected(selectedDateFromCalendar)
+
+                reportsViewModel.filterModel.emit(
+                    reportsViewModel.filterModel.value.copy(
+                        selectedDate = selectedDateFromCalendar
+                    )
+                )
+
             }
         }
     }

@@ -43,7 +43,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         val controlInstance = Calendar.getInstance()
 
         if (selectedCalendar.after(controlInstance)) {
-            ToastUtils.showLongToastInMiddle(R.string.arrival_time_alert)
+            ToastUtils.showLongToastOnTop(R.string.arrival_time_alert)
 
             return
         }
