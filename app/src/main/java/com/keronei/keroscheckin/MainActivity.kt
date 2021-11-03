@@ -1,6 +1,7 @@
 package com.keronei.keroscheckin
 
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -55,22 +56,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_main)
                 ?.findNavController()
 
-        val window = this.window
-
-// clear FLAG_TRANSLUCENT_STATUS flag:
-
-// clear FLAG_TRANSLUCENT_STATUS flag:
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-
-// finally change the color
-
-// finally change the color
-        window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
 
     }
 
@@ -102,13 +87,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (dismissedWithAuth) {
+            super.onBackPressed()
+        } else {
+            ToastUtils.showLongToast("You can't do that.")
+        }
+    }
+
     private fun initiateAuth() {
 
         unlocker = UnlockDialogBuilder(this)
 
 
         unlocker?.onUnlocked { dismissedWithAuth = true }
-        unlocker?.onCanceled { onUserCancelAuth() }
+        unlocker?.onCanceled {
+            onUserCancelAuth()
+            dismissedWithAuth = false
+        }
         //val necessary = unlocker?.showIfRequiredOrSuccess(TimeUnit.MINUTES.toMillis(15))
 
         unlocker?.show()
@@ -124,6 +120,9 @@ class MainActivity : AppCompatActivity() {
         cancelAuthAlert.setConfirmClickListener { sDialog ->
 
             sDialog.dismissWithAnimation()
+
+            dismissedWithAuth = true
+
             initiateAuth()
 
         }
@@ -137,6 +136,13 @@ class MainActivity : AppCompatActivity() {
 
         }
         cancelAuthAlert.setCanceledOnTouchOutside(false)
+
+        cancelAuthAlert.setOnDismissListener {
+            if (!dismissedWithAuth) {
+                initiateAuth()
+            }
+        }
+
         cancelAuthAlert.show()
 
 
@@ -148,6 +154,8 @@ class MainActivity : AppCompatActivity() {
         lockCreator?.onCanceled {
 
             onUserCancelAuthCreation()
+
+            dismissedWithAuth = false
 
         }
         lockCreator?.onLockCreated {
@@ -174,6 +182,8 @@ class MainActivity : AppCompatActivity() {
         authCreationAlert.setConfirmClickListener { sDialog ->
             sDialog.dismissWithAnimation()
 
+            dismissedWithAuth = true
+
             createAuth()
         }
 
@@ -187,9 +197,20 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        authCreationAlert.setOnDismissListener {
+            if (!dismissedWithAuth) {
+                createAuth()
+            }
+        }
+
         authCreationAlert.setCanceledOnTouchOutside(false)
         authCreationAlert.show()
 
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+        dismissedWithAuth = false
     }
 
 //    override fun onPostResume() {
