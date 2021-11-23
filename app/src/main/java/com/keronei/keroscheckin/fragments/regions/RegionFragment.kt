@@ -14,12 +14,14 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.keronei.data.remote.Constants
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.RegionFragmentBinding
 import com.keronei.keroscheckin.databinding.SelectedRegonOptionsBinding
 import com.keronei.keroscheckin.adapter.RegionsRecyclerAdapter
 import com.keronei.keroscheckin.models.RegionPresentation
+import com.keronei.keroscheckin.models.constants.GUEST_ENTRY
 import com.keronei.keroscheckin.models.toPresentation
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
@@ -101,6 +103,10 @@ class RegionFragment : Fragment() {
         params?.width = ViewGroup.LayoutParams.MATCH_PARENT
 
         optionsPrompt?.window?.attributes = params
+
+        if (region.name == GUEST_ENTRY) {
+            selectedRegionOptions.deleteRegion.isEnabled = false
+        }
 
         selectedRegionOptions.editRegion.setOnClickListener {
             val navigateToEdit =

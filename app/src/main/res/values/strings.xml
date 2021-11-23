@@ -78,9 +78,10 @@
     <string name="included_fields">Included Fields</string>
     <string name="phone">Phone</string>
     <string name="temperature">Temperature</string>
-    <string name="age">Age</string>
+    <string name="yob">Year of Birth eg. 1998</string>
     <string name="check_in_time">Check-In time</string>
     <string name="region">Region</string>
     <string name="other_sex">Other</string>
     <string name="either_all_have_checked_in_or_there_s_no_registered_member">Either all have checked-in or there\'s no registered member.</string>
+    <string name="age">Age</string>
 </resources>

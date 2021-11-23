@@ -106,7 +106,7 @@ class CreateMemberFragment : DialogFragment() {
             val secondName = layoutBinding.secondNameEdittext.text
             val otherNames = layoutBinding.otherNamesEdittext.text
 
-            val age = layoutBinding.ageEdittext.text
+            val yob = layoutBinding.ageEdittext.text
             val phoneNumber = layoutBinding.phoneEdittext.text
             val maleSex = layoutBinding.maleSelector
             val femaleSex = layoutBinding.femaleSelector
@@ -134,8 +134,13 @@ class CreateMemberFragment : DialogFragment() {
             }
 
 
-            if (age?.isEmpty() == true) {
+            if (yob?.isEmpty() == true) {
                 layoutBinding.ageEdittext.error = "Provider this field!"
+                return@setOnClickListener
+            }
+
+            if(yob?.length ?: 0 < 4){
+                layoutBinding.ageEdittext.error = "Needs 4 digits eg. 1999."
                 return@setOnClickListener
             }
 
@@ -156,7 +161,7 @@ class CreateMemberFragment : DialogFragment() {
                     secondName!!.trim().toString(),
                     otherNames!!.trim().toString(),
                     sexSelection,
-                    age!!.trim().toString().toInt(),
+                    yob!!.trim().toString().toInt(),
                     phoneNumber?.trim().toString(),
                     if(isEditing) layoutBinding.memberActivityStatus.isChecked else true,
                     selectedRegion!!.id

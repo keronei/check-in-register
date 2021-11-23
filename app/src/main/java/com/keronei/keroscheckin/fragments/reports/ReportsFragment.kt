@@ -257,24 +257,24 @@ class ReportsFragment : Fragment() {
         val reportFileName =
             if (reportsViewModel.filterModel.value.attendance) "Members present on ${
                 parser.format(Date(startOfDateSelectedTimeStamp))
-            } report.xlsx"
+            } report"
             else
-                "Members absent on ${parser.format(Date(startOfDateSelectedTimeStamp))} report.xlsx"
+                "Members absent on ${parser.format(Date(startOfDateSelectedTimeStamp))} report"
 
         try {
             val openingIntent = exportDataIntoWorkbook(
                 requireContext(),
                 reportFileName,
-                allMembersViewModel.allMembersData.value,
+                generatedReport,
                 reportsViewModel.fieldsFilterModel.value
             )
 
             MaterialAlertDialogBuilder(requireContext()).setMessage("Report Generated")
-                .setNegativeButton("Share") { _, i ->
+                .setNegativeButton("Share") { _, _ ->
                     openingIntent.action = Intent.ACTION_SEND
                     startActivity(Intent.createChooser(openingIntent, "Share report"))
 
-                }.setPositiveButton("View") { _, dialig ->
+                }.setPositiveButton("View") { _, _ ->
 
                     openingIntent.action = Intent.ACTION_VIEW
 
@@ -302,7 +302,7 @@ class ReportsFragment : Fragment() {
             SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
                 .setTitleText("Error")
                 .setContentText(
-                    "Could not generate report. Report this error = ${exception.message}"
+                    "Could not generate report. Report this error : ${exception.message}"
                 )
                 .show()
         }

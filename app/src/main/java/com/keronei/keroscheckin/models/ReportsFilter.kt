@@ -32,7 +32,7 @@ data class ReportsFilter(
             } != null
         }
 
-        val listFromSelectedDateAbsent = fullList - listFromSelectedDateCheckedIn
+        val listFromSelectedDateAbsent = fullList - listFromSelectedDateCheckedIn.toSet()
 
         subjectListInTermsOfAttendance =
             if (attendance) listFromSelectedDateCheckedIn else listFromSelectedDateAbsent
