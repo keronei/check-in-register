@@ -16,6 +16,7 @@
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.KO.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.KO.MediumComponent</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.KO.LargeComponent</item>
+        <item name="fontFamily">@font/halveticaneue</item>
 
     </style>
 

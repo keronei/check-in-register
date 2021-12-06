@@ -59,6 +59,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun applyFont(){
+
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(com.keronei.keroscheckin.R.menu.menu_main, menu)

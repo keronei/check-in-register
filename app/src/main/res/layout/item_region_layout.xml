@@ -33,6 +33,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/halveticaneue"
                 tools:text="Manyatta" />
 
             <TextView
