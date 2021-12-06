@@ -72,6 +72,7 @@
                             android:drawableEnd="@drawable/ic_baseline_edit_24"
                             android:drawablePadding="20dp"
                             android:paddingTop="10dp"
+                            android:textStyle="bold"
                             android:textSize="20sp"
                             android:textColor="@android:color/black"
                             android:text="27 - Oct - 2021"
@@ -148,14 +149,14 @@
                     android:id="@+id/sex_selection_header"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="wrap_content"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/attendance_status_selection">
 
                     <View
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="160dp"
                         android:layout_margin="20dp"
                         android:background="@drawable/border" />
 
@@ -181,7 +182,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/header_sex_selection"
-                            android:orientation="horizontal"
+                            android:orientation="vertical"
                             android:paddingStart="20dp">
 
                             <RadioButton
