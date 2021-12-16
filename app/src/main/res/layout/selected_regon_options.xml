@@ -18,8 +18,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"/>
+            android:textAlignment="center"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/edit_region"

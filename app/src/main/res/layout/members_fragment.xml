@@ -60,6 +60,7 @@
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="16dp"
+            app:shapeAppearance="@style/ShapeAppearance.KO.ProfileImageComponent"
             android:contentDescription="@string/create_new_member_fab"
             app:srcCompat="@drawable/ic_baseline_add_member_24" />
 

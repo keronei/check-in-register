@@ -24,7 +24,6 @@
                     android:layout_marginTop="6dp"
                     android:gravity="center"
                     android:text="@string/reports"
-                    android:textColor="@color/primaryColor"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -56,11 +55,10 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
-                            android:background="@android:color/white"
+                            android:background="@color/reports_header"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
-                            android:text="@string/generate_reports_for"
-                            android:textColor="@color/primaryColor" />
+                            android:text="@string/generate_reports_for" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/date_selection_textview"
@@ -71,12 +69,11 @@
                             android:layout_marginStart="20dp"
                             android:drawableEnd="@drawable/ic_baseline_edit_24"
                             android:drawablePadding="20dp"
+                            android:fontFamily="@font/halveticaneue"
                             android:paddingTop="10dp"
-                            android:textStyle="bold"
-                            android:textSize="20sp"
-                            android:textColor="@android:color/black"
                             android:text="27 - Oct - 2021"
-                             />
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
                     </RelativeLayout>
 
@@ -110,11 +107,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:background="@android:color/white"
+                            android:background="@color/reports_header"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
-                            android:text="@string/attendance"
-                            android:textColor="@color/primaryColor" />
+                            android:text="@string/attendance" />
 
                         <RadioGroup
                             android:id="@+id/attendance_selector"
@@ -171,11 +167,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:background="@android:color/white"
+                            android:background="@color/reports_header"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
-                            android:text="@string/sex"
-                            android:textColor="@color/primaryColor" />
+                            android:text="@string/sex" />
 
                         <RadioGroup
                             android:id="@+id/membership_sex_selector"
@@ -242,11 +237,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:background="@android:color/white"
+                            android:background="@color/reports_header"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
-                            android:text="@string/included_fields"
-                            android:textColor="@color/primaryColor" />
+                            android:text="@string/included_fields" />
 
                         <CheckBox
                             android:id="@+id/phone_field"
@@ -320,11 +314,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:background="@android:color/white"
+                            android:background="@color/reports_header"
                             android:paddingStart="10dp"
                             android:paddingEnd="10dp"
-                            android:text="@string/activity"
-                            android:textColor="@color/primaryColor" />
+                            android:text="@string/activity" />
 
                         <CheckBox
                             android:id="@+id/check_inactive_members"

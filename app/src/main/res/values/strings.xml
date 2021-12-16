@@ -54,7 +54,6 @@
     <string name="invalidate_period">Invalidate check-in period</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Backup data periodically</string>
     <string name="organization_name_key">organization_name_key</string>
     <string name="invalidate_period_key">invalidate_period_key</string>
     <string name="too_long_ago">That\'s too long ago! Consider changing invalidation period in settings.</string>
@@ -84,4 +83,10 @@
     <string name="other_sex">Other</string>
     <string name="either_all_have_checked_in_or_there_s_no_registered_member">Either all have checked-in or there\'s no registered member.</string>
     <string name="age">Age</string>
+    <string name="help">Help</string>
+
+    <plurals name="reports_generated">
+        <item quantity="one">Report Generated [%d entry]</item>
+        <item quantity="other">Report Generated [%d entries]</item>
+    </plurals>
 </resources>

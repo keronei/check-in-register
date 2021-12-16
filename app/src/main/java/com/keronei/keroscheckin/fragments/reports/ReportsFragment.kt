@@ -269,7 +269,13 @@ class ReportsFragment : Fragment() {
                 reportsViewModel.fieldsFilterModel.value
             )
 
-            MaterialAlertDialogBuilder(requireContext()).setMessage("Report Generated")
+            MaterialAlertDialogBuilder(requireContext()).setMessage(
+                resources.getQuantityString(
+                    R.plurals.reports_generated,
+                    generatedReport.size,
+                    generatedReport.size
+                )
+            )
                 .setNegativeButton("Share") { _, _ ->
                     openingIntent.action = Intent.ACTION_SEND
                     startActivity(Intent.createChooser(openingIntent, "Share report"))

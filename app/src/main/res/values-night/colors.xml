@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#0742F3</color>
+    <color name="primaryLightColor">#7a7cff</color>
+    <color name="primaryDarkColor">#111112</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="list_item_card_color">#393737</color>
+    <color name="background_color">#393737</color>
+    <color name="reports_header">#111112</color>
+    <color name="on_surface_color">#ffffff</color>
+</resources>

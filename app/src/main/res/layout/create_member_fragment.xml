@@ -19,7 +19,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/create_new_member"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,18 +33,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/create_member_header"
                 app:smsp_errorText=""
-                app:smsp_floatingLabelColor="#1976D2"
                 app:smsp_floatingLabelText="Floating Label Text"
                 app:smsp_hint="Select region for member"
                 app:smsp_isOutlined="true"
                 app:smsp_isSearchable="true"
-                app:smsp_itemColor="@android:color/black"
-                app:smsp_itemListColor="@android:color/black"
-                app:smsp_itemListHintBackgroundColor="#808080"
-                app:smsp_itemListHintColor="#FFFFFF"
+
                 app:smsp_multilineError="false"
                 app:smsp_searchHint="Type to filter"
-                app:smsp_selectedItemListColor="#FF5252" />
+                app:smsp_searchHintColor="@color/primaryDarkColor"
+                app:smsp_searchFilterColor="@color/primaryColor"
+                app:smsp_searchTextColor="@color/design_default_color_primary"
+                app:smsp_itemColor="@color/on_surface_color"
+                app:smsp_selectedItemListColor="@color/primaryColor"
+                />
 
 
             <com.google.android.material.textfield.TextInputLayout

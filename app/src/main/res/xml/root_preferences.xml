@@ -29,16 +29,21 @@
 
     <PreferenceCategory app:title="@string/sync_header">
 
-        <SwitchPreferenceCompat
-            app:icon="@drawable/ic_baseline_sync_24"
-            app:key="sync"
-            app:title="@string/sync_title" />
-
         <Preference
             app:icon="@drawable/ic_baseline_manage_backup_accounts_24"
-            app:key="back_up_account"
-            app:summary="Google account for data backup."
-            app:title="Set up  account" />
+            app:key="export_import"
+            app:summary="Start easily on a new device."
+            app:title="Export or Import" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/help">
+
+        <Preference
+            app:icon="@drawable/ic_baseline_live_help_24"
+            app:key="assistance"
+            app:summary="Read guides and get help in Telegram support group"
+            app:title="Join support group" />
 
 
     </PreferenceCategory>
