@@ -14,15 +14,18 @@ import com.keronei.utils.ToastUtils
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
+import android.content.Intent
+import android.net.Uri
+
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var sharedPreference: SharedPreferences
 
-    val regionsViewModel: RegionViewModel by activityViewModels()
+    private val regionsViewModel: RegionViewModel by activityViewModels()
 
-    val memberViewModel: MemberViewModel by activityViewModels()
+    private val memberViewModel: MemberViewModel by activityViewModels()
 
     private var promptImportExport: MaterialAlertDialogBuilder? = null
 
@@ -106,6 +109,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val supportPrompt = findPreference<Preference>(getString(R.string.join_support))
 
         supportPrompt?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+
+            try {
+                val browserIntent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/+LeUr_owiXBtkMDBk"))
+                startActivity(browserIntent)
+            } catch (exception: Exception) {
+                ToastUtils.showLongToast("An error occurred.")
+            }
             true
         }
     }
