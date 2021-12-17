@@ -30,7 +30,7 @@
     <PreferenceCategory app:title="@string/sync_header">
 
         <Preference
-            app:icon="@drawable/ic_baseline_manage_backup_accounts_24"
+            app:icon="@drawable/ic_baseline_import_export_24"
             app:key="export_import"
             app:summary="Start easily on a new device."
             app:title="Export or Import" />

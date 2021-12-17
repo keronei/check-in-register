@@ -85,6 +85,13 @@
     <string name="age">Age</string>
     <string name="help">Help</string>
     <string name="version_number">version_number</string>
+    <string name="export_import">export_import</string>
+    <string name="join_support">assistance</string>
+    <string name="import_data">Import</string>
+    <string name="export_data">Export</string>
+    <string name="import_context">Use when another device is already setup and would wish to use this as new device with same data; this operation will clean up current data in this device.</string>
+    <string name="export_context">Best suited for transferring data for setting up other new devices.</string>
+    <string name="_1_both_entries_include_regions_by_default">Both entries include regions by default.</string>
 
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
