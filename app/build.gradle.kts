@@ -29,10 +29,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            resValue("string" , "version", AppConfig.versionName)
         }
 
         getByName("debug") {
             isMinifyEnabled = false
+
+            resValue("string" , "version", AppConfig.versionName)
         }
     }
     java {

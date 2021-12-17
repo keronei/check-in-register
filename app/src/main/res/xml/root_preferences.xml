@@ -14,8 +14,8 @@
             app:entryValues="@array/invalidate_values"
             app:icon="@drawable/ic_invalidate_period_in_24"
             app:key="@string/invalidate_period_key"
-            app:title="@string/invalidate_period"
             app:summary="@string/invalidate_period_summary"
+            app:title="@string/invalidate_period"
             app:useSimpleSummaryProvider="true" />
 
 
@@ -44,6 +44,12 @@
             app:key="assistance"
             app:summary="Read guides and get help in Telegram support group"
             app:title="Join support group" />
+
+        <Preference
+            app:icon="@drawable/ic_baseline_info_24"
+            app:key="version_number"
+            app:summary="0.0"
+            app:title="Version" />
 
 
     </PreferenceCategory>

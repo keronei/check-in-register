@@ -84,6 +84,7 @@
     <string name="either_all_have_checked_in_or_there_s_no_registered_member">Either all have checked-in or there\'s no registered member.</string>
     <string name="age">Age</string>
     <string name="help">Help</string>
+    <string name="version_number">version_number</string>
 
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
