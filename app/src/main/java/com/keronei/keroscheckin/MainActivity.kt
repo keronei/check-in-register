@@ -76,17 +76,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        val isFirstTime = sharedPreferences.getBoolean(IS_FIRST_TIME_KEY, true)
-
-        if (!isFirstTime) {
-
-            initiateAuth()
-
-        }
-    }
 
     override fun onBackPressed() {
         if (dismissedWithAuth) {
@@ -212,6 +201,13 @@ class MainActivity : AppCompatActivity() {
     override fun onPostResume() {
         super.onPostResume()
         dismissedWithAuth = false
+
+        val isFirstTime = sharedPreferences.getBoolean(IS_FIRST_TIME_KEY, true)
+
+        if (!isFirstTime) {
+            AppLock.onActivityResumed(this)
+        }
+
     }
 
 //    override fun onPostResume() {
