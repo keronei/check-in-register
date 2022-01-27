@@ -1,82 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:padding="15dp">
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/export_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="export_entry, export_explanation" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/import_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="import_entry, import_explanation"/>
-
+        android:padding="10dp">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/import_entry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_baseline_import_alt_24"
-            android:drawablePadding="8dp"
-            android:text="@string/import_data"
-            android:textColor="@color/on_surface_color"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/import_explanation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/choose_option"
+            android:text="@string/choose_an_option"
             android:gravity="center"
-            android:text="@string/import_context"
-            app:layout_constraintEnd_toEndOf="@id/import_entry"
-            app:layout_constraintStart_toStartOf="@id/import_entry"
-            app:layout_constraintTop_toBottomOf="@id/import_entry" />
-
-        <View
-            android:id="@+id/separator"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/on_surface_color"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="12dp"
-            android:background="@color/primaryColor"
-            app:layout_constraintTop_toBottomOf="@id/import_explanation" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/export_entry"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:drawableStart="@drawable/ic_baseline_export_24"
-            android:drawablePadding="8dp"
-            android:text="@string/export_data"
-            android:textColor="@color/on_surface_color"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/import_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/separator" />
+            app:layout_constraintTop_toBottomOf="@id/choose_option">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/export_explanation"
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/import_entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_baseline_import_alt_24"
+                    android:drawablePadding="8dp"
+                    android:text="@string/import_data"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/on_surface_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/import_explanation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="start"
+                    android:text="@string/import_context"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintEnd_toEndOf="@id/import_entry"
+                    app:layout_constraintStart_toStartOf="@id/import_entry"
+                    app:layout_constraintTop_toBottomOf="@id/import_entry" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/export_card"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/export_context"
-            app:layout_constraintEnd_toEndOf="@id/export_entry"
-            app:layout_constraintStart_toStartOf="@id/export_entry"
-            app:layout_constraintTop_toBottomOf="@id/export_entry" />
+            android:layout_marginTop="20dp"
+            android:checkable="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/import_card">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/export_entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:drawableStart="@drawable/ic_baseline_export_24"
+                    android:drawablePadding="8dp"
+                    android:text="@string/export_data"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/on_surface_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/export_explanation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="start"
+                    android:text="@string/export_context"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintEnd_toEndOf="@id/export_entry"
+                    app:layout_constraintStart_toStartOf="@id/export_entry"
+                    app:layout_constraintTop_toBottomOf="@id/export_entry" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/note_export_includes_regions"
@@ -90,7 +127,18 @@
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/export_explanation" />
+            app:layout_constraintTop_toBottomOf="@id/export_card" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/note_export_includes_regions" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

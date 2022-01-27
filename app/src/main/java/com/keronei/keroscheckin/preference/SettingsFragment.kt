@@ -16,6 +16,7 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import android.content.Intent
 import android.net.Uri
+import com.google.android.material.card.MaterialCardView
 
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -59,29 +60,40 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
                 val layout = DialogImportExportLayoutBinding.inflate(layoutInflater)
 
+
+                val importCard = layout.importCard
+
+                val exportCard = layout.exportCard
+
+
                 promptImportExport?.setView(layout.root)
 
                 promptImportExport?.show()
 
-                layout.importEntry.setOnClickListener {
+                importCard.setOnClickListener {
+
+                    importCard.isChecked = !importCard.isChecked
+
+                    if(importCard.isChecked){
+                        exportCard.isChecked = !importCard.isChecked
+                    }
+
+
                     importData()
                 }
 
-                layout.importExplanation.setOnClickListener {
-                    importData()
-                }
 
+               exportCard.setOnClickListener {
 
-                layout.exportEntry.setOnClickListener {
+                    exportCard.isChecked = !exportCard.isChecked
+
+                   if(exportCard.isChecked) {
+                       importCard.isChecked = !exportCard.isChecked
+                   }
+
                     exportData()
 
                 }
-
-                layout.exportExplanation.setOnClickListener {
-                    exportData()
-
-                }
-
 
                 true
             }
