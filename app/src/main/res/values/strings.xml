@@ -93,9 +93,24 @@
     <string name="export_context">Best suited for transferring data for setting up other new devices.</string>
     <string name="_1_both_entries_include_regions_by_default">Both entries include regions by default.</string>
     <string name="choose_an_option">Choose an option</string>
+    <string name="guest_region"> guest region </string>
+
+    <string name="summary_export">Will export %s with %s"</string>
 
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>
     </plurals>
+
+    <plurals name="regions_prefix">
+        <item quantity="many">%d regions</item>
+        <item quantity="one">%d region</item>
+    </plurals>
+
+    <plurals name="members_prefix">
+        <item quantity="many">%d members</item>
+        <item quantity="one">%d member</item>
+        <item quantity="zero">%s members</item>
+    </plurals>
+
 </resources>

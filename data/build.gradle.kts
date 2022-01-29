@@ -39,6 +39,7 @@ android {
 
 dependencies {
     implementation(project(LocalModules.domainModule))
+    implementation(project(LocalModules.commonModule))
 
     //Dagger Hilt
     implementation(Dependencies.daggerHilt)
@@ -57,6 +58,7 @@ dependencies {
     api(platform(Dependencies.okHttpBoM))
     api(Dependencies.okHttp3)
     api(Dependencies.loggingInterceptor)
+
 
     //Test
     testImplementation(Dependencies.junit)

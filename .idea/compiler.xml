@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
       <module name="Keros_CheckIn.buildSrc" target="11" />
+      <module name="Keros_CheckIn.common" target="11" />
       <module name="KI_Register.buildSrc" target="11" />
       <module name="KI_Register.domain" target="11" />
       <module name="KO_Register.buildSrc" target="11" />

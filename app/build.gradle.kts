@@ -62,6 +62,7 @@ dependencies {
     //Local Modules
     implementation(project(LocalModules.dataModule))
     implementation(project(LocalModules.domainModule))
+    implementation(project(LocalModules.commonModule))
 
     //Dagger Hilt
     implementation(Dependencies.daggerHilt)
@@ -72,7 +73,7 @@ dependencies {
     //Searchable dropdown
     implementation(Dependencies.searchableDropDown)
     implementation(Dependencies.shared_preference)
-    implementation(files("libs/poi-3.7.jar"))
+
 
     kapt(Dependencies.hiltCompiler)
 

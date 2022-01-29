@@ -18,6 +18,7 @@ import com.keronei.keroscheckin.fragments.checkin.DatePickerFragment
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.keroscheckin.viewmodels.ReportsViewModel
 import com.keronei.utils.exportDataIntoWorkbook
+import com.keronei.utils.makeShareIntent
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -262,12 +263,14 @@ class ReportsFragment : Fragment() {
                 "Members absent on ${parser.format(Date(startOfDateSelectedTimeStamp))} report"
 
         try {
-            val openingIntent = exportDataIntoWorkbook(
-                requireContext(),
+            val workBook = exportDataIntoWorkbook(
                 reportFileName,
                 generatedReport,
                 reportsViewModel.fieldsFilterModel.value
             )
+
+            val openingIntent = makeShareIntent(reportFileName, workBook, requireContext())
+
 
             MaterialAlertDialogBuilder(requireContext()).setMessage(
                 resources.getQuantityString(
@@ -276,6 +279,7 @@ class ReportsFragment : Fragment() {
                     generatedReport.size
                 )
             )
+
                 .setNegativeButton("Share") { _, _ ->
                     openingIntent.action = Intent.ACTION_SEND
                     startActivity(Intent.createChooser(openingIntent, "Share report"))

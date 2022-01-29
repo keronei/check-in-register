@@ -1,12 +1,5 @@
 package com.keronei.utils
 
-import android.content.Context
-import android.content.Intent
-import android.content.Intent.*
-import android.os.Environment
-import android.util.Log
-import android.webkit.MimeTypeMap
-import androidx.core.content.FileProvider
 import com.keronei.domain.entities.AttendanceEntity
 import com.keronei.keroscheckin.models.FieldsFilter
 import com.keronei.keroscheckin.models.constants.ReportInclusion
@@ -15,10 +8,6 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.hssf.util.HSSFColor
 import org.apache.poi.ss.usermodel.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,10 +29,10 @@ lateinit var cellStyle: CellStyle
 private val parser = SimpleDateFormat("hh:mm a", Locale.US)
 
 fun exportDataIntoWorkbook(
-    context: Context, fileName: String,
+    fileName: String,
     dataList: List<AttendanceEntity>,
     fields: FieldsFilter
-): Intent {
+): HSSFWorkbook {
     workbook = HSSFWorkbook()
 
     cellStyle = workbook.createCellStyle();
@@ -72,27 +61,8 @@ fun exportDataIntoWorkbook(
     setHeaderRow(fields)
     fillDataIntoExcel(dataList, fields)
 
-    val file = File(context.getExternalFilesDir(null), "$fileName.xlsx")
 
-    val fileOutputStream: FileOutputStream?
-
-    fileOutputStream = FileOutputStream(file)
-    workbook.write(fileOutputStream)
-
-
-    val openGeneratedReportFileIntent = Intent()
-
-    val uri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
-
-    openGeneratedReportFileIntent.setDataAndType(
-        uri,
-        "application/vnd.ms-excel"
-    )
-
-    openGeneratedReportFileIntent.putExtra(EXTRA_STREAM, uri)
-    openGeneratedReportFileIntent.addFlags(FLAG_GRANT_READ_URI_PERMISSION)
-
-    return openGeneratedReportFileIntent
+    return workbook as HSSFWorkbook
 }
 
 

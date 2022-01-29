@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [CheckInDBO::class, MemberDBO::class, RegionDBO::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class KODatabase : RoomDatabase() {
@@ -38,8 +38,8 @@ abstract class KODatabase : RoomDatabase() {
                     context.applicationContext,
                     KODatabase::class.java,
                     "kodatabase.db"
-                ).addCallback(KODatabaseCallBack(scope)).build()
-
+                ).addCallback(KODatabaseCallBack(scope)).fallbackToDestructiveMigration().build()
+//TODO configure migration strategy
                 databaseInstance = instance
 
                 instance
@@ -54,7 +54,7 @@ abstract class KODatabase : RoomDatabase() {
 
             databaseInstance?.let { readyInstance ->
                 scope.launch {
-                   val instance = readyInstance.regionDao()
+                    val instance = readyInstance.regionDao()
                     instance.createRegion(RegionDBO(0, "Guest/Visitor"))
                 }
 

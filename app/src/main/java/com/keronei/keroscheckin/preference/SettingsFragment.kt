@@ -1,28 +1,42 @@
 package com.keronei.keroscheckin.preference
 
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.keronei.android.common.Constants.SHEET_NAME
+import com.keronei.android.common.Constants.TELEGRAM_SUPPORT_GROUP_LINK
+import com.keronei.data.repository.mapper.MemberLocalEntityMapper
+import com.keronei.data.repository.mapper.RegionEntityToRegionDBOMapper
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.DialogImportExportLayoutBinding
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
+import com.keronei.utils.export.ExportRegionMembersProcessor
+import com.keronei.utils.makeShareIntent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import java.util.*
 import javax.inject.Inject
-import android.content.Intent
-import android.net.Uri
-import com.google.android.material.card.MaterialCardView
 
-
+@AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
 
     @Inject
     lateinit var sharedPreference: SharedPreferences
+
+    @Inject
+    lateinit var regionEntityMapper: RegionEntityToRegionDBOMapper
+
+    @Inject
+    lateinit var memberEntityMapper: MemberLocalEntityMapper
 
     private val regionsViewModel: RegionViewModel by activityViewModels()
 
@@ -74,7 +88,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
                     importCard.isChecked = !importCard.isChecked
 
-                    if(importCard.isChecked){
+                    if (importCard.isChecked) {
                         exportCard.isChecked = !importCard.isChecked
                     }
 
@@ -83,13 +97,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
 
 
-               exportCard.setOnClickListener {
+                exportCard.setOnClickListener {
 
                     exportCard.isChecked = !exportCard.isChecked
 
-                   if(exportCard.isChecked) {
-                       importCard.isChecked = !exportCard.isChecked
-                   }
+                    if (exportCard.isChecked) {
+                        importCard.isChecked = !exportCard.isChecked
+                    }
 
                     exportData()
 
@@ -104,12 +118,79 @@ class SettingsFragment : PreferenceFragmentCompat() {
             regionsViewModel.queryAllRegions().first()
         }
 
+        val dboRegions = regionEntityMapper.mapList(regions)
+
         val members = runBlocking { memberViewModel.queryAllMembers().first() }
 
-        ToastUtils.showLongToast("Will export ${regions.size} regions with ${members.size} members")
+        val dboMembers = memberEntityMapper.mapList(members)
 
-        ToastUtils.showLongToast("Not yet implemented")
+        //don't prepare workbook if it's only guest region with no members.
 
+        if (regions.size < 2 && members.isEmpty()) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("No data")
+                .setMessage("Seems like you have not added any regions/members.")
+                .setPositiveButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+            return
+        }
+
+
+        val preparedWorkBook = ExportRegionMembersProcessor(
+            dboRegions,
+            dboMembers,
+            Calendar.getInstance().timeInMillis
+        ).createExportFile()
+
+        val sendingIntent = makeShareIntent(SHEET_NAME, preparedWorkBook, requireContext())
+
+        val totalRegions = regions.size - 1//minus guest region
+
+        val regionsPrefix =
+            if (regions.size < 2) getString(R.string.guest_region) else resources.getQuantityString(
+                R.plurals.regions_prefix,
+                totalRegions,
+                totalRegions
+            )
+
+        val membersPrefix =
+            resources.getQuantityString(R.plurals.members_prefix, members.size, members.size)
+
+        val summary = getString(
+            R.string.summary_export,
+            regionsPrefix,
+            membersPrefix
+        )
+
+        launchSendData(sendingIntent, summary)
+
+    }
+
+    private fun launchSendData(sendDataIntent: Intent, summary: String) {
+        try {
+
+            MaterialAlertDialogBuilder(requireContext())
+                .setMessage(summary)
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }.setPositiveButton("Export") { _, _ ->
+                    sendDataIntent.action = Intent.ACTION_SEND
+                    startActivity(Intent.createChooser(sendDataIntent, "Export regions & members"))
+
+                }
+                .show()
+
+
+        } catch (exception: java.lang.Exception) {
+            SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("Error")
+                .setContentText(
+                    "Could not export data. Report this error : ${exception.message}"
+                )
+                .show()
+        }
     }
 
     private fun importData() {
@@ -124,7 +205,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             try {
                 val browserIntent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/+LeUr_owiXBtkMDBk"))
+                    Intent(Intent.ACTION_VIEW, Uri.parse(TELEGRAM_SUPPORT_GROUP_LINK))
                 startActivity(browserIntent)
             } catch (exception: Exception) {
                 ToastUtils.showLongToast("An error occurred.")

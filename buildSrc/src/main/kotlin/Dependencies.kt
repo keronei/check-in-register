@@ -80,4 +80,7 @@ object Dependencies {
 
     //Preference
     const val shared_preference = "androidx.preference:preference-ktx:${Versions.preference}"
+
+    //libs
+    const val poiLibrary = ""
 }
