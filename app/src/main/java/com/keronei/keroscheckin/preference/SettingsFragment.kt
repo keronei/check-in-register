@@ -1,6 +1,5 @@
 package com.keronei.keroscheckin.preference
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -49,7 +48,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private var promptImportExport: MaterialAlertDialogBuilder? = null
 
-    private var displayedPrompt : androidx.appcompat.app.AlertDialog? = null
+    private var displayedPrompt: androidx.appcompat.app.AlertDialog? = null
 
     private var selection = SELECTION.UNSELECTED
 
@@ -99,10 +98,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
                     if (importCard.isChecked) {
                         exportCard.isChecked = !importCard.isChecked
+                        selection = SELECTION.IMPORT
+                    } else {
+                        selection = SELECTION.UNSELECTED
                     }
-
-
-                    selection = SELECTION.IMPORT
                 }
 
 
@@ -112,9 +111,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
                     if (exportCard.isChecked) {
                         importCard.isChecked = !exportCard.isChecked
+                        selection = SELECTION.EXPORT
+                    } else {
+                        selection = SELECTION.UNSELECTED
                     }
-
-                    selection = SELECTION.EXPORT
 
                 }
 
