@@ -1,5 +1,6 @@
 package com.keronei.keroscheckin.preference
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -48,6 +49,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private var promptImportExport: MaterialAlertDialogBuilder? = null
 
+    private var displayedPrompt : androidx.appcompat.app.AlertDialog? = null
+
     private var selection = SELECTION.UNSELECTED
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -88,7 +91,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
                 promptImportExport?.setView(layout.root)
 
-                promptImportExport?.show()
+                displayedPrompt = promptImportExport?.show()
 
                 importCard.setOnClickListener {
 
@@ -149,6 +152,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 .setMessage(getString(R.string.empty_export_message))
                 .setPositiveButton(getString(R.string.dialog_cancel)) { dialog, _ ->
                     dialog.dismiss()
+                    displayedPrompt?.dismiss()
                 }
                 .show()
             return
@@ -182,6 +186,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         )
 
         launchSendData(sendingIntent, summary)
+
+        displayedPrompt?.dismiss()
 
     }
 

@@ -116,6 +116,7 @@
 
     <plurals name="members_prefix">
         <item quantity="many">%d members</item>
+        <item quantity="other">%d members</item>
         <item quantity="one">%d member</item>
         <item quantity="zero">%s members</item>
     </plurals>

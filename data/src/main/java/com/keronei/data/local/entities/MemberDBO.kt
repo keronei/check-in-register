@@ -46,6 +46,7 @@ data class MemberDBO(
             "birthYear" -> this.birthYear
             "phoneNumber" -> this.phoneNumber ?: ""
             "isActive" -> this.isActive
+            "regionId" -> this.regionId
             else -> ""
         }
     }

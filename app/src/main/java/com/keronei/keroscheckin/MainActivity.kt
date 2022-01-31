@@ -77,14 +77,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onBackPressed() {
-        if (dismissedWithAuth) {
-            super.onBackPressed()
-        } else {
-            ToastUtils.showLongToast("You can't do that.")
-        }
-    }
-
     private fun initiateAuth() {
 
         unlocker = UnlockDialogBuilder(this)

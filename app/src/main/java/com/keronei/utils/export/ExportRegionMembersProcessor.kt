@@ -1,16 +1,11 @@
 package com.keronei.utils.export
 
-import android.content.Context
-import com.keronei.android.common.Constants.EXPORT_FILE_NAME
 import com.keronei.android.common.Constants.SHEET_NAME
 import com.keronei.data.local.entities.BaseDBO
 import com.keronei.data.local.entities.MemberDBO
 import com.keronei.data.local.entities.RegionDBO
-import com.keronei.utils.workbook
 import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import java.io.File
-import java.io.FileOutputStream
 
 enum class DBOType {
     REGION,
@@ -71,7 +66,7 @@ class ExportRegionMembersProcessor(
         }
         val header = sheet.createRow(startingCell)
 
-        val guideHeader = header.createCell(startingCell)
+        val guideHeader = header.createCell(0)
 
         guideHeader.setCellValue("###$sectionName-$timeStamp-total-${items.size}###")
 
@@ -79,14 +74,14 @@ class ExportRegionMembersProcessor(
 
         for (field in fields) {
 
-            val cellHeaderValue = headerRow.createCell(fields.indexOf(field) + 2)
+            val cellHeaderValue = headerRow.createCell(fields.indexOf(field))
 
             cellHeaderValue.setCellValue(field.name)
 
         }
 
         for (entry in items) {
-            val dataRow = sheet.createRow(startingCell + 2)
+            val dataRow = sheet.createRow(startingCell + items.indexOf(entry) +2 )
 
             for (field in fields) {
                 val cellValue = dataRow.createCell(fields.indexOf(field))
