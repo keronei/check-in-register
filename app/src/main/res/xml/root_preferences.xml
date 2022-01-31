@@ -37,6 +37,20 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:initialExpandedChildrenCount="0"
+        app:title="Clean up | Risky zone">
+
+        <Preference
+            app:icon="@drawable/ic_baseline_delete_forever_24"
+
+            app:key="clean_up"
+            app:summary="Clear regions, members and check-in records."
+            app:title="Delete everything" />
+
+    </PreferenceCategory>
+
+
     <PreferenceCategory app:title="@string/help">
 
         <Preference

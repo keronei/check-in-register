@@ -26,6 +26,10 @@ import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
 
+enum class SELECTION {
+    EXPORT, IMPORT, UNSELECTED
+}
+
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -43,6 +47,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val memberViewModel: MemberViewModel by activityViewModels()
 
     private var promptImportExport: MaterialAlertDialogBuilder? = null
+
+    private var selection = SELECTION.UNSELECTED
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
 
@@ -93,7 +99,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     }
 
 
-                    importData()
+                    selection = SELECTION.IMPORT
                 }
 
 
@@ -105,7 +111,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         importCard.isChecked = !exportCard.isChecked
                     }
 
-                    exportData()
+                    selection = SELECTION.EXPORT
+
+                }
+
+                layout.btnNext.setOnClickListener {
+                    when (selection) {
+                        SELECTION.UNSELECTED -> ToastUtils.showLongToast(getString(R.string.make_selection_import_export))
+
+                        SELECTION.IMPORT -> importData()
+
+                        SELECTION.EXPORT -> exportData()
+                    }
 
                 }
 
@@ -128,9 +145,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         if (regions.size < 2 && members.isEmpty()) {
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("No data")
-                .setMessage("Seems like you have not added any regions/members.")
-                .setPositiveButton("Cancel") { dialog, _ ->
+                .setTitle(getString(R.string.emty_export))
+                .setMessage(getString(R.string.empty_export_message))
+                .setPositiveButton(getString(R.string.dialog_cancel)) { dialog, _ ->
                     dialog.dismiss()
                 }
                 .show()
@@ -173,11 +190,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             MaterialAlertDialogBuilder(requireContext())
                 .setMessage(summary)
-                .setNegativeButton("Cancel") { dialog, _ ->
+                .setNegativeButton(getString(R.string.dialog_cancel)) { dialog, _ ->
                     dialog.dismiss()
-                }.setPositiveButton("Export") { _, _ ->
+                }.setPositiveButton(getString(R.string.export_option)) { _, _ ->
                     sendDataIntent.action = Intent.ACTION_SEND
-                    startActivity(Intent.createChooser(sendDataIntent, "Export regions & members"))
+                    startActivity(
+                        Intent.createChooser(
+                            sendDataIntent,
+                            getString(R.string.export_regions_members)
+                        )
+                    )
 
                 }
                 .show()
@@ -185,9 +207,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         } catch (exception: java.lang.Exception) {
             SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("Error")
+                .setTitleText(getString(R.string.dialog_error_title))
                 .setContentText(
-                    "Could not export data. Report this error : ${exception.message}"
+                    getString(
+                        R.string.dialog_error_template, exception.message
+                    )
                 )
                 .show()
         }
@@ -208,7 +232,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     Intent(Intent.ACTION_VIEW, Uri.parse(TELEGRAM_SUPPORT_GROUP_LINK))
                 startActivity(browserIntent)
             } catch (exception: Exception) {
-                ToastUtils.showLongToast("An error occurred.")
+                SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
+                    .setTitleText(getString(R.string.dialog_error_title))
+                    .setContentText(
+                        getString(
+                            R.string.dialog_error_template, exception.message
+                        )
+                    )
+                    .show()
             }
             true
         }

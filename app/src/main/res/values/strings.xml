@@ -96,6 +96,13 @@
     <string name="guest_region"> guest region </string>
 
     <string name="summary_export">Will export %s with %s"</string>
+    <string name="emty_export">No data</string>
+    <string name="empty_export_message">Seems like you have not added any regions/members.</string>
+    <string name="export_option">Export</string>
+    <string name="export_regions_members"><![CDATA[Export regions & members]]></string>
+    <string name="dialog_error_title">Error</string>
+    <string name="dialog_error_template">An error occurred while doing that. Report this : %s</string>
+    <string name="make_selection_import_export">Please select one.</string>
 
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
