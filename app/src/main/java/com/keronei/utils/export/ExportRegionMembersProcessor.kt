@@ -1,22 +1,25 @@
 package com.keronei.utils.export
 
+import android.provider.Settings.Global.getString
 import com.keronei.android.common.Constants.MEMBERS_SHEET_NAME
 import com.keronei.android.common.Constants.REGIONS_SHEET_NAME
-import com.keronei.data.local.entities.BaseDBO
-import com.keronei.data.local.entities.MemberDBO
-import com.keronei.data.local.entities.RegionDBO
+import com.keronei.domain.entities.BaseEntity
+import com.keronei.domain.entities.MemberEntity
+import com.keronei.domain.entities.RegionEntity
+import com.keronei.keroscheckin.R
 import org.apache.poi.hssf.usermodel.HSSFSheet
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 
-enum class DBOType {
+enum class EntityType {
     REGION,
     MEMBER
 }
 
 class ExportRegionMembersProcessor(
-    val regions: List<RegionDBO>,
-    val members: List<MemberDBO>,
-    private val timeStamp: Long
+    val regions: List<RegionEntity>,
+    val members: List<MemberEntity>,
+    private val timeStamp: Long,
+    private val versionNumber : String
 ) {
     /*
     Exporting data from room:
@@ -31,9 +34,9 @@ class ExportRegionMembersProcessor(
      */
     private val hssfWorkBook = HSSFWorkbook()
 
-    private val regionsSheet: HSSFSheet = hssfWorkBook.createSheet("$REGIONS_SHEET_NAME+$timeStamp")
+    private val regionsSheet: HSSFSheet = hssfWorkBook.createSheet("$REGIONS_SHEET_NAME$timeStamp")
 
-    private val membersSheet: HSSFSheet = hssfWorkBook.createSheet("$MEMBERS_SHEET_NAME+$timeStamp")
+    private val membersSheet: HSSFSheet = hssfWorkBook.createSheet("$MEMBERS_SHEET_NAME$timeStamp")
 
 
     fun createExportFile(): HSSFWorkbook {
@@ -44,34 +47,34 @@ class ExportRegionMembersProcessor(
     }
 
     private fun populateRegionsData() {
-        writeToSheet(regionsSheet, regions, DBOType.REGION)
+        writeToSheet(regionsSheet, regions, EntityType.REGION)
     }
 
     private fun populateMembersData() {
-        writeToSheet(membersSheet, members, DBOType.MEMBER)
+        writeToSheet(membersSheet, members, EntityType.MEMBER)
     }
 
     private fun writeToSheet(
         sheet : HSSFSheet,
-        items: List<BaseDBO>,
-        type: DBOType
+        items: List<BaseEntity>,
+        type: EntityType
     ): HSSFSheet {
         val fields =
             when (type) {
-                DBOType.REGION -> RegionDBO::class.java.declaredFields
-                DBOType.MEMBER -> MemberDBO::class.java.declaredFields
+                EntityType.REGION -> RegionEntity::class.java.declaredFields
+                EntityType.MEMBER -> MemberEntity::class.java.declaredFields
             }
 
         val sectionName = when (type) {
-            DBOType.REGION -> "regions"
-            DBOType.MEMBER -> "members"
+            EntityType.REGION -> "regions"
+            EntityType.MEMBER -> "members"
 
         }
         val header = sheet.createRow(0)
 
         val guideHeader = header.createCell(0)
 
-        guideHeader.setCellValue("###$sectionName-$timeStamp-total-${items.size}###")
+        guideHeader.setCellValue("###$sectionName-$timeStamp-version-$versionNumber-total-${items.size}###")
 
         val headerRow = sheet.createRow(1)
 

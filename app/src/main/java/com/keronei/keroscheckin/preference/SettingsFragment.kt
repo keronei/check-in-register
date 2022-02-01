@@ -9,7 +9,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.keronei.android.common.Constants.SHEET_NAME
+import com.keronei.android.common.Constants.EXPORT_FILE_NAME
 import com.keronei.android.common.Constants.TELEGRAM_SUPPORT_GROUP_LINK
 import com.keronei.data.repository.mapper.MemberLocalEntityMapper
 import com.keronei.data.repository.mapper.RegionEntityToRegionDBOMapper
@@ -138,11 +138,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             regionsViewModel.queryAllRegions().first()
         }
 
-        val dboRegions = regionEntityMapper.mapList(regions)
 
         val members = runBlocking { memberViewModel.queryAllMembers().first() }
 
-        val dboMembers = memberEntityMapper.mapList(members)
 
         //don't prepare workbook if it's only guest region with no members.
 
@@ -160,12 +158,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
 
         val preparedWorkBook = ExportRegionMembersProcessor(
-            dboRegions,
-            dboMembers,
-            Calendar.getInstance().timeInMillis
+            regions,
+            members,
+            Calendar.getInstance().timeInMillis,
+            getString(R.string.version)
         ).createExportFile()
 
-        val sendingIntent = makeShareIntent(SHEET_NAME, preparedWorkBook, requireContext())
+        val sendingIntent = makeShareIntent(EXPORT_FILE_NAME, preparedWorkBook, requireContext())
 
         val totalRegions = regions.size - 1//minus guest region
 

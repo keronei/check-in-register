@@ -1,7 +1,7 @@
-package com.keronei.data.local.entities
+package com.keronei.domain.entities
 
 import java.lang.reflect.Field
 
-abstract class BaseDBO {
+abstract class BaseEntity {
     abstract fun getValue(field: Field) : Any
 }

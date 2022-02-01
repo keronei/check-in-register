@@ -35,19 +35,4 @@ data class MemberDBO(
 
     @ColumnInfo(index = true)
     val regionId: Int
-) : BaseDBO() {
-    override fun getValue(field: Field): Any {
-        return when (field.name) {
-            "id" -> this.id
-            "firstName" -> this.firstName
-            "secondName" -> this.secondName
-            "otherNames" -> this.otherNames
-            "sex" -> this.sex
-            "birthYear" -> this.birthYear
-            "phoneNumber" -> this.phoneNumber ?: ""
-            "isActive" -> this.isActive
-            "regionId" -> this.regionId
-            else -> ""
-        }
-    }
-}
+)
