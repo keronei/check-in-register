@@ -1,6 +1,7 @@
 package com.keronei.utils.export
 
-import com.keronei.android.common.Constants.SHEET_NAME
+import com.keronei.android.common.Constants.MEMBERS_SHEET_NAME
+import com.keronei.android.common.Constants.REGIONS_SHEET_NAME
 import com.keronei.data.local.entities.BaseDBO
 import com.keronei.data.local.entities.MemberDBO
 import com.keronei.data.local.entities.RegionDBO
@@ -30,7 +31,9 @@ class ExportRegionMembersProcessor(
      */
     private val hssfWorkBook = HSSFWorkbook()
 
-    private val sheet: HSSFSheet = hssfWorkBook.createSheet("$SHEET_NAME+$timeStamp")
+    private val regionsSheet: HSSFSheet = hssfWorkBook.createSheet("$REGIONS_SHEET_NAME+$timeStamp")
+
+    private val membersSheet: HSSFSheet = hssfWorkBook.createSheet("$MEMBERS_SHEET_NAME+$timeStamp")
 
 
     fun createExportFile(): HSSFWorkbook {
@@ -41,15 +44,15 @@ class ExportRegionMembersProcessor(
     }
 
     private fun populateRegionsData() {
-        writeToSheet(0, regions, DBOType.REGION)
+        writeToSheet(regionsSheet, regions, DBOType.REGION)
     }
 
     private fun populateMembersData() {
-        writeToSheet(regions.size + 5, members, DBOType.MEMBER)
+        writeToSheet(membersSheet, members, DBOType.MEMBER)
     }
 
     private fun writeToSheet(
-        startingCell: Int,
+        sheet : HSSFSheet,
         items: List<BaseDBO>,
         type: DBOType
     ): HSSFSheet {
@@ -64,13 +67,13 @@ class ExportRegionMembersProcessor(
             DBOType.MEMBER -> "members"
 
         }
-        val header = sheet.createRow(startingCell)
+        val header = sheet.createRow(0)
 
         val guideHeader = header.createCell(0)
 
         guideHeader.setCellValue("###$sectionName-$timeStamp-total-${items.size}###")
 
-        val headerRow = sheet.createRow(startingCell + 1)
+        val headerRow = sheet.createRow(1)
 
         for (field in fields) {
 
@@ -81,7 +84,7 @@ class ExportRegionMembersProcessor(
         }
 
         for (entry in items) {
-            val dataRow = sheet.createRow(startingCell + items.indexOf(entry) +2 )
+            val dataRow = sheet.createRow(items.indexOf(entry) + 2 )
 
             for (field in fields) {
                 val cellValue = dataRow.createCell(fields.indexOf(field))
