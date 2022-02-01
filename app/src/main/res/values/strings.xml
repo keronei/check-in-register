@@ -111,6 +111,7 @@
 
     <plurals name="regions_prefix">
         <item quantity="many">%d regions</item>
+        <item quantity="other">%d regions</item>
         <item quantity="one">%d region</item>
     </plurals>
 
