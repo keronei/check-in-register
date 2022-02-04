@@ -1,15 +1,22 @@
 package com.keronei.keroscheckin.preference
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toFile
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keronei.android.common.Constants.EXPORT_FILE_NAME
+import com.keronei.android.common.Constants.EXPORT_FILE_PICKER_REQUEST_CODE
 import com.keronei.android.common.Constants.TELEGRAM_SUPPORT_GROUP_LINK
 import com.keronei.data.repository.mapper.MemberLocalEntityMapper
 import com.keronei.data.repository.mapper.RegionEntityToRegionDBOMapper
@@ -19,10 +26,13 @@ import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import com.keronei.utils.export.ExportRegionMembersProcessor
+import com.keronei.utils.import.ImportRegionMembersProcessor
 import com.keronei.utils.makeShareIntent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import java.io.File
+import java.io.InputStream
 import java.util.*
 import javax.inject.Inject
 
@@ -52,6 +62,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private var selection = SELECTION.UNSELECTED
 
+    lateinit var getContent: ActivityResultLauncher<String>
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
 
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -62,6 +74,23 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         joinSupport()
 
+        registerContract()
+
+    }
+
+    private fun registerContract() {
+        getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri ->
+           // val file = DocumentFile.fromSingleUri(requireContext(), uri)
+
+            val result = requireContext().contentResolver.openInputStream(uri)
+
+            handleImportFileSelection(result!!)
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        getContent.unregister()
     }
 
     private fun retrieveVersionNumber() {
@@ -223,7 +252,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun importData() {
-        ToastUtils.showLongToast("Not yet implemented")
+        getContent.launch("application/vnd.ms-excel")
+
+        displayedPrompt?.dismiss()
+    }
+
+    private fun handleImportFileSelection(file: InputStream){
+        val importRegionMembersProcessor = ImportRegionMembersProcessor(file)
+
+        importRegionMembersProcessor.readEntries()
     }
 
 

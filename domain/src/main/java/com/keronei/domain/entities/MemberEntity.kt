@@ -3,15 +3,15 @@ package com.keronei.domain.entities
 import java.lang.reflect.Field
 
 data class MemberEntity(
-    val id: Int,
-    val firstName: String,
-    val secondName: String,
-    val otherNames: String,
-    val sex: Int,
-    val birthYear: Int,
-    val phoneNumber: String?,
-    val isActive: Boolean,
-    val regionId: Int
+    var id: Int,
+    var firstName: String,
+    var secondName: String,
+    var otherNames: String,
+    var sex: Int,
+    var birthYear: Int,
+    var phoneNumber: String?,
+    var isActive: Boolean,
+    var regionId: Int
 ) : BaseEntity() {
     override fun getValue(field: Field): Any {
         return when (field.name) {
@@ -29,7 +29,7 @@ data class MemberEntity(
 
     }
 
-    override fun toString(): String {
-        return "$firstName $secondName $otherNames"
-    }
+//    override fun toString(): String {
+//        return "$firstName $secondName $otherNames"
+//    }
 }

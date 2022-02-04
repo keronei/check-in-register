@@ -3,8 +3,8 @@ package com.keronei.domain.entities
 import java.lang.reflect.Field
 
 data class RegionEntity(
-    val id: Int,
-    val name: String
+    var id: Int,
+    var name: String
 ) : BaseEntity() {
     override fun getValue(field: Field): Any {
         return when (field.name) {

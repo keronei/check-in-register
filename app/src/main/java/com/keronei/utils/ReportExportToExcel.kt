@@ -130,7 +130,7 @@ private fun fillDataIntoExcel(dataList: List<AttendanceEntity>, fields: FieldsFi
                     val calendarInstance = Calendar.getInstance()
                     val currentYear = calendarInstance.get(Calendar.YEAR)
 
-                    val actualAge = currentYear - dataList[i].memberEntity.age
+                    val actualAge = currentYear - dataList[i].memberEntity.birthYear
 
                     val outputtedAgeValue: String = if (actualAge < 1) {
                         "~1"
