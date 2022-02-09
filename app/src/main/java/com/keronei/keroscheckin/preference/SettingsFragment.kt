@@ -80,7 +80,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun registerContract() {
         getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri ->
-           // val file = DocumentFile.fromSingleUri(requireContext(), uri)
+            // val file = DocumentFile.fromSingleUri(requireContext(), uri)
 
             val result = requireContext().contentResolver.openInputStream(uri)
 
@@ -257,10 +257,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
         displayedPrompt?.dismiss()
     }
 
-    private fun handleImportFileSelection(file: InputStream){
+    private fun handleImportFileSelection(file: InputStream) {
         val importRegionMembersProcessor = ImportRegionMembersProcessor(file)
 
-        importRegionMembersProcessor.readEntries()
+        val overview = importRegionMembersProcessor.readBasicInformation() //.readEntries()
+
+        SweetAlertDialog(requireContext(), SweetAlertDialog.BUTTON_CONFIRM)
+            .setTitleText("Summary")
+            .setContentText("Found ${overview.regionsEntrySize} regions and ${overview.membersEntrySize}. Proceed to import?")
+            .setConfirmButton("Proceed") {
+
+            }.show()
     }
 
 

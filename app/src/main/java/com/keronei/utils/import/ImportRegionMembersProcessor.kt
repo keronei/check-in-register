@@ -2,9 +2,13 @@ package com.keronei.utils.import
 
 
 import android.util.Log
+import com.keronei.android.common.Constants
+import com.keronei.android.common.Constants.THREE_HASHES
+import com.keronei.android.common.Constants.TOTAL_FIX
 import com.keronei.domain.entities.BaseEntity
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
+import com.keronei.keroscheckin.models.ImportSummary
 import com.keronei.utils.export.EntityType
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Sheet
@@ -53,13 +57,28 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
 
     }
 
-    private fun readAppVersion(): String {
+    fun readBasicInformation(): ImportSummary {
         val senderAppVersion = regionsSheet.first()
+        val memberSheetFirstEntry = membersSheet.first().getCell(0).stringCellValue
 
         val readString = senderAppVersion.getCell(0).stringCellValue
 
+        return ImportSummary(
+            readAppVersion(readString),
+            readEntriesCount(readString),
+            readEntriesCount(memberSheetFirstEntry)
+        )
+    }
 
+    private fun readAppVersion(readString: String): String {
+        return readString.removeSuffix(Constants.VERSION_FIX, TOTAL_FIX)
 
+    }
+
+    private fun readEntriesCount(readString: String): Int {
+        val result = readString.removeSurrounding(TOTAL_FIX, THREE_HASHES)
+
+        return result.toInt()
     }
 
     private fun readRegions(): List<RegionEntity> {

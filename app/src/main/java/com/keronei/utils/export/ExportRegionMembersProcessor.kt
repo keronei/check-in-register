@@ -3,6 +3,9 @@ package com.keronei.utils.export
 import android.provider.Settings.Global.getString
 import com.keronei.android.common.Constants.MEMBERS_SHEET_NAME
 import com.keronei.android.common.Constants.REGIONS_SHEET_NAME
+import com.keronei.android.common.Constants.THREE_HASHES
+import com.keronei.android.common.Constants.TOTAL_FIX
+import com.keronei.android.common.Constants.VERSION_FIX
 import com.keronei.domain.entities.BaseEntity
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
@@ -74,7 +77,7 @@ class ExportRegionMembersProcessor(
 
         val guideHeader = header.createCell(0)
 
-        guideHeader.setCellValue("###$sectionName-$timeStamp-version-$versionNumber-total-${items.size}###")
+        guideHeader.setCellValue("$THREE_HASHES$sectionName-$timeStamp$VERSION_FIX$versionNumber$TOTAL_FIX${items.size}$THREE_HASHES")
 
         val headerRow = sheet.createRow(1)
 
