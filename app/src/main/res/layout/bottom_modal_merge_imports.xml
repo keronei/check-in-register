@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/summary_heading"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/helveticaneue"
+            android:padding="12dp"
+            android:text="You have 45 regions and 520 members to be imported while your device already contains 51 regions and 401 members. "
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/here_is_what_to_do"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/helveticaneue"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="Here's what we can do"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/summary_heading" />
+
+        <ImageView
+            android:id="@+id/merge_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_baseline_merge_entries_24"
+            app:layout_constraintEnd_toStartOf="@id/merge_explanation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/here_is_what_to_do" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/merge_explanation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/helveticaneue"
+            android:padding="12dp"
+            android:text="This will keep all your existing data and try to add the imported ones."
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/merge_icon"
+            app:layout_constraintTop_toBottomOf="@id/here_is_what_to_do" />
+
+        <ImageView
+            android:id="@+id/replace_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_baseline_import_replace_24"
+            app:layout_constraintEnd_toStartOf="@id/replace_explanation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/merge_icon"
+            app:tint="@android:color/holo_red_dark" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/replace_explanation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/helveticaneue"
+            android:padding="12dp"
+            android:text="This option will clean your existing data and add the newly imported ones. \nYou will loose existing entries."
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/replace_icon"
+            app:layout_constraintTop_toBottomOf="@id/merge_explanation" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/replace"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/replace_strategy"
+            app:icon="@drawable/ic_baseline_import_replace_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/merge"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/merge"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/merge_strategy"
+            app:icon="@drawable/ic_baseline_merge_entries_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/replace" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

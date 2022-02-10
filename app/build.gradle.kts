@@ -55,6 +55,9 @@ android {
     dataBinding {
         android.buildFeatures.dataBinding = true
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -73,6 +76,8 @@ dependencies {
     //Searchable dropdown
     implementation(Dependencies.searchableDropDown)
     implementation(Dependencies.shared_preference)
+    implementation("com.google.android.material:material:1.5.0")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
 
 
     kapt(Dependencies.hiltCompiler)

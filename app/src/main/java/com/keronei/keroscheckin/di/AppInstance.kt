@@ -10,6 +10,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 @Module
@@ -17,7 +20,7 @@ import javax.inject.Singleton
 object AppInstance {
     @Provides
     @Singleton
-    fun providesApplication() : KORegisterApplication{
+    fun providesApplication(): KORegisterApplication {
         return KORegisterApplication()
     }
 
@@ -29,7 +32,13 @@ object AppInstance {
 
     @Provides
     @Singleton
-    fun providesPreferenceInstance(@ApplicationContext context: Context) : SharedPreferences{
+    fun providesPreferenceInstance(@ApplicationContext context: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(context)
     }
+//
+//    @Provides
+//    @Singleton
+//    fun providesCoroutineScope(): CoroutineScope {
+//        return CoroutineScope(Dispatchers.Main + SupervisorJob())
+//    }
 }

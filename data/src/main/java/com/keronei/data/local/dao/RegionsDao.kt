@@ -14,6 +14,7 @@ interface RegionsDao {
     @Query("SELECT * FROM RegionDBO ORDER BY name DESC")
     fun queryAllRegions(): Flow<List<RegionDBO>>
 
+    @Transaction
     @Query("SELECT * FROM RegionDBO ORDER BY name DESC")
     fun queryAllRegionsWithMemberCount(): Flow<List<RegionEmbed>>
 

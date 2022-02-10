@@ -59,6 +59,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="start"
                     android:text="@string/import_context"
+                    android:fontFamily="@font/halveticaneue"
                     android:textAppearance="?attr/textAppearanceBody2"
                     app:layout_constraintEnd_toEndOf="@id/import_entry"
                     app:layout_constraintStart_toStartOf="@id/import_entry"
@@ -106,6 +107,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="start"
                     android:text="@string/export_context"
+                    android:fontFamily="@font/halveticaneue"
                     android:textAppearance="?attr/textAppearanceBody2"
                     app:layout_constraintEnd_toEndOf="@id/export_entry"
                     app:layout_constraintStart_toStartOf="@id/export_entry"
@@ -131,9 +133,10 @@
 
         <com.google.android.material.button.MaterialButton
            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/next"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"

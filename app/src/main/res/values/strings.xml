@@ -89,7 +89,7 @@
     <string name="join_support">assistance</string>
     <string name="import_data">Import</string>
     <string name="export_data">Export</string>
-    <string name="import_context">Use when another device is already setup and would wish to use this as new device with same data; this operation will clean up current data in this device.</string>
+    <string name="import_context">Use when another device is already setup and would wish to use this as new device with same data.</string>
     <string name="export_context">Best suited for transferring data for setting up other new devices.</string>
     <string name="_1_both_entries_include_regions_by_default">Both entries include regions by default.</string>
     <string name="choose_an_option">Choose an option</string>
@@ -104,6 +104,11 @@
     <string name="dialog_error_template">An error occurred while doing that. Report this : %s</string>
     <string name="make_selection_import_export">Please select one.</string>
 
+    <string name="summary_import_confirmation_text">Found %s and %s. Proceed to import?</string>
+    <string name="summary_string">Summary</string>
+    <string name="proceed">Proceed</string>
+    <string name="replace_strategy">Replace</string>
+    <string name="merge_strategy">Merge</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>

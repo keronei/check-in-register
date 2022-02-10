@@ -5,11 +5,11 @@ import android.util.Log
 import com.keronei.android.common.Constants
 import com.keronei.android.common.Constants.THREE_HASHES
 import com.keronei.android.common.Constants.TOTAL_FIX
+import com.keronei.android.common.Constants.VERSION_FIX
 import com.keronei.domain.entities.BaseEntity
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.models.ImportSummary
-import com.keronei.utils.export.EntityType
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
@@ -71,14 +71,21 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
     }
 
     private fun readAppVersion(readString: String): String {
-        return readString.removeSuffix(Constants.VERSION_FIX, TOTAL_FIX)
+        //"$THREE_HASHES$sectionName-$timeStamp$VERSION_FIX$versionNumber$TOTAL_FIX${items.size}$THREE_HASHES"
+        val withVersionPrefixAndHash = readString.replaceBefore(VERSION_FIX, "") //
+
+        val versionNumberWithPrefix = withVersionPrefixAndHash.replaceAfter(TOTAL_FIX, "")
+
+        return versionNumberWithPrefix.replace(VERSION_FIX, "")
 
     }
 
     private fun readEntriesCount(readString: String): Int {
-        val result = readString.removeSurrounding(TOTAL_FIX, THREE_HASHES)
+        val totalSuffixAndCount = readString.replaceBefore(TOTAL_FIX, "")
 
-        return result.toInt()
+        val versionNumberWithPrefix = totalSuffixAndCount.removeSuffix(THREE_HASHES)
+
+        return versionNumberWithPrefix.removePrefix(TOTAL_FIX).toInt()
     }
 
     private fun readRegions(): List<RegionEntity> {
@@ -118,10 +125,10 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
 
     private fun readMembers(): List<MemberEntity> {
 
-        return loopAndBuildItem(membersSheet, EntityType.MEMBER) as List<MemberEntity>
+        return loopAndBuildMemberItem(membersSheet) as List<MemberEntity>
     }
 
-    private fun loopAndBuildItem(providedSheet: Sheet, modelToBuild: EntityType): List<BaseEntity> {
+    private fun loopAndBuildMemberItem(providedSheet: Sheet): List<BaseEntity> {
 
         val readList = mutableListOf<BaseEntity>()
 
