@@ -38,14 +38,13 @@
                 app:smsp_isOutlined="true"
                 app:smsp_isSearchable="true"
 
+                app:smsp_itemColor="@color/on_surface_color"
                 app:smsp_multilineError="false"
+                app:smsp_searchFilterColor="@color/primaryColor"
                 app:smsp_searchHint="Type to filter"
                 app:smsp_searchHintColor="@color/primaryDarkColor"
-                app:smsp_searchFilterColor="@color/primaryColor"
                 app:smsp_searchTextColor="@color/design_default_color_primary"
-                app:smsp_itemColor="@color/on_surface_color"
-                app:smsp_selectedItemListColor="@color/primaryColor"
-                />
+                app:smsp_selectedItemListColor="@color/primaryColor" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -159,6 +158,35 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <RadioGroup
+                android:id="@+id/marital_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="12dp"
+                android:paddingTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/age_layout">
+
+                <RadioButton
+                    android:id="@+id/married"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/married_status" />
+
+                <Space
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content" />
+
+                <RadioButton
+                    android:id="@+id/not_married"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/not_married_status" />
+
+
+            </RadioGroup>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/phone_layout"
@@ -167,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="@string/phone_number"
-                app:layout_constraintTop_toBottomOf="@id/age_layout">
+                app:layout_constraintTop_toBottomOf="@id/marital_status">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phone_edittext"
@@ -195,8 +223,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:text="@string/delete_member"
                 android:layout_marginTop="12dp"
+                android:text="@string/delete_member"
                 android:textColor="@android:color/white"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -211,9 +239,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="12dp"
                 android:layout_toEndOf="@+id/delete_member_button"
                 android:text="@string/add_member"
-                android:layout_marginTop="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/delete_member_button"
