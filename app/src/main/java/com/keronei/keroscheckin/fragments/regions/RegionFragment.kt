@@ -66,7 +66,7 @@ class RegionFragment : Fragment() {
 
     private fun watchFab() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            regionFragmentBinding.nestedScrollViewRegions.setOnScrollChangeListener { v, scrollX, scrollY, _, oldScrollY ->
+            regionFragmentBinding.nestedScrollViewRegions.setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
                 with(regionFragmentBinding.addRegionFabText) {
                     visibility = when {
                         scrollY > oldScrollY -> {
