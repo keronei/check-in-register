@@ -12,7 +12,11 @@
         android:label="BaseMembersFragment" >
         <action
             android:id="@+id/action_membersFragment_to_createMemberFragment"
-            app:destination="@id/createMemberFragment" />
+            app:destination="@id/createMemberFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_membersFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
