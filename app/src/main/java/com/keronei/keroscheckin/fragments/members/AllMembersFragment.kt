@@ -17,10 +17,10 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keronei.domain.entities.CheckInEntity
 import com.keronei.keroscheckin.R
+import com.keronei.keroscheckin.adapter.AttendanceRecyclerAdapter
 import com.keronei.keroscheckin.databinding.AllMembersFragmentBinding
 import com.keronei.keroscheckin.databinding.LayoutCheckInDialogBinding
 import com.keronei.keroscheckin.databinding.SelectedAttendeeOptionsBinding
-import com.keronei.keroscheckin.adapter.AttendanceRecyclerAdapter
 import com.keronei.keroscheckin.fragments.checkin.TimePickerFragment
 import com.keronei.keroscheckin.models.AttendeePresentation
 import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD
@@ -99,19 +99,24 @@ class AllMembersFragment : Fragment() {
 
                 when {
                     scrollY > oldScrollY -> {
-                        android.view.View.GONE
+                        flipFab(false)
                     }
                     scrollX == scrollY -> {
-                        android.view.View.VISIBLE
+                        flipFab(true)
                     }
                     else -> {
-                        android.view.View.VISIBLE
-                    }
+                        flipFab(false)
 
+                    }
                 }
             }
 
         }
+    }
+
+    private fun flipFab(state: Boolean) {
+        allMembersViewModel.membersFabVisibilityStatus.value = state
+
     }
 
     private fun setOnClickListeners() {

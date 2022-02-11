@@ -7,6 +7,7 @@ import com.keronei.domain.usecases.ListAttendeesUseCase
 import com.keronei.domain.usecases.base.UseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,6 +19,8 @@ class AllMembersViewModel @Inject constructor(private val queryAllMembersUseCase
     val allMembersData = MutableStateFlow(value = listOf<AttendanceEntity>())
 
     val membersFabVisibilityStatus = MutableStateFlow(value = true)
+
+    val membersFabVisibilityStatusPropagate: StateFlow<Boolean> = membersFabVisibilityStatus
 
     init {
         viewModelScope.launch {

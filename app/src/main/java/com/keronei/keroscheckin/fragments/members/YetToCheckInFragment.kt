@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.keronei.keroscheckin.R
-import com.keronei.keroscheckin.databinding.YetToCheckedInFragmentBinding
 import com.keronei.keroscheckin.adapter.AttendanceRecyclerAdapter
+import com.keronei.keroscheckin.databinding.YetToCheckedInFragmentBinding
 import com.keronei.keroscheckin.models.AttendeePresentation
 import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD
 import com.keronei.keroscheckin.models.toPresentation
@@ -31,7 +31,7 @@ class YetToCheckInFragment : Fragment() {
         fun newInstance() = YetToCheckInFragment()
     }
 
-    private val allMembersViewModel: AllMembersViewModel by viewModels()
+    private val allMembersViewModel: AllMembersViewModel by activityViewModels()
     private lateinit var yetToCheckInBinding: YetToCheckedInFragmentBinding
     lateinit var yetToCheckInAdapter: AttendanceRecyclerAdapter
     lateinit var searchView: androidx.appcompat.widget.SearchView
@@ -77,21 +77,23 @@ class YetToCheckInFragment : Fragment() {
 
                 when {
                     scrollY > oldScrollY -> {
-                        allMembersViewModel.membersFabVisibilityStatus.value = false
+                        flipFab(false)
                     }
                     scrollX == scrollY -> {
-                        allMembersViewModel.membersFabVisibilityStatus.value = true
-
+                        flipFab(true)
                     }
                     else -> {
-                        allMembersViewModel.membersFabVisibilityStatus.value = true
-
+                        flipFab(true)
                     }
 
                 }
             }
 
         }
+    }
+
+    private fun flipFab(status: Boolean) {
+        allMembersViewModel.membersFabVisibilityStatus.value = status
     }
 
     private fun setUpOnClickListeners() {

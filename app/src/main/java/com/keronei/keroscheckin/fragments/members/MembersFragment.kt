@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -17,9 +17,7 @@ import com.keronei.keroscheckin.adapter.AttendanceTabsAdapter
 import com.keronei.keroscheckin.databinding.MembersFragmentBinding
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MembersFragment : Fragment() {
@@ -27,7 +25,7 @@ class MembersFragment : Fragment() {
     private lateinit var mTabs: TabLayout
     private lateinit var mViewPager: ViewPager2
     private lateinit var membersContentBinding: MembersFragmentBinding
-    private val allMembersViewModel: AllMembersViewModel by viewModels()
+    private val allMembersViewModel: AllMembersViewModel by activityViewModels()
 
 
     companion object {
@@ -67,21 +65,21 @@ class MembersFragment : Fragment() {
 
     private fun handleFabBehaviourBasedOnScrolls() {
         lifecycleScope.launchWhenResumed {
-            allMembersViewModel.membersFabVisibilityStatus.collect { currentStatus ->
-                withContext(Dispatchers.Main) {
-                    membersContentBinding.addMemberFabText.visibility =
-                        if (currentStatus) View.VISIBLE else View.GONE
-                }
+            allMembersViewModel.membersFabVisibilityStatusPropagate.collect { flipStatus ->
+                membersContentBinding.addMemberFabText.visibility =
+                    if (flipStatus) View.VISIBLE else View.GONE
             }
         }
     }
 
     private fun onClickListeners() {
         membersContentBinding.fabFullBtnMembers.setOnClickListener {
-            val openCreateMemberAction =
-                MembersFragmentDirections.actionMembersFragmentToCreateMemberFragment()
+            navigateToCreateNew()
+        }
 
-            findNavController().navigate(R.id.action_membersFragment_to_createMemberFragment)
+        membersContentBinding.createNewMember.setOnClickListener {
+            navigateToCreateNew()
+
         }
 
         membersContentBinding.settingsIcon.setOnClickListener {
@@ -89,6 +87,10 @@ class MembersFragment : Fragment() {
 
             findNavController().navigate(settingsAction)
         }
+    }
+
+    private fun navigateToCreateNew() {
+        findNavController().navigate(R.id.action_membersFragment_to_createMemberFragment)
     }
 
 }

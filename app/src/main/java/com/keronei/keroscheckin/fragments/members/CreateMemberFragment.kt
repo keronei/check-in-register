@@ -192,6 +192,8 @@ class CreateMemberFragment : Fragment() {
             ToastUtils.showLongToastInMiddle(if (isEditing) R.string.member_updated else R.string.member_created)
 
             //this.dismiss()
+
+            findNavController().popBackStack()
         }
 
         layoutBinding.deleteMemberButton.setOnClickListener {
@@ -215,6 +217,9 @@ class CreateMemberFragment : Fragment() {
                     sDialog.dismissWithAnimation()
 
                     //this.dismiss()
+
+                    childFragmentManager.popBackStack()
+
 
                     showDeletionSuccess()
                 }

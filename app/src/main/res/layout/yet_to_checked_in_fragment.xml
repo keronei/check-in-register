@@ -36,8 +36,12 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nested_scroll_view_yet_to_check_in"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="0dp"
+            android:fillViewport="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_view_yet_to_check_in">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_yet_to_check_in"
@@ -46,11 +50,6 @@
                 android:orientation="vertical"
                 android:paddingTop="12dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/search_view_yet_to_check_in"
                 tools:listitem="@layout/layout_attendee_item" />
         </androidx.core.widget.NestedScrollView>
 
