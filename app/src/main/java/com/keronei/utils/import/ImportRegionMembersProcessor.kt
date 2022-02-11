@@ -13,6 +13,7 @@ import com.keronei.keroscheckin.models.ImportSummary
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
+import timber.log.Timber
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
@@ -100,17 +101,15 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
             regionsSheet.rowIterator().forEach { pointerRow ->
                 if (pointerRow.rowNum > 1) {//skip header row - two of them
 
-                    val cellIterator = pointerRow.cellIterator()
-
-                    while (cellIterator.hasNext()) {
-
                         val builtEntityObject = RegionEntity(
                             pointerRow.getCell(0).stringCellValue.toInt(),
                             pointerRow.getCell(1).stringCellValue
                         )
 
+                        Timber.d("Read -> ${pointerRow.rowNum} with $builtEntityObject")
+
                         regionsList.add(builtEntityObject)
-                    }
+
                 }
 
             }
@@ -157,7 +156,7 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
 
                     val cellIterator = pointerRow.cellIterator()
 
-                    while (cellIterator.hasNext()) {
+                    Timber.d("Reading member -> ${pointerRow.rowNum} ")
 
                         val builtEntityObject = MemberEntity(
                             pointerRow.getCell(2).stringCellValue.toInt(),
@@ -171,12 +170,13 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
                             pointerRow.getCell(6).stringCellValue.toInt()
                         )
 
+                        Timber.d("Iterating through cell ${cellIterator.next().columnIndex}")
+
                         readList.add(builtEntityObject)
 
                         Log.d("Reading from excel", "$builtEntityObject")
                     }
 
-                }
             }
         } catch (exception: Exception) {
             exception.printStackTrace()
