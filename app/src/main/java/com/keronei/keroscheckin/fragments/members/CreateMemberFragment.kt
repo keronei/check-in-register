@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -27,7 +28,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CreateMemberFragment : DialogFragment() {
+class CreateMemberFragment : Fragment() {
 
     lateinit var layoutBinding: CreateMemberFragmentBinding
     lateinit var regionsSpinner: SmartMaterialSpinner<RegionEntity>
@@ -180,7 +181,7 @@ class CreateMemberFragment : DialogFragment() {
 
             ToastUtils.showLongToastInMiddle(if (isEditing) R.string.member_updated else R.string.member_created)
 
-            this.dismiss()
+            //this.dismiss()
         }
 
         layoutBinding.deleteMemberButton.setOnClickListener {
@@ -203,7 +204,7 @@ class CreateMemberFragment : DialogFragment() {
 
                     sDialog.dismissWithAnimation()
 
-                    this.dismiss()
+                    //this.dismiss()
 
                     showDeletionSuccess()
                 }
@@ -269,13 +270,5 @@ class CreateMemberFragment : DialogFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        val params = dialog?.window?.attributes
-        params?.width = ViewGroup.LayoutParams.MATCH_PARENT
-
-        dialog?.window?.attributes = params
-    }
 
 }
