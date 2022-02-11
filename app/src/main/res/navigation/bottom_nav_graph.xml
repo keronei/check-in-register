@@ -55,7 +55,7 @@
             android:defaultValue="@null" />
     </dialog>
 
-    <dialog
+    <fragment
         android:id="@+id/createMemberFragment"
         android:name="com.keronei.keroscheckin.fragments.members.CreateMemberFragment"
         tools:layout="@layout/create_member_fragment"
@@ -69,7 +69,7 @@
             app:argType="com.keronei.keroscheckin.models.AttendeePresentation"
             app:nullable="true"
             android:defaultValue="@null" />
-    </dialog>
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
