@@ -1,5 +1,6 @@
 package com.keronei.keroscheckin.fragments.regions
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -53,7 +54,7 @@ class RegionFragment : Fragment() {
 
         searchView = regionFragmentBinding.searchViewRegions
 
-
+        watchFab()
 
         setupOnClickListeners()
 
@@ -61,6 +62,26 @@ class RegionFragment : Fragment() {
             ?.findNavController()
 
         return regionFragmentBinding.root
+    }
+
+    private fun watchFab() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            regionFragmentBinding.nestedScrollViewRegions.setOnScrollChangeListener { v, scrollX, scrollY, _, oldScrollY ->
+                with(regionFragmentBinding.addRegionFabText) {
+                    visibility = when {
+                        scrollY > oldScrollY -> {
+                            View.GONE
+                        }
+                        scrollX == scrollY -> {
+                            View.VISIBLE
+                        }
+                        else -> {
+                            View.VISIBLE
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupOnClickListeners() {
