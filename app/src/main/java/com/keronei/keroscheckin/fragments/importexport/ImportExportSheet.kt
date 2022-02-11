@@ -53,6 +53,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
     lateinit var coroutineScope: CoroutineScope
 
     private fun registerContract() {
+        //TODO use lifeCycleScope to watch
         getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri ->
             val result = requireContext().contentResolver.openInputStream(uri)
 
