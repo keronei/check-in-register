@@ -1,6 +1,7 @@
 package com.keronei.keroscheckin.fragments.reports
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -56,6 +57,28 @@ class ReportsFragment : Fragment() {
         onFieldsChangedListeners()
 
         actionListeners()
+
+        watchFab()
+    }
+
+    private fun watchFab() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            reportsBinding.nestedScrollViewReports.setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
+                with(reportsBinding.chatFabText) {
+                    visibility = when {
+                        scrollY > oldScrollY -> {
+                            View.VISIBLE
+                        }
+                        scrollX == scrollY -> {
+                            View.GONE
+                        }
+                        else -> {
+                            View.VISIBLE
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setMillis(value: Calendar) {
