@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/helveticaneue"
             android:gravity="center"
-            android:padding="12dp"
+            android:padding="6dp"
             android:text="Here's what we can do"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +38,19 @@
             android:src="@drawable/ic_baseline_merge_entries_24"
             app:layout_constraintEnd_toStartOf="@id/merge_explanation"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/merge_header" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/merge_header"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:paddingTop="12dp"
+            android:text="Merge"
+            app:layout_constraintStart_toStartOf="@id/merge_explanation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/merge_icon"
             app:layout_constraintTop_toBottomOf="@id/here_is_what_to_do" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -46,12 +59,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:fontFamily="@font/helveticaneue"
-            android:padding="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="4dp"
             android:text="This will keep all your existing data and try to add the imported ones."
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/merge_icon"
-            app:layout_constraintTop_toBottomOf="@id/here_is_what_to_do" />
+            app:layout_constraintTop_toBottomOf="@id/merge_header" />
 
         <ImageView
             android:id="@+id/replace_icon"
@@ -62,8 +77,21 @@
             android:src="@drawable/ic_baseline_import_replace_24"
             app:layout_constraintEnd_toStartOf="@id/replace_explanation"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/merge_icon"
+            app:layout_constraintTop_toTopOf="@id/replace_header"
             app:tint="@android:color/holo_red_dark" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/replace_header"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:paddingTop="12dp"
+            android:text="Replace"
+            app:layout_constraintStart_toStartOf="@id/replace_explanation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/replace_icon"
+            app:layout_constraintTop_toBottomOf="@id/merge_explanation" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/replace_explanation"
@@ -71,12 +99,15 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:fontFamily="@font/helveticaneue"
-            android:padding="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="4dp"
             android:text="This option will clean your existing data and add the newly imported ones. \nYou will loose existing entries."
             android:textSize="18sp"
+            android:paddingBottom="14dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/replace_icon"
-            app:layout_constraintTop_toBottomOf="@id/merge_explanation" />
+            app:layout_constraintTop_toBottomOf="@id/replace_header" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/replace"
@@ -88,7 +119,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/merge"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/replace_explanation" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/merge"
@@ -99,7 +131,8 @@
             app:icon="@drawable/ic_baseline_merge_entries_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/replace" />
+            app:layout_constraintStart_toEndOf="@+id/replace"
+            app:layout_constraintTop_toBottomOf="@+id/replace_explanation" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

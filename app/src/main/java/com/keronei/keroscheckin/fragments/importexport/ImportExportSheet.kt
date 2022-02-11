@@ -29,6 +29,7 @@ import com.keronei.utils.makeShareIntent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 import java.io.InputStream
 import java.util.*
 import javax.inject.Inject
@@ -234,7 +235,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
         val overview = importRegionMembersProcessor.readBasicInformation() //.readEntries()
 
-        this.dismiss()
+        //this.dismiss()
 
         val membersString = resources.getQuantityString(
             R.plurals.members_prefix,
@@ -257,26 +258,33 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                     membersString
                 )
             )
-            .setConfirmButton(getString(R.string.proceed)) {
+            .setConfirmButton(getString(R.string.proceed)) { confirmationPrompt ->
 
                 val processingDialog =
                     SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE)
 
                 try {
-                   processingDialog.show()
+                    processingDialog.show()
 
                     coroutineScope.launch {
                         val result = waitForResults(importRegionMembersProcessor)
 
+                        Timber.d("Parsed result $result")
+
                         withContext(Dispatchers.Main) {
                             processingDialog.dismissWithAnimation()
 
+                            confirmationPrompt.dismissWithAnimation()
+
                             promptLocalContentRetention(result.keys.first(), result.values.first())
+
                         }
                     }
                 } catch (exception: Exception) {
                     exception.printStackTrace()
                     processingDialog.dismissWithAnimation()
+
+                    confirmationPrompt.dismissWithAnimation()
 
                     SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE).setContentText(
                         exception.message ?: "Something unexpected happened."
@@ -292,7 +300,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
             HashMap<List<RegionEntity>, List<MemberEntity>> {
 
         val actualDataEntriesJob = coroutineScope.async {
-           return@async importRegionMembersProcessor.readEntries()
+            importRegionMembersProcessor.readEntries()
         }
 
         return actualDataEntriesJob.await()
@@ -302,15 +310,11 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         readRegionsList: List<RegionEntity>,
         readMembersList: List<MemberEntity>
     ) {
-        val regions = runBlocking {
-            regionsViewModel.queryAllRegions().first()
-        }
-
-        val members = runBlocking { memberViewModel.queryAllMembers().first() }
-
         val proceedToOptions = MergePromptImports()
 
-        proceedToOptions.show(childFragmentManager, MergePromptImports.TAG)
+        proceedToOptions.show(requireActivity().supportFragmentManager, MergePromptImports.TAG)
+
+        this.dismiss()
 
     }
 
