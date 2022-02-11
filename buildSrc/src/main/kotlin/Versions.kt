@@ -13,8 +13,14 @@ object Versions {
     const val navigationFragment = "2.3.5"
     const val androidExtensions = "1.4.0"
 
+    //motion toast
+    const val motionToast = "1.4"
+
     //Room
     const val room_version = "2.3.0"
+
+    //Timber log
+    const val timber = "5.0.1"
 
     //Network
     const val hilt_version = "2.37"

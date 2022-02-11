@@ -82,6 +82,9 @@ dependencies {
 
     kapt(Dependencies.hiltCompiler)
 
+    //motion toas
+    implementation(Dependencies.motionToast)
+
     //Room
     implementation(Dependencies.room)
     kapt(Dependencies.room_compiler)
@@ -95,6 +98,9 @@ dependencies {
 
     //DataStore
     implementation(Dependencies.dataStore)
+
+    //Timber
+    implementation(Dependencies.timber)
 
     //Lock
     implementation(Dependencies.screen_lock)

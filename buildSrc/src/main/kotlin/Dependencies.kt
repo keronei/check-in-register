@@ -22,6 +22,12 @@ object Dependencies {
 
     const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt_version}"
 
+    //Timber
+    const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
+
+    //Motion Toast
+    const val motionToast = "com.github.Spikeysanju:MotionToast:${Versions.motionToast}"
+
     //Network Dependencies
 
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"

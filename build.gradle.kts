@@ -20,6 +20,7 @@ allprojects{
     repositories{
         google()
         mavenCentral()
+        maven { url = java.net.URI.create("https://jitpack.io") }
     }
 }
 
