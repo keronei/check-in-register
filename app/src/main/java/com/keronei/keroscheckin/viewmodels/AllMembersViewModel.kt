@@ -17,6 +17,8 @@ class AllMembersViewModel @Inject constructor(private val queryAllMembersUseCase
 
     val allMembersData = MutableStateFlow(value = listOf<AttendanceEntity>())
 
+    val membersFabVisibilityStatus = MutableStateFlow(value = true)
+
     init {
         viewModelScope.launch {
             queryAllMembersUseCase(UseCaseParams.Empty).collect { entries ->

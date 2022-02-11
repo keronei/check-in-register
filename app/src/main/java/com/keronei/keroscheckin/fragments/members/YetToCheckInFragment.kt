@@ -1,6 +1,7 @@
 package com.keronei.keroscheckin.fragments.members
 
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,7 +54,10 @@ class YetToCheckInFragment : Fragment() {
         searchView = yetToCheckInBinding.searchViewYetToCheckIn
 
         invalidationPeriod =
-            preferences.getString(getString(R.string.invalidate_period_key), CHECK_IN_INVALIDATE_DEFAULT_PERIOD)?.toInt() ?: CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
+            preferences.getString(
+                getString(R.string.invalidate_period_key),
+                CHECK_IN_INVALIDATE_DEFAULT_PERIOD
+            )?.toInt() ?: CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
 
         return yetToCheckInBinding.root
     }
@@ -64,6 +68,30 @@ class YetToCheckInFragment : Fragment() {
         setupList()
         watchStatuses()
         setUpOnClickListeners()
+        listenToFab()
+    }
+
+    private fun listenToFab() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            yetToCheckInBinding.nestedScrollViewYetToCheckIn.setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
+
+                when {
+                    scrollY > oldScrollY -> {
+                        allMembersViewModel.membersFabVisibilityStatus.value = false
+                    }
+                    scrollX == scrollY -> {
+                        allMembersViewModel.membersFabVisibilityStatus.value = true
+
+                    }
+                    else -> {
+                        allMembersViewModel.membersFabVisibilityStatus.value = true
+
+                    }
+
+                }
+            }
+
+        }
     }
 
     private fun setUpOnClickListeners() {
@@ -118,10 +146,13 @@ class YetToCheckInFragment : Fragment() {
                             }
 
                             val inactiveShouldBeHidden =
-                                preferences.getBoolean(getString(R.string.inactive_members_pref_key), false)
+                                preferences.getBoolean(
+                                    getString(R.string.inactive_members_pref_key),
+                                    false
+                                )
 
                             val filteredList =
-                                if (inactiveShouldBeHidden)  temp.filter { memberEntry -> memberEntry.isActive } else temp
+                                if (inactiveShouldBeHidden) temp.filter { memberEntry -> memberEntry.isActive } else temp
 
                             yetToCheckInAdapter.modifyList(filteredList)
 

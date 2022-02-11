@@ -1,6 +1,7 @@
 package com.keronei.keroscheckin.fragments.members
 
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -53,7 +54,7 @@ class AllMembersFragment : Fragment() {
     private lateinit var checkInPrompt: androidx.appcompat.app.AlertDialog
     private var memberAtCheckIn: AttendeePresentation? = null
     private var invalidationPeriod = CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
-    private  var optionsPrompt : androidx.appcompat.app.AlertDialog? = null
+    private var optionsPrompt: androidx.appcompat.app.AlertDialog? = null
 
     @Inject
     lateinit var preferences: SharedPreferences
@@ -89,6 +90,28 @@ class AllMembersFragment : Fragment() {
 
         setOnClickListeners()
 
+        listenToFab()
+    }
+
+    private fun listenToFab() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            allMembersFragmentBinding.nestedScrollViewMembers.setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
+
+                when {
+                    scrollY > oldScrollY -> {
+                        android.view.View.GONE
+                    }
+                    scrollX == scrollY -> {
+                        android.view.View.VISIBLE
+                    }
+                    else -> {
+                        android.view.View.VISIBLE
+                    }
+
+                }
+            }
+
+        }
     }
 
     private fun setOnClickListeners() {
@@ -221,7 +244,7 @@ class AllMembersFragment : Fragment() {
 
         optionsPrompt?.dismiss()
 
-         optionsPrompt =
+        optionsPrompt =
             MaterialAlertDialogBuilder(requireContext()).setView(selectedAttendeeOptions.root)
                 .show()
 
@@ -298,7 +321,8 @@ class AllMembersFragment : Fragment() {
         checkInEntity: CheckInEntity
     ) {
 
-        val addressing = if (member.sex == 1) " him " else if (member.sex == 0) " her " else " them "
+        val addressing =
+            if (member.sex == 1) " him " else if (member.sex == 0) " her " else " them "
 
         SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
             .setTitleText("Inactive Member")
