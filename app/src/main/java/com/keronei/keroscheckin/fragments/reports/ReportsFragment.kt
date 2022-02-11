@@ -257,6 +257,10 @@ class ReportsFragment : Fragment() {
         reportsBinding.fabFullBtnReport.setOnClickListener {
             runGenerateReports()
         }
+
+        reportsBinding.createNewMember.setOnClickListener {
+            runGenerateReports()
+        }
     }
 
 

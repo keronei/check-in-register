@@ -86,8 +86,11 @@ class RegionFragment : Fragment() {
 
     private fun setupOnClickListeners() {
         regionFragmentBinding.fabFullBtnRegions.setOnClickListener {
+            navigateToCreateNew()
+        }
 
-            findNavController().navigate(R.id.action_regionsFragment_to_createRegionFragment)
+        regionFragmentBinding.createNewMember.setOnClickListener {
+            navigateToCreateNew()
         }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
@@ -102,6 +105,11 @@ class RegionFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun navigateToCreateNew() {
+        findNavController().navigate(R.id.action_regionsFragment_to_createRegionFragment)
+
     }
 
     private fun setupRegionsList() {

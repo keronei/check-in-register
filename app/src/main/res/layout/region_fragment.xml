@@ -11,13 +11,12 @@
 
         <TextView
             android:id="@+id/regions_header"
+            style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:gravity="center"
             android:text="@string/all_regions"
-            android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,10 +35,10 @@
             android:id="@+id/nested_scroll_view_regions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fillViewport="false"
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_view_regions"
-            android:fillViewport="false">
+            app:layout_constraintTop_toBottomOf="@id/search_view_regions">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/regions_recycler"
@@ -47,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
                 tools:listitem="@layout/item_region_layout" />
         </androidx.core.widget.NestedScrollView>
 

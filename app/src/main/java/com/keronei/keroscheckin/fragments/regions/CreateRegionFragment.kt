@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
@@ -19,7 +21,7 @@ import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateRegionFragment : DialogFragment() {
+class CreateRegionFragment : Fragment() {
 
     private val args: CreateRegionFragmentArgs by navArgs()
 
@@ -46,7 +48,7 @@ class CreateRegionFragment : DialogFragment() {
 
             createRegionFragmentBindings.regionNameEdittext.setText(selectedRegion?.name)
 
-            if (selectedRegion?.name == GUEST_ENTRY){
+            if (selectedRegion?.name == GUEST_ENTRY) {
                 createRegionFragmentBindings.regionNameEdittext.isEnabled = false
                 createRegionFragmentBindings.createRegionButton.isEnabled = false
             }
@@ -62,6 +64,8 @@ class CreateRegionFragment : DialogFragment() {
         )
 
         setupOnClickListeners()
+
+        configureToolBar()
 
         return createRegionFragmentBindings.root
     }
@@ -81,7 +85,7 @@ class CreateRegionFragment : DialogFragment() {
                     viewModel.createRegion(RegionEntity(0, providedName.trim()))
                     ToastUtils.showLongToastOnTop(R.string.entry_added)
                 }
-                this.dismiss()
+                findNavController().popBackStack()
 
 
             } else {
@@ -90,14 +94,13 @@ class CreateRegionFragment : DialogFragment() {
         }
     }
 
-
-    override fun onResume() {
-        super.onResume()
-
-        val params = dialog?.window?.attributes
-        params?.width = MATCH_PARENT
-
-        dialog?.window?.attributes = params
+    private fun configureToolBar() {
+        with(createRegionFragmentBindings.createRegionToolbar) {
+            setNavigationIcon(R.drawable.ic_navigate_back_24)
+            setNavigationOnClickListener {
+                findNavController().popBackStack()
+            }
+        }
     }
 
 
