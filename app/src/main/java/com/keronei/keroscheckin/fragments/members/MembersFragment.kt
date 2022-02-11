@@ -61,7 +61,7 @@ class MembersFragment : Fragment() {
             val openCreateMemberAction =
                 MembersFragmentDirections.actionMembersFragmentToCreateMemberFragment()
 
-            findNavController().navigate(openCreateMemberAction)
+            findNavController().navigate(R.id.action_membersFragment_to_createMemberFragment )
         }
 
         membersContentBinding.settingsIcon.setOnClickListener {

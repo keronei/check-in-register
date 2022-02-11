@@ -3,6 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <Toolbar
+        android:id="@+id/createMemberToolBar"
+        android:title="@string/create_new_member"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -13,17 +25,6 @@
             android:padding="12dp"
             tools:context="com.keronei.keroscheckin.fragments.members.CreateMemberFragment">
 
-            <TextView
-                android:id="@+id/create_member_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/create_new_member"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
                 android:id="@+id/search_region_spinner"
                 android:layout_width="match_parent"
@@ -31,7 +32,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/create_member_header"
+                app:layout_constraintTop_toTopOf="parent"
                 app:smsp_errorText=""
                 app:smsp_floatingLabelText="Floating Label Text"
                 app:smsp_hint="Select region for member"
@@ -251,4 +252,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+    </LinearLayout>
 </layout>

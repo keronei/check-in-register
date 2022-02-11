@@ -53,16 +53,17 @@
             android:layout_height="match_parent"
             android:layout_marginTop="90dp" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/create_new_member"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/fab_margin"
+            android:text="@string/add_member"
             android:layout_marginBottom="16dp"
             app:shapeAppearance="@style/ShapeAppearance.KO.ProfileImageComponent"
             android:contentDescription="@string/create_new_member_fab"
-            app:srcCompat="@drawable/ic_baseline_add_member_24" />
+            app:icon="@drawable/ic_baseline_add_member_24" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

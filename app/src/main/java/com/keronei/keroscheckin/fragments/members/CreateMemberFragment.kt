@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
@@ -63,6 +64,8 @@ class CreateMemberFragment : Fragment() {
 
         isEditing = args.isEditing
 
+        configureToolBar()
+
         selectedAttendee = args.selectedMember
 
 
@@ -77,11 +80,18 @@ class CreateMemberFragment : Fragment() {
         return layoutBinding.root
     }
 
+    private fun configureToolBar() {
+        layoutBinding.createMemberToolBar.setNavigationIcon(R.drawable.ic_navigate_back_24)
+        layoutBinding.createMemberToolBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
     private fun populateEditFields() {
         layoutBinding.deleteMemberButton.visibility = View.VISIBLE
         layoutBinding.memberActivityStatus.visibility = View.VISIBLE
         layoutBinding.createMemberButton.text = "Update"
-        layoutBinding.createMemberHeader.text = "Update Member Info"
+        layoutBinding.createMemberToolBar.title = "Update Member Info"
 
         layoutBinding.firstNameEdittext.setText(selectedAttendee?.firstName)
         layoutBinding.secondNameEdittext.setText(selectedAttendee?.secondName)

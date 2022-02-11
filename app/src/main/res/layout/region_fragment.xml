@@ -43,18 +43,19 @@
             app:layout_constraintTop_toBottomOf="@id/search_view_regions"
             tools:listitem="@layout/item_region_layout" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/create_new_entry_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/fab_margin"
+            android:text="@string/add_region"
             android:layout_marginBottom="16dp"
             app:shapeAppearance="@style/ShapeAppearance.KO.ProfileImageComponent"
-            android:contentDescription="@string/create_new_member_fab"
+            android:contentDescription="@string/create_new_region_fab"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_baseline_add_region_24" />
+            app:icon="@drawable/ic_baseline_add_region_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
