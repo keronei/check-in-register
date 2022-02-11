@@ -16,7 +16,9 @@
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/membersFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_membersFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
@@ -30,7 +32,13 @@
         android:label="RegionFragment" >
         <action
             android:id="@+id/action_regionsFragment_to_createRegionFragment"
-            app:destination="@id/createRegionFragment" />
+            app:destination="@id/createRegionFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/regionsFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -39,7 +47,7 @@
         android:label="reports_fragment"
         tools:layout="@layout/reports_fragment" />
 
-    <dialog
+    <fragment
         android:id="@+id/createRegionFragment"
         tools:layout="@layout/create_region_fragment"
         android:name="com.keronei.keroscheckin.fragments.regions.CreateRegionFragment"
@@ -53,7 +61,7 @@
             app:argType="com.keronei.keroscheckin.models.RegionPresentation"
             app:nullable="true"
             android:defaultValue="@null" />
-    </dialog>
+    </fragment>
 
     <fragment
         android:id="@+id/createMemberFragment"
