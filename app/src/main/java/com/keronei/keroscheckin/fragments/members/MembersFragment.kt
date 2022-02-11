@@ -56,14 +56,6 @@ class MembersFragment : Fragment() {
     }
 
 
-//    override fun onBackPressed() {
-//        if (viewpager.currentItem == 0) {
-//            super.onBackPressed()
-//        } else {
-//            viewpager.currentItem = viewpager.currentItem - 1
-//        }
-//    }
-
     private fun onClickListeners() {
         membersContentBinding.createNewMember.setOnClickListener {
             val openCreateMemberAction =

@@ -202,14 +202,5 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    override fun onPostResume() {
-//        super.onPostResume()
-//
-//        val isFirstTime = sharedPreferences.getBoolean(IS_FIRST_TIME_KEY, true)
-//
-//        if (!isFirstTime) {
-//            AppLock.onActivityResumed(this)
-//        }
-//    }
 
 }
