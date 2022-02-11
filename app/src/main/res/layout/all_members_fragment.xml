@@ -27,25 +27,31 @@
             android:textAlignment="center"
             android:textColor="@color/on_surface_color"
             android:textSize="15sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_all_members"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view_members"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingTop="12dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
-
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_view_all_members"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/layout_attendee_item" />
+            android:fillViewport="false">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_all_members"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:paddingTop="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/layout_attendee_item" />
+        </androidx.core.widget.NestedScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

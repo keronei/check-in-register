@@ -27,25 +27,32 @@
             android:textAlignment="center"
             android:textColor="@color/on_surface_color"
             android:textSize="15sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_yet_to_check_in"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingTop="12dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_view_yet_to_check_in"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/layout_attendee_item" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_yet_to_check_in"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:paddingTop="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/search_view_yet_to_check_in"
+                tools:listitem="@layout/layout_attendee_item" />
+        </androidx.core.widget.NestedScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

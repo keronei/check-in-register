@@ -64,7 +64,7 @@ class RegionFragment : Fragment() {
     }
 
     private fun setupOnClickListeners() {
-        regionFragmentBinding.createNewEntryFab.setOnClickListener {
+        regionFragmentBinding.fabFullBtnRegions.setOnClickListener {
 
             findNavController().navigate(R.id.action_regionsFragment_to_createRegionFragment)
         }

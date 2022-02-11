@@ -57,7 +57,7 @@ class MembersFragment : Fragment() {
 
 
     private fun onClickListeners() {
-        membersContentBinding.createNewMember.setOnClickListener {
+        membersContentBinding.fabFullBtnMembers.setOnClickListener {
             val openCreateMemberAction =
                 MembersFragmentDirections.actionMembersFragmentToCreateMemberFragment()
 

@@ -53,17 +53,48 @@
             android:layout_height="match_parent"
             android:layout_marginTop="90dp" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <LinearLayout
+            android:id="@+id/fab_full_btn_members"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/fab_margin"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/fab_btn_corners"
+            android:backgroundTint="@color/colorAccent"
+            android:clipToPadding="false"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:outlineProvider="none">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/create_new_member"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:text="@string/add_member"
-            android:layout_marginBottom="16dp"
             app:shapeAppearance="@style/ShapeAppearance.KO.ProfileImageComponent"
             android:contentDescription="@string/create_new_member_fab"
-            app:icon="@drawable/ic_baseline_add_member_24" />
+            app:srcCompat="@drawable/ic_baseline_add_member_24"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_gravity="center_vertical"
+            app:backgroundTint="@color/colorAccent"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:fabSize="normal"
+            app:useCompatPadding="false"/>
+
+            <TextView
+                android:id="@+id/chat_fab_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingStart="0dp"
+                android:paddingEnd="20dp"
+                android:text="@string/add_member"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
+
+        </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

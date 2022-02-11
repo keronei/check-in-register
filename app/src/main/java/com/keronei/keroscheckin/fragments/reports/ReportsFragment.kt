@@ -231,7 +231,7 @@ class ReportsFragment : Fragment() {
     }
 
     private fun actionListeners() {
-        reportsBinding.generateReportsFab.setOnClickListener {
+        reportsBinding.fabFullBtnReport.setOnClickListener {
             runGenerateReports()
         }
     }
