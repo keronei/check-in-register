@@ -111,6 +111,8 @@
     <string name="merge_strategy">Merge</string>
     <string name="married_status">Married</string>
     <string name="not_married_status">Not Married</string>
+    <string name="add_region">Add Region</string>
+    <string name="create_new_region_fab">Create new region fab</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>
