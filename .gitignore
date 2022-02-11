@@ -16,6 +16,7 @@ local.properties
 .idea/misc.xml
 app/libs/
 .idea/deploymentTargetDropDown.xml
+.idea/codeStyles/
 app/google-services.json
 app/release/
 common/libs/
