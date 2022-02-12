@@ -46,4 +46,8 @@ class RegionsRepositoryImpl(
     override suspend fun deleteRegion(regionEntity: RegionEntity) {
         regionsDao.deleteRegion(regionEntityToRegionDBOMapper.map(regionEntity))
     }
+
+    override suspend fun deleteAllRegions(): Int {
+        return regionsDao.deleteAllRegions()
+    }
 }

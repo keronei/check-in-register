@@ -37,4 +37,9 @@ class MembersRepositoryImpl(
         return memberDao.getAttendanceInformation()
             .map { attendanceData -> attendanceEmbedToAttendanceEntityMapper.mapList(attendanceData) }
     }
+
+    override suspend fun deleteAllMembers(): Int {
+        return memberDao.deleteAllMembers()
+
+    }
 }

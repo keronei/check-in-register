@@ -43,4 +43,8 @@ class MemberViewModel @Inject constructor(
             deleteMemberUseCase(memberEntity)
         }
     }
+
+    fun deleteAllMembers(){
+
+    }
 }

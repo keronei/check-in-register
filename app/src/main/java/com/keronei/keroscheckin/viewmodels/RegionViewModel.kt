@@ -47,4 +47,8 @@ class RegionViewModel @Inject constructor(
             deleteRegionUseCase(defectedRegion)
         }
     }
+
+    fun deleteAllRegions(){
+
+    }
 }

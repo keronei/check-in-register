@@ -161,6 +161,21 @@ class MemberDaoTest {
         }
     }
 
+    @Test
+    fun deleteAllMembersDeletesCreatedMembers(){
+        return runBlocking {
+            createMember()
+            memberDao.createNewMember(memberLocalEntityMapper.map(member2))
+
+            memberDao.deleteAllMembers()
+
+            val existingMembersCount = memberDao.getAllMembers().first().size
+
+            assertTrue(existingMembersCount == 0)
+        }
+
+    }
+
     private suspend fun createMember() {
         regionsDao.createRegion(RegionDBO(0, "Test region."))
         memberDao.createNewMember(memberDBO = memberLocalEntityMapper.map(member))

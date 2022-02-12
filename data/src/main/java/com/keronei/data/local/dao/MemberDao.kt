@@ -23,4 +23,7 @@ interface MemberDao {
 
     @Delete
     suspend fun deleteMember(memberDBO: MemberDBO)
+
+    @Query("DELETE FROM MemberDBO")
+    suspend fun deleteAllMembers() : Int
 }

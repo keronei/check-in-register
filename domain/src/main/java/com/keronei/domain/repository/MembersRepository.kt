@@ -17,4 +17,6 @@ interface MembersRepository {
 
     suspend fun getAllAttendanceData(): Flow<List<AttendanceEntity>>
 
+    suspend fun deleteAllMembers() : Int
+
 }
