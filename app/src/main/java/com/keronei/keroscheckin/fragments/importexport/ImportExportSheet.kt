@@ -237,6 +237,19 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
         //this.dismiss()
 
+        if (overview.appVersion == "" || overview.membersEntrySize == 0) {
+            SweetAlertDialog(
+                requireContext(),
+                SweetAlertDialog.ERROR_TYPE
+            ).setContentText("Seems like this is not a valid data export file.")
+                .setTitleText("Unable to import")
+                .setCancelButton("Close") { dialog ->
+                    dialog.dismiss()
+                }
+                .show()
+            return
+        }
+
         val membersString = resources.getQuantityString(
             R.plurals.members_prefix,
             overview.membersEntrySize,
@@ -310,11 +323,28 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         readRegionsList: List<RegionEntity>,
         readMembersList: List<MemberEntity>
     ) {
-        val proceedToOptions = MergePromptImports()
+        val regions = runBlocking {
+            regionsViewModel.queryAllRegions().first()
+        }
 
-        proceedToOptions.show(requireActivity().supportFragmentManager, MergePromptImports.TAG)
 
+        val members = runBlocking { memberViewModel.queryAllMembers().first() }
+
+        if (members.size < 2 || regions.size < 2) {
+            cleanUpAndAddImports(readRegionsList, readMembersList)
+        } else {
+            val proceedToOptions = MergePromptImports()
+            proceedToOptions.show(requireActivity().supportFragmentManager, MergePromptImports.TAG)
+
+        }
         this.dismiss()
+
+    }
+
+    private fun cleanUpAndAddImports(
+        readRegionsList: List<RegionEntity>,
+        readMembersList: List<MemberEntity>
+    ) {
 
     }
 
