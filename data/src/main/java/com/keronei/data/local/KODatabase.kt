@@ -1,9 +1,9 @@
 package com.keronei.data.local
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import androidx.room.migration.AutoMigrationSpec
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.keronei.data.local.dao.CheckInDao
 import com.keronei.data.local.dao.MemberDao
@@ -17,7 +17,10 @@ import kotlinx.coroutines.launch
 @Database(
     entities = [CheckInDBO::class, MemberDBO::class, RegionDBO::class],
     version = 2,
-    exportSchema = false
+    exportSchema = true,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2, spec = KODatabase.AutoMigrationSpecFrom1to2::class)
+    ]
 )
 abstract class KODatabase : RoomDatabase() {
     abstract fun checkInDao(): CheckInDao
@@ -26,10 +29,25 @@ abstract class KODatabase : RoomDatabase() {
 
     abstract fun regionDao(): RegionsDao
 
+    @RenameColumn(fromColumnName = "age", toColumnName = "birthYear", tableName = "MemberDBO")
+    class AutoMigrationSpecFrom1to2 : AutoMigrationSpec
+
+
+
     companion object {
 
         @Volatile
         private var databaseInstance: KODatabase? = null
+
+        val MIGRATION_1_2 = object : Migration(1, 2){
+            override fun migrate(database: SupportSQLiteDatabase) {
+
+                //database.execSQL("ALTER TABLE MemberDBO RENAME COLUMN age TO birthYear")
+
+                database.execSQL("ALTER TABLE MemberDBO ADD COLUMN isMarried BOOLEAN NOT NULL DEFAULT 'false'")
+            }
+        }
+
 
         fun buildDatabase(context: Context, scope: CoroutineScope): KODatabase {
             return databaseInstance ?: synchronized(this) {
@@ -38,8 +56,7 @@ abstract class KODatabase : RoomDatabase() {
                     context.applicationContext,
                     KODatabase::class.java,
                     "kodatabase.db"
-                ).addCallback(KODatabaseCallBack(scope)).fallbackToDestructiveMigration().build()
-//TODO configure migration strategy
+                ).addCallback(KODatabaseCallBack(scope)).addMigrations(MIGRATION_1_2) .build()
                 databaseInstance = instance
 
                 instance
