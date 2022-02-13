@@ -29,6 +29,9 @@ data class MemberDBO(
 
     val birthYear: Int,
 
+    @ColumnInfo(defaultValue = false.toString())
+    val isMarried : Boolean,
+
     val phoneNumber: String?,
 
     val isActive: Boolean,

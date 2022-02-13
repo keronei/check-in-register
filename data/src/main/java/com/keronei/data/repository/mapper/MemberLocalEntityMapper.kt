@@ -13,6 +13,7 @@ class MemberLocalEntityMapper : Mapper<MemberEntity, MemberDBO>() {
             input.otherNames,
             input.sex,
             input.birthYear,
+            input.isMarried,
             input.phoneNumber,
             input.isActive,
             input.regionId

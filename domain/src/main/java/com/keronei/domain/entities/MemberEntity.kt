@@ -9,6 +9,7 @@ data class MemberEntity(
     var otherNames: String,
     var sex: Int,
     var birthYear: Int,
+    var isMarried : Boolean,
     var phoneNumber: String?,
     var isActive: Boolean,
     var regionId: Int
@@ -21,6 +22,7 @@ data class MemberEntity(
             "otherNames" -> otherNames
             "sex" -> sex
             "birthYear" -> birthYear
+            "isMarried" -> isMarried
             "phoneNumber" -> phoneNumber ?: ""
             "isActive" -> isActive
             "regionId" -> regionId
