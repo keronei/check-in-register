@@ -17,7 +17,7 @@ object Versions {
     const val motionToast = "1.4"
 
     //Room
-    const val room_version = "2.3.0"
+    const val room_version = "2.4.1"
 
     //Timber log
     const val timber = "5.0.1"
