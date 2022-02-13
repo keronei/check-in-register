@@ -13,6 +13,13 @@ android {
         minSdk = AppConfig.minSdk
         targetSdk = AppConfig.targetSdk
         testInstrumentationRunner = AppConfig.androidTestInstrumentation
+
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf("room.schemaLocation" to "$projectDir/schemas")
+            }
+        }
     }
 
     buildTypes {
@@ -32,6 +39,10 @@ android {
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
     }
 
 }
