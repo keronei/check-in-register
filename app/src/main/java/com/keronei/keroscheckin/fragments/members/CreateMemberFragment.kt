@@ -173,6 +173,7 @@ class CreateMemberFragment : Fragment() {
                     otherNames!!.trim().toString(),
                     sexSelection,
                     yob!!.trim().toString().toInt(),
+                    layoutBinding.married.isChecked,
                     phoneNumber?.trim().toString(),
                     if(isEditing) layoutBinding.memberActivityStatus.isChecked else true,
                     selectedRegion!!.id
