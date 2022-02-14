@@ -165,6 +165,8 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
                             pointerRow.getCell(4).stringCellValue,
                             pointerRow.getCell(8).stringCellValue.toInt(),
                             pointerRow.getCell(0).stringCellValue.toInt(),
+                            //TODO check actual cell for marital status
+                            pointerRow.getCell(8).stringCellValue.toBoolean(),
                             pointerRow.getCell(5).stringCellValue,
                             pointerRow.getCell(3).stringCellValue.toBoolean(),
                             pointerRow.getCell(6).stringCellValue.toInt()

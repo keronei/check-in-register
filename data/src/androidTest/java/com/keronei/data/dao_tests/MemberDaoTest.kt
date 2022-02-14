@@ -39,6 +39,7 @@ class MemberDaoTest {
         "",
         1,
         14,
+        true,
         null,
         true,
         1
@@ -140,6 +141,7 @@ class MemberDaoTest {
                     "Mathias",
                     1,
                     15,
+                    false,
                     "0100",
                     true,
                     1

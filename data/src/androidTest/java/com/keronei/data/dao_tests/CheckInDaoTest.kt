@@ -102,7 +102,7 @@ class CheckInDaoTest {
                     checkIn.memberId,
                     checkIn.timeStamp,
                     checkIn.temperature
-                )
+                ).timeStamp
             )
 
             val checkIns = checkInDao.getCheckInForMember(1, 0L)

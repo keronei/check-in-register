@@ -44,7 +44,7 @@ abstract class KODatabase : RoomDatabase() {
 
                 //database.execSQL("ALTER TABLE MemberDBO RENAME COLUMN age TO birthYear")
 
-                database.execSQL("ALTER TABLE MemberDBO ADD COLUMN isMarried BOOLEAN NOT NULL DEFAULT 'false'")
+                database.execSQL("ALTER TABLE MemberDBO ADD COLUMN isMarried BOOLEAN NOT NULL DEFAULT 0")
             }
         }
 

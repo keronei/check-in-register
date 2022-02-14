@@ -12,6 +12,7 @@ data class AttendeePresentation(
     val memberId : Int,
     val name: String,
     val age : Int,
+    val isMarried : Boolean,
     val phoneNumber : String?,
     val isActive : Boolean,
     val regionId : Int,
