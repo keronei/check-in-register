@@ -5,7 +5,6 @@
 
     <application
         android:allowBackup="true"
-        tools:replace="android:icon"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:name="com.keronei.keroscheckin.instance.KORegisterApplication"
@@ -15,7 +14,6 @@
         <activity
             android:name="com.keronei.keroscheckin.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.KIRegister.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +31,23 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity
+            android:name="com.guardanis.applock.activities.LockCreationActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            tools:node="merge"
+            android:theme="@style/applock__theme_activity" />
+        <activity
+            android:name="com.guardanis.applock.activities.UnlockActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            tools:node="merge"
+            android:theme="@style/applock__theme_activity" />
     </application>
 
 </manifest>

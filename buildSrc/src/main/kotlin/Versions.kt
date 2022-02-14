@@ -42,7 +42,7 @@ object Versions {
     const val mockito_kotlin = "2.1.0"
     const val mockito_android = "2.28.2"
     const val test_runner = "1.2.0"
-    const val test_ext_junit = "1.1.1"
+    const val test_ext_junit = "1.1.3"
     const val espresso_core = "3.2.0"
     const val arch_core_testing = "1.1.1"
     const val assertj = "1.7.1"
