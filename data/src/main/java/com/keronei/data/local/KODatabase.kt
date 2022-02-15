@@ -18,9 +18,9 @@ import kotlinx.coroutines.launch
     entities = [CheckInDBO::class, MemberDBO::class, RegionDBO::class],
     version = 2,
     exportSchema = true,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2, spec = KODatabase.AutoMigrationSpecFrom1to2::class)
-    ]
+//    autoMigrations = [
+//        AutoMigration(from = 1, to = 2, spec = KODatabase.AutoMigrationSpecFrom1to2::class)
+//    ]
 )
 abstract class KODatabase : RoomDatabase() {
     abstract fun checkInDao(): CheckInDao
@@ -39,16 +39,6 @@ abstract class KODatabase : RoomDatabase() {
         @Volatile
         private var databaseInstance: KODatabase? = null
 
-        val MIGRATION_1_2 = object : Migration(1, 2){
-            override fun migrate(database: SupportSQLiteDatabase) {
-
-                //database.execSQL("ALTER TABLE MemberDBO RENAME COLUMN age TO birthYear")
-
-                database.execSQL("ALTER TABLE MemberDBO ADD COLUMN isMarried BOOLEAN NOT NULL DEFAULT 0")
-            }
-        }
-
-
         fun buildDatabase(context: Context, scope: CoroutineScope): KODatabase {
             return databaseInstance ?: synchronized(this) {
 
@@ -65,6 +55,8 @@ abstract class KODatabase : RoomDatabase() {
     }
 
 
+
+
     private class KODatabaseCallBack(private val scope: CoroutineScope) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
@@ -78,5 +70,14 @@ abstract class KODatabase : RoomDatabase() {
             }
 
         }
+    }
+}
+
+val MIGRATION_1_2 = object : Migration(1, 2){
+    override fun migrate(database: SupportSQLiteDatabase) {
+
+        database.execSQL("ALTER TABLE MemberDBO RENAME COLUMN age TO birthYear")
+
+        database.execSQL("ALTER TABLE MemberDBO ADD COLUMN isMarried BOOLEAN NOT NULL DEFAULT 0")
     }
 }
