@@ -1,8 +1,6 @@
 package com.keronei.utils.import
 
 
-import android.util.Log
-import com.keronei.android.common.Constants
 import com.keronei.android.common.Constants.THREE_HASHES
 import com.keronei.android.common.Constants.TOTAL_FIX
 import com.keronei.android.common.Constants.VERSION_FIX
@@ -73,6 +71,10 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
 
     private fun readAppVersion(readString: String): String {
         //"$THREE_HASHES$sectionName-$timeStamp$VERSION_FIX$versionNumber$TOTAL_FIX${items.size}$THREE_HASHES"
+        if (readString == "" || !readString.startsWith(THREE_HASHES)){
+            return ""
+        }
+
         val withVersionPrefixAndHash = readString.replaceBefore(VERSION_FIX, "") //
 
         val versionNumberWithPrefix = withVersionPrefixAndHash.replaceAfter(TOTAL_FIX, "")
@@ -82,6 +84,10 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
     }
 
     private fun readEntriesCount(readString: String): Int {
+        if (readString == "" || !readString.startsWith(THREE_HASHES)){
+            return 0
+        }
+
         val totalSuffixAndCount = readString.replaceBefore(TOTAL_FIX, "")
 
         val versionNumberWithPrefix = totalSuffixAndCount.removeSuffix(THREE_HASHES)
@@ -141,11 +147,12 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
                 1 - firstName
                 2 - id
                 3 - isActive
-                4 - otherNames
-                5 - phoneNumber
-                6 - regionId
-                7 - secondName
-                8 - sex
+                4 - isMarried
+                5 - otherNames
+                6 - phoneNumber
+                7 - regionId
+                8 - secondName
+                9 - sex
 
                 RegionObject:
                 0 - id
@@ -158,26 +165,25 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
 
                     Timber.d("Reading member -> ${pointerRow.rowNum} ")
 
-                        val builtEntityObject = MemberEntity(
-                            pointerRow.getCell(2).stringCellValue.toInt(),
-                            pointerRow.getCell(1).stringCellValue,
-                            pointerRow.getCell(7).stringCellValue,
-                            pointerRow.getCell(4).stringCellValue,
-                            pointerRow.getCell(8).stringCellValue.toInt(),
-                            pointerRow.getCell(0).stringCellValue.toInt(),
-                            //TODO check actual cell for marital status
-                            pointerRow.getCell(8).stringCellValue.toBoolean(),
-                            pointerRow.getCell(5).stringCellValue,
-                            pointerRow.getCell(3).stringCellValue.toBoolean(),
-                            pointerRow.getCell(6).stringCellValue.toInt()
-                        )
+                    val builtEntityObject = MemberEntity(
+                        pointerRow.getCell(2).stringCellValue.toInt(),
+                        pointerRow.getCell(1).stringCellValue,
+                        pointerRow.getCell(8).stringCellValue,
+                        pointerRow.getCell(5).stringCellValue,
+                        pointerRow.getCell(9).stringCellValue.toInt(),
+                        pointerRow.getCell(0).stringCellValue.toInt(),
+                        pointerRow.getCell(4).stringCellValue.toBoolean(),
+                        pointerRow.getCell(6).stringCellValue,
+                        pointerRow.getCell(3).stringCellValue.toBoolean(),
+                        pointerRow.getCell(7).stringCellValue.toInt()
+                    )
 
-                        Timber.d("Iterating through cell ${cellIterator.next().columnIndex}")
+                    Timber.d("Iterating through cell ${cellIterator.next().columnIndex}")
 
-                        readList.add(builtEntityObject)
+                    readList.add(builtEntityObject)
 
-                        Log.d("Reading from excel", "$builtEntityObject")
-                    }
+                    Timber.d("Built object $builtEntityObject")
+                }
 
             }
         } catch (exception: Exception) {
