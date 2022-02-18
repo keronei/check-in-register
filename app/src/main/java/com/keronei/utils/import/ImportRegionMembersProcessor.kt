@@ -57,6 +57,10 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
     }
 
     fun readBasicInformation(): ImportSummary {
+        if (!this::regionsSheet.isInitialized || !this::membersSheet.isInitialized) {
+            return ImportSummary("", 0, 0)
+        }
+
         val senderAppVersion = regionsSheet.first()
         val memberSheetFirstEntry = membersSheet.first().getCell(0).stringCellValue
 

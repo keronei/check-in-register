@@ -416,6 +416,12 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         readMembersList: List<MemberEntity>
     ) {
 
+        regionsViewModel.deleteAllRegions()
+
+        memberViewModel.deleteAllMembers()
+
+
+
     }
 
     companion object {
