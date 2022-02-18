@@ -11,27 +11,18 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object RegionsUseCaseModule {
     @Provides
-    fun providesCreateRegionUseCase(regionsRepositoryImpl: RegionsRepository): CreateRegionUseCase {
-        return CreateRegionUseCase(regionsRepositoryImpl)
+    fun providesCreateRegionUseCase(regionsRepositoryImpl: RegionsRepository): RegionsUseCases {
+        return RegionsUseCases(
+            CreateRegionUseCase(regionsRepositoryImpl),
+            QueryAllRegionsUseCase
+                (regionsRepositoryImpl),
+            UpdateRegionUseCase
+                (regionsRepositoryImpl),
+            DeleteRegionUseCase
+                (regionsRepositoryImpl),
+            QueryAllRegionsWithMembersUseCase(regionsRepositoryImpl),
+            DeleteAllRegionsUseCase(regionsRepositoryImpl)
+        )
     }
 
-    @Provides
-    fun providesQueryAllRegionsUseCase(regionsRepositoryImpl: RegionsRepository): QueryAllRegionsUseCase {
-        return QueryAllRegionsUseCase(regionsRepositoryImpl)
-    }
-
-    @Provides
-    fun providesUpdateRegionUseCase(regionsRepositoryImpl: RegionsRepository): UpdateRegionUseCase {
-        return UpdateRegionUseCase(regionsRepositoryImpl)
-    }
-
-    @Provides
-    fun providesDeleteRegionUseCase(regionsRepositoryImpl: RegionsRepository): DeleteRegionUseCase {
-        return DeleteRegionUseCase(regionsRepositoryImpl)
-    }
-
-    @Provides
-    fun providesQueryAllRegionsWithMemberDataUseCase(regionsRepositoryImpl: RegionsRepository): QueryAllRegionsWithMembersUseCase {
-        return QueryAllRegionsWithMembersUseCase(regionsRepositoryImpl)
-    }
 }

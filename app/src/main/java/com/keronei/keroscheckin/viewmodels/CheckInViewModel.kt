@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.keronei.domain.entities.CheckInEntity
 import com.keronei.domain.entities.MemberEntity
+import com.keronei.domain.usecases.AttendanceUseCases
 import com.keronei.domain.usecases.CheckInMemberUseCase
 import com.keronei.domain.usecases.ListAttendeesUseCase
 import com.keronei.domain.usecases.UndoCheckInUseCase
@@ -20,9 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CheckInViewModel @Inject constructor(
-    private val checkInMemberUseCase: CheckInMemberUseCase,
-    private val undoCheckInUseCase: UndoCheckInUseCase,
-    private val attendeesUseCase: ListAttendeesUseCase
+    private val attendanceUseCases: AttendanceUseCases
 ) : ViewModel() {
 
     private val attendanceData = MutableStateFlow(value = AttendeeViewState(emptyList()))
@@ -37,24 +36,19 @@ class CheckInViewModel @Inject constructor(
 
     fun checkInMember(checkInEntity: CheckInEntity, memberEntity: MemberEntity) {
         viewModelScope.launch {
-            checkInMemberUseCase(CheckInParam(checkInEntity, memberEntity))
+            attendanceUseCases.checkInMemberUseCase(CheckInParam(checkInEntity, memberEntity))
         }
     }
 
     fun undoCheckInForMember(checkInEntity: CheckInEntity) {
         viewModelScope.launch {
-            undoCheckInUseCase(checkInEntity)
+            attendanceUseCases.undoCheckInUseCase(checkInEntity)
         }
     }
 
     suspend fun attendanceData() {
-        attendeesUseCase(UseCaseParams.Empty).collect { newValues ->
+        attendanceUseCases.listAttendeesUseCase (UseCaseParams.Empty).collect { _ ->
             val list = mutableListOf<AttendeePresentation>()
-
-            newValues.forEach { entity ->
-                //list.add(entity.toPresentation())
-            }
-
             attendanceData.emit(AttendeeViewState(list))
 
         }

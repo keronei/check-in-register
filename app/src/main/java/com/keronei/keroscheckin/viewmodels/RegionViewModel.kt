@@ -12,11 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegionViewModel @Inject constructor(
-    private val createRegionUseCase: CreateRegionUseCase,
-    private val updateRegionUseCase: UpdateRegionUseCase,
-    private val deleteRegionUseCase: DeleteRegionUseCase,
-    private val queryAllRegionsUseCase: QueryAllRegionsUseCase,
-    private val queryAllRegionsWithMembersUseCase: QueryAllRegionsWithMembersUseCase
+    private val regionsUseCases: RegionsUseCases
 ) : ViewModel() {
 
     val regionsInformation = MutableStateFlow<List<RegionEntity>>(emptyList())
@@ -27,28 +23,30 @@ class RegionViewModel @Inject constructor(
 
     fun createRegion(newRegion: RegionEntity) {
         viewModelScope.launch {
-            createRegionUseCase(newRegion)
+            regionsUseCases.createRegionUseCase(newRegion)
         }
     }
 
     fun updateRegion(updatedRegion: RegionEntity) {
         viewModelScope.launch {
-            updateRegionUseCase(updatedRegion)
+            regionsUseCases.updateRegionUseCase(updatedRegion)
         }
     }
 
-    suspend fun queryAllRegions() = queryAllRegionsUseCase(UseCaseParams.Empty)
+    suspend fun queryAllRegions() = regionsUseCases.queryAllRegionsUseCase(UseCaseParams.Empty)
 
     suspend fun queryAllRegionsWithMembersData() =
-        queryAllRegionsWithMembersUseCase(UseCaseParams.Empty)
+        regionsUseCases.queryAllRegionsWithMembersUseCase(UseCaseParams.Empty)
 
     fun deleteRegion(defectedRegion: RegionEntity) {
         viewModelScope.launch {
-            deleteRegionUseCase(defectedRegion)
+            regionsUseCases.deleteRegionUseCase(defectedRegion)
         }
     }
 
     fun deleteAllRegions(){
-
+        viewModelScope.launch {
+            regionsUseCases.deleteAllRegionsUseCase(Unit)
+        }
     }
 }

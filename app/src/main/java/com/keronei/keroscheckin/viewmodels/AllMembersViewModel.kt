@@ -3,7 +3,9 @@ package com.keronei.keroscheckin.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.keronei.domain.entities.AttendanceEntity
+import com.keronei.domain.usecases.AttendanceUseCases
 import com.keronei.domain.usecases.ListAttendeesUseCase
+import com.keronei.domain.usecases.MembersUseCases
 import com.keronei.domain.usecases.base.UseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AllMembersViewModel @Inject constructor(private val queryAllMembersUseCase: ListAttendeesUseCase) :
+class AllMembersViewModel @Inject constructor(private val attendanceUseCases: AttendanceUseCases) :
     ViewModel() {
 
     val allMembersData = MutableStateFlow(value = listOf<AttendanceEntity>())
@@ -24,7 +26,7 @@ class AllMembersViewModel @Inject constructor(private val queryAllMembersUseCase
 
     init {
         viewModelScope.launch {
-            queryAllMembersUseCase(UseCaseParams.Empty).collect { entries ->
+            attendanceUseCases.listAttendeesUseCase(UseCaseParams.Empty).collect { entries ->
                 allMembersData.emit(entries)
             }
         }
