@@ -113,6 +113,11 @@
     <string name="not_married_status">Not Married</string>
     <string name="add_region">Add Region</string>
     <string name="create_new_region_fab">Create new region fab</string>
+    <string name="close_dialog">Close</string>
+    <string name="unable_to_import_title">Unable to import</string>
+    <string name="import_error_message">Seems like this is not a valid data export file.</string>
+    <string name="unable_to_export_title">Unable to Export</string>
+    <string name="unable_to_export_message">Could not create export file from your existing entries.</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>

@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -29,6 +30,7 @@ import com.keronei.utils.makeShareIntent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import timber.log.Timber
 import java.io.InputStream
 import java.util.*
@@ -50,6 +52,8 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
     lateinit var getContent: ActivityResultLauncher<String>
 
+    lateinit var processingDialog : SweetAlertDialog
+
     @Inject
     lateinit var coroutineScope: CoroutineScope
 
@@ -68,6 +72,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        processingDialog = SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE)
         registerContract()
     }
 
@@ -134,61 +139,103 @@ class ImportExportSheet : BottomSheetDialogFragment() {
     }
 
     private fun exportData() {
+        processingDialog.show()
+
         val regions = runBlocking {
             regionsViewModel.queryAllRegions().first()
         }
 
-
         val members = runBlocking { memberViewModel.queryAllMembers().first() }
 
-
+        coroutineScope.launch {
         //don't prepare workbook if it's only guest region with no members.
+        processingDialog.dismissWithAnimation()
 
-        if (regions.size < 2 && members.isEmpty()) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.emty_export))
-                .setMessage(getString(R.string.empty_export_message))
-                .setPositiveButton(getString(R.string.dialog_cancel)) { dialog, _ ->
-                    dialog.dismiss()
-                    displayedPrompt?.dismiss()
+            withContext(Dispatchers.Main) {
+                if (regions.size < 2 && members.isEmpty()) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(getString(R.string.emty_export))
+                        .setMessage(getString(R.string.empty_export_message))
+                        .setPositiveButton(getString(R.string.dialog_cancel)) { dialog, _ ->
+                            dialog.dismiss()
+                            displayedPrompt?.dismiss()
+                        }
+                        .show()
+                    return@withContext
                 }
-                .show()
-            return
+
+            }
+
+            processingDialog.show()
+
+            try {
+                val preparedWorkBook = createExportFile(regions, members)
+
+                withContext(Dispatchers.Main) {
+
+                    processingDialog.dismissWithAnimation()
+
+                    val sendingIntent =
+                        makeShareIntent(
+                            Constants.EXPORT_FILE_NAME,
+                            preparedWorkBook,
+                            requireContext()
+                        )
+
+                    val totalRegions = regions.size - 1//minus guest region
+
+                    val regionsPrefix =
+                        if (regions.size < 2) getString(R.string.guest_region) else resources.getQuantityString(
+                            R.plurals.regions_prefix,
+                            totalRegions,
+                            totalRegions
+                        )
+
+                    val membersPrefix =
+                        resources.getQuantityString(
+                            R.plurals.members_prefix,
+                            members.size,
+                            members.size
+                        )
+
+                    val summary = getString(
+                        R.string.summary_export,
+                        regionsPrefix,
+                        membersPrefix
+                    )
+
+                    launchSendData(sendingIntent, summary)
+                }
+
+            } catch (exception: Exception) {
+
+                processingDialog.dismissWithAnimation()
+
+                showErrorDialog(getString(R.string.unable_to_export_title), getString(R.string.unable_to_export_message))
+
+                exception.printStackTrace()
+            }
+
         }
-
-
-        val preparedWorkBook = ExportRegionMembersProcessor(
-            regions,
-            members,
-            Calendar.getInstance().timeInMillis,
-            getString(R.string.version)
-        ).createExportFile()
-
-        val sendingIntent =
-            makeShareIntent(Constants.EXPORT_FILE_NAME, preparedWorkBook, requireContext())
-
-        val totalRegions = regions.size - 1//minus guest region
-
-        val regionsPrefix =
-            if (regions.size < 2) getString(R.string.guest_region) else resources.getQuantityString(
-                R.plurals.regions_prefix,
-                totalRegions,
-                totalRegions
-            )
-
-        val membersPrefix =
-            resources.getQuantityString(R.plurals.members_prefix, members.size, members.size)
-
-        val summary = getString(
-            R.string.summary_export,
-            regionsPrefix,
-            membersPrefix
-        )
-
-        launchSendData(sendingIntent, summary)
 
         displayedPrompt?.dismiss()
 
+    }
+
+    private suspend fun createExportFile(
+        regions: List<RegionEntity>,
+        members: List<MemberEntity>
+    ): HSSFWorkbook {
+        val preparedWorkBook = coroutineScope.async {
+            ExportRegionMembersProcessor(
+                regions,
+                members,
+                Calendar.getInstance().timeInMillis,
+                getString(R.string.version)
+            ).createExportFile()
+        }
+
+        return preparedWorkBook.await()
     }
 
     private fun launchSendData(sendDataIntent: Intent, summary: String) {
@@ -238,15 +285,10 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         //this.dismiss()
 
         if (overview.appVersion == "" || overview.membersEntrySize == 0) {
-            SweetAlertDialog(
-                requireContext(),
-                SweetAlertDialog.ERROR_TYPE
-            ).setContentText("Seems like this is not a valid data export file.")
-                .setTitleText("Unable to import")
-                .setCancelButton("Close") { dialog ->
-                    dialog.dismiss()
-                }
-                .show()
+            showErrorDialog(
+                getString(R.string.unable_to_import_title),
+                getString(R.string.import_error_message)
+            )
             return
         }
 
@@ -273,8 +315,6 @@ class ImportExportSheet : BottomSheetDialogFragment() {
             )
             .setConfirmButton(getString(R.string.proceed)) { confirmationPrompt ->
 
-                val processingDialog =
-                    SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE)
 
                 try {
                     processingDialog.show()
@@ -307,6 +347,18 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
 
             }.show()
+    }
+
+    private fun showErrorDialog(title: String, message: String) {
+        SweetAlertDialog(
+            requireContext(),
+            SweetAlertDialog.ERROR_TYPE
+        ).setContentText(message)
+            .setTitleText(title)
+            .setCancelButton(getString(R.string.close_dialog)) { dialog ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private suspend fun waitForResults(importRegionMembersProcessor: ImportRegionMembersProcessor):
