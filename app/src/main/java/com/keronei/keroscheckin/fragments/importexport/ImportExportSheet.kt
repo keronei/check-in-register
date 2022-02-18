@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -52,7 +53,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
     lateinit var getContent: ActivityResultLauncher<String>
 
-    lateinit var processingDialog: SweetAlertDialog
+    private lateinit var processingDialog: SweetAlertDialog
 
     @Inject
     lateinit var coroutineScope: CoroutineScope
@@ -154,7 +155,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
             withContext(Dispatchers.Main) {
                 if (regions.size < 2 && members.isEmpty()) {
                     MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(getString(R.string.emty_export))
+                        .setTitle(getString(R.string.empty_export))
                         .setMessage(getString(R.string.empty_export_message))
                         .setPositiveButton(getString(R.string.dialog_cancel)) { dialog, _ ->
                             dialog.dismiss()
@@ -293,6 +294,19 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                 getString(R.string.unable_to_import_title),
                 getString(R.string.import_error_message)
             )
+            return
+        }
+
+        if (overview.appVersion != getString(R.string.version)) {
+            val versionMismatchInfo = getString(
+                R.string.app_version_mismatch_import,
+                getString(R.string.version),
+                overview.appVersion
+            )
+            SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(getString(R.string.version_mismatch_title))
+                .setContentText(versionMismatchInfo)
+                .show()
             return
         }
 

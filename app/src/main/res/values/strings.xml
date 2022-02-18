@@ -94,9 +94,11 @@
     <string name="_1_both_entries_include_regions_by_default">Both entries include regions by default.</string>
     <string name="choose_an_option">Choose an option</string>
     <string name="guest_region"> guest region </string>
+    <string name="app_version_mismatch_import"><![CDATA[You have version %s installed while this file was exported from an app version %s.
+     <br/><br/>This may not work.]]></string>
 
     <string name="summary_export">Will export %s with %s"</string>
-    <string name="emty_export">No data</string>
+    <string name="empty_export">No data</string>
     <string name="empty_export_message">Seems like you have not added any regions/members.</string>
     <string name="export_option">Export</string>
     <string name="export_regions_members"><![CDATA[Export regions & members]]></string>
@@ -118,6 +120,7 @@
     <string name="import_error_message">Seems like this is not a valid data export file.</string>
     <string name="unable_to_export_title">Unable to Export</string>
     <string name="unable_to_export_message">Could not create export file from your existing entries.</string>
+    <string name="version_mismatch_title">Version Mismatch</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>
