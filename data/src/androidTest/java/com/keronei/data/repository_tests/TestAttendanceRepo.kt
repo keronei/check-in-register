@@ -12,7 +12,6 @@ import com.keronei.data.repository.mapper.CheckInEntityLocalMapper
 import com.keronei.data.repository.mapper.MemberDBOToEntityMapper
 import com.keronei.data.repository.mapper.MemberLocalEntityMapper
 import com.keronei.domain.entities.MemberEntity
-import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

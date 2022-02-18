@@ -135,6 +135,23 @@ class RegionDaoTest {
         }
     }
 
+    @Test
+    fun delete_all_regions_wipes_all(){
+        runBlocking {
+            //1
+            regionDao.createRegion(region)
+            //2
+            regionDao.createRegion(region)
+
+            regionDao.deleteAllRegions()
+
+            val remainingRegions = regionDao.queryAllRegions().first()
+
+
+            assertTrue(remainingRegions.isEmpty())
+        }
+    }
+
     @After
     fun cleanUpTestingData() {
         koDatabase.close()
