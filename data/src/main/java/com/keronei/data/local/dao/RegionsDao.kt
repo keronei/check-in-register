@@ -1,6 +1,7 @@
 package com.keronei.data.local.dao
 
 import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
 import com.keronei.data.local.embeds.RegionEmbed
 import com.keronei.data.local.entities.MemberDBO
 import com.keronei.data.local.entities.RegionDBO
@@ -8,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RegionsDao {
-    @Insert
+    @Insert(onConflict = REPLACE)
     suspend fun createRegion(regionDBO: RegionDBO)
 
     @Query("SELECT * FROM RegionDBO ORDER BY name DESC")
