@@ -116,9 +116,9 @@ class CheckInDaoTest {
         CheckInDBO(0, 1, Calendar.getInstance().timeInMillis, 35.5)
 
     private suspend fun createMember() {
-        regionDao.createRegion(RegionDBO(1, "Test Region."))
+        regionDao.createRegion(listOf(RegionDBO(1, "Test Region.")))
 
-        memberDao.createNewMember(memberLocalEntityMapper.map(member))
+        memberDao.createNewMember(listOf(memberLocalEntityMapper.map(member)))
     }
 
     @After

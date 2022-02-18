@@ -15,7 +15,7 @@ class MemberViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    fun createNewMember(newMember: MemberEntity) {
+    fun createNewMember(newMember: List<MemberEntity>) {
         viewModelScope.launch {
             membersUseCases.createMemberUseCase(newMember)
         }

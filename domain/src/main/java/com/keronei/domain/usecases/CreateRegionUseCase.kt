@@ -5,8 +5,8 @@ import com.keronei.domain.repository.RegionsRepository
 import com.keronei.domain.usecases.base.BaseUseCase
 
 class CreateRegionUseCase(private val regionsRepository: RegionsRepository) :
-    BaseUseCase<RegionEntity, Unit> {
-    override suspend fun invoke(params: RegionEntity) {
+    BaseUseCase<List<RegionEntity>, Unit> {
+    override suspend fun invoke(params: List<RegionEntity>) {
         return regionsRepository.createNewRegion(params)
     }
 }

@@ -21,7 +21,7 @@ class RegionViewModel @Inject constructor(
 
     }
 
-    fun createRegion(newRegion: RegionEntity) {
+    fun createRegion(newRegion: List<RegionEntity>) {
         viewModelScope.launch {
             regionsUseCases.createRegionUseCase(newRegion)
         }

@@ -56,7 +56,7 @@ class RegionDaoTest {
     fun add_new_region_creates_new_region() {
         runBlocking {
 
-            regionDao.createRegion(region)
+            regionDao.createRegion(listOf(region))
 
             val singleRegionList = regionDao.queryAllRegions().first()
 
@@ -73,8 +73,8 @@ class RegionDaoTest {
 
             val updatedRegionName = RegionDBO(1, "West-airport")
 
-            regionDao.createRegion(region)
-            regionDao.createRegion(region2)
+            regionDao.createRegion(listOf(region))
+            regionDao.createRegion(listOf(region2))
 
             regionDao.updateRegion(updatedRegionName)
 
@@ -95,8 +95,8 @@ class RegionDaoTest {
         runBlocking {
             val region2 = RegionDBO(0, "Ring road")
 
-            regionDao.createRegion(region)
-            regionDao.createRegion(region2)
+            regionDao.createRegion(listOf(region))
+            regionDao.createRegion(listOf(region2))
 
             regionDao.deleteRegion(RegionDBO(2, region2.name))
 
@@ -113,19 +113,19 @@ class RegionDaoTest {
     fun adding_several_regions_returns_all() {
         runBlocking {
             //1
-            regionDao.createRegion(region)
+            regionDao.createRegion(listOf(region))
             //2
-            regionDao.createRegion(region)
+            regionDao.createRegion(listOf(region))
             //3
-            regionDao.createRegion(region)
+            regionDao.createRegion(listOf(region))
             //4
-            regionDao.createRegion(region)
+            regionDao.createRegion(listOf(region))
             //5
-            regionDao.createRegion(region)
+            regionDao.createRegion(listOf(region))
             //6
-            regionDao.createRegion(region)
+            regionDao.createRegion(listOf(region))
 
-            memberDao.createNewMember(memberLocalEntityMapper.map(KOTestDatabaseInstance.getMemberEntity()))
+            memberDao.createNewMember(memberLocalEntityMapper.mapList(listOf(KOTestDatabaseInstance.getMemberEntity())))
 
             regionDao.deleteRegion(RegionDBO(6, region.name))
 
@@ -139,9 +139,9 @@ class RegionDaoTest {
     fun delete_all_regions_wipes_all(){
         runBlocking {
             //1
-            regionDao.createRegion(region)
+            regionDao.createRegion(listOf(region))
             //2
-            regionDao.createRegion(region)
+            regionDao.createRegion(listOf(region))
 
             regionDao.deleteAllRegions()
 

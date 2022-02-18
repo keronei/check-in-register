@@ -64,7 +64,7 @@ abstract class KODatabase : RoomDatabase() {
             databaseInstance?.let { readyInstance ->
                 scope.launch {
                     val instance = readyInstance.regionDao()
-                    instance.createRegion(RegionDBO(0, "Guest/Visitor"))
+                    instance.createRegion(listOf(RegionDBO(0, "Guest/Visitor")))
                 }
 
             }

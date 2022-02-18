@@ -19,8 +19,8 @@ class RegionsRepositoryImpl(
     private val memberDBOToEntityMapper: MemberDBOToEntityMapper,
     private val regionEmbedToRegionEmbedEntityMapper: RegionEmbedToRegionEmbedEntityMapper
 ) : RegionsRepository {
-    override suspend fun createNewRegion(regionEntity: RegionEntity) {
-        regionsDao.createRegion(regionEntityToRegionDBOMapper.map(regionEntity))
+    override suspend fun createNewRegion(regionEntity: List<RegionEntity>) {
+        regionsDao.createRegion(regionEntityToRegionDBOMapper.mapList(regionEntity))
     }
 
     override suspend fun getAllRegions(): Flow<List<RegionEntity>> {

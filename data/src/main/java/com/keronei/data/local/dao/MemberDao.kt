@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MemberDao {
     @Insert(onConflict = REPLACE)
-    suspend fun createNewMember(memberDBO: MemberDBO)
+    suspend fun createNewMember(memberDBOs: List<MemberDBO>)
 
     @Update(entity = MemberDBO::class)
     suspend fun updateMemberInformation(memberDBO: MemberDBO)

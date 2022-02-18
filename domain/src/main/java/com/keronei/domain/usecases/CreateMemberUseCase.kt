@@ -6,8 +6,8 @@ import com.keronei.domain.usecases.base.BaseUseCase
 
 
 class CreateMemberUseCase(private val membersRepository: MembersRepository) :
-    BaseUseCase<MemberEntity, Unit> {
-    override suspend fun invoke(params: MemberEntity) {
+    BaseUseCase<List<MemberEntity>, Unit> {
+    override suspend fun invoke(params: List<MemberEntity>) {
         return membersRepository.addNewMember(params)
     }
 }

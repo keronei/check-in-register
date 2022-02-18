@@ -16,8 +16,8 @@ class MembersRepositoryImpl(
     private val memberDBOToEntityMapper: MemberDBOToEntityMapper,
     private val attendanceEmbedToAttendanceEntityMapper: AttendanceEmbedToAttendanceEntityMapper
 ) : MembersRepository {
-    override suspend fun addNewMember(memberEntity: MemberEntity) {
-        memberDao.createNewMember(memberLocalEntityMapper.map(memberEntity))
+    override suspend fun addNewMember(memberEntity: List<MemberEntity>) {
+        memberDao.createNewMember(memberLocalEntityMapper.mapList(memberEntity))
     }
 
     override fun getAllMembers(): Flow<List<MemberEntity>> {

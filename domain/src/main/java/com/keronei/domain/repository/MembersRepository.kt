@@ -7,7 +7,7 @@ import com.keronei.domain.usecases.base.Either
 import kotlinx.coroutines.flow.Flow
 
 interface MembersRepository {
-    suspend fun addNewMember(memberEntity: MemberEntity)
+    suspend fun addNewMember(memberEntity: List<MemberEntity>)
 
     fun getAllMembers(): Flow<List<MemberEntity>>
 
