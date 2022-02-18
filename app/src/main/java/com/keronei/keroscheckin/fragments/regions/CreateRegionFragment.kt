@@ -82,7 +82,7 @@ class CreateRegionFragment : Fragment() {
                     viewModel.updateRegion(RegionEntity(selectedRegion!!.id.toInt(), providedName))
                     ToastUtils.showLongToastOnTop(R.string.entry_updated)
                 } else {
-                    viewModel.createRegion(RegionEntity(0, providedName.trim()))
+                    viewModel.createRegion(listOf(RegionEntity(0, providedName.trim())))
                     ToastUtils.showLongToastOnTop(R.string.entry_added)
                 }
                 findNavController().popBackStack()

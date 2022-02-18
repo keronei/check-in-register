@@ -86,6 +86,7 @@
     <string name="help">Help</string>
     <string name="version_number">version_number</string>
     <string name="export_import">export_import</string>
+    <string name="clean_up">clean_up</string>
     <string name="join_support">assistance</string>
     <string name="import_data">Import</string>
     <string name="export_data">Export</string>

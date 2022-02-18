@@ -12,6 +12,7 @@ import com.keronei.data.repository.mapper.MemberLocalEntityMapper
 import com.keronei.data.repository.mapper.RegionEntityToRegionDBOMapper
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.fragments.importexport.ImportExportSheet
+import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -43,8 +44,21 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         joinSupport()
 
+        wipeAllData()
+
     }
 
+    private fun wipeAllData(){
+        val exportImport = findPreference<Preference>(getString(R.string.clean_up))
+
+        exportImport?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+
+                ToastUtils.showLongToast("deletion")
+
+                true
+            }
+    }
 
 
     private fun retrieveVersionNumber() {

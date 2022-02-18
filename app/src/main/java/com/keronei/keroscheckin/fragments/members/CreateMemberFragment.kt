@@ -150,7 +150,7 @@ class CreateMemberFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            if(yob?.length ?: 0 < 4){
+            if (yob?.length ?: 0 < 4) {
                 layoutBinding.ageEdittext.error = "Needs 4 digits eg. 1999."
                 return@setOnClickListener
             }
@@ -161,7 +161,9 @@ class CreateMemberFragment : Fragment() {
                 var sexSelection = 1
 
                 when {
-                    maleSex.isChecked -> {sexSelection = 1}
+                    maleSex.isChecked -> {
+                        sexSelection = 1
+                    }
                     femaleSex.isChecked -> sexSelection = 0
                     otherSex.isChecked -> sexSelection = 2
                 }
@@ -175,7 +177,7 @@ class CreateMemberFragment : Fragment() {
                     yob!!.trim().toString().toInt(),
                     layoutBinding.married.isChecked,
                     phoneNumber?.trim().toString(),
-                    if(isEditing) layoutBinding.memberActivityStatus.isChecked else true,
+                    if (isEditing) layoutBinding.memberActivityStatus.isChecked else true,
                     selectedRegion!!.id
                 )
 
@@ -185,7 +187,9 @@ class CreateMemberFragment : Fragment() {
                     )
                 } else {
                     memberViewModel.createNewMember(
-                        subjectMember
+                        listOf(
+                            subjectMember
+                        )
                     )
                 }
             }

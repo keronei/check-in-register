@@ -31,7 +31,7 @@
 
         <Preference
             app:icon="@drawable/ic_baseline_import_export_24"
-            app:key="export_import"
+            app:key="@string/export_import"
             app:summary="Start easily on a new device."
             app:title="Export or Import" />
 
@@ -39,12 +39,13 @@
 
     <PreferenceCategory
         app:initialExpandedChildrenCount="0"
+        app:key="delete_entries"
         app:title="Clean up | Risky zone">
 
         <Preference
             app:icon="@drawable/ic_baseline_delete_forever_24"
 
-            app:key="clean_up"
+            app:key="@string/clean_up"
             app:summary="Clear regions, members and check-in records."
             app:title="Delete everything" />
 
