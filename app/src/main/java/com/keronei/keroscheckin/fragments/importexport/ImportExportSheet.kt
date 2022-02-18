@@ -52,7 +52,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
     lateinit var getContent: ActivityResultLauncher<String>
 
-    lateinit var processingDialog : SweetAlertDialog
+    lateinit var processingDialog: SweetAlertDialog
 
     @Inject
     lateinit var coroutineScope: CoroutineScope
@@ -148,8 +148,8 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         val members = runBlocking { memberViewModel.queryAllMembers().first() }
 
         coroutineScope.launch {
-        //don't prepare workbook if it's only guest region with no members.
-        processingDialog.dismissWithAnimation()
+            //don't prepare workbook if it's only guest region with no members.
+            processingDialog.dismissWithAnimation()
 
             withContext(Dispatchers.Main) {
                 if (regions.size < 2 && members.isEmpty()) {
@@ -211,7 +211,10 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
                 processingDialog.dismissWithAnimation()
 
-                showErrorDialog(getString(R.string.unable_to_export_title), getString(R.string.unable_to_export_message))
+                showErrorDialog(
+                    getString(R.string.unable_to_export_title),
+                    getString(R.string.unable_to_export_message)
+                )
 
                 exception.printStackTrace()
             }
@@ -241,11 +244,15 @@ class ImportExportSheet : BottomSheetDialogFragment() {
     private fun launchSendData(sendDataIntent: Intent, summary: String) {
         try {
 
-            MaterialAlertDialogBuilder(requireContext())
-                .setMessage(summary)
-                .setNegativeButton(getString(R.string.dialog_cancel)) { dialog, _ ->
-                    dialog.dismiss()
-                }.setPositiveButton(getString(R.string.export_option)) { _, _ ->
+            SweetAlertDialog(requireContext(), SweetAlertDialog.BUTTON_CONFIRM)
+                .setTitleText(getString(R.string.summary_string))
+                .setContentText(
+                    summary
+                )
+                .setConfirmButton(getString(R.string.export_option)) { confirmationPrompt ->
+
+                    confirmationPrompt.dismissWithAnimation()
+
                     sendDataIntent.action = Intent.ACTION_SEND
                     startActivity(
                         Intent.createChooser(
@@ -253,10 +260,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                             getString(R.string.export_regions_members)
                         )
                     )
-
-                }
-                .show()
-
+                }.show()
 
         } catch (exception: java.lang.Exception) {
             SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
