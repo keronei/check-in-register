@@ -27,8 +27,10 @@ import com.keronei.keroscheckin.models.toPresentation
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RegionFragment : Fragment() {
@@ -36,6 +38,9 @@ class RegionFragment : Fragment() {
     companion object {
         fun newInstance() = RegionFragment()
     }
+
+    @Inject
+    lateinit var coroutineScope: CoroutineScope
 
     private val viewModel: RegionViewModel by activityViewModels()
     lateinit var regionsAdapter: RegionsRecyclerAdapter
@@ -169,7 +174,10 @@ class RegionFragment : Fragment() {
             )
             .setConfirmText("Yes")
             .setConfirmClickListener { sDialog ->
-                viewModel.deleteRegion(entry)
+                coroutineScope.launch {
+                    viewModel.deleteRegion(entry)
+
+                }
                 ToastUtils.showLongToastInMiddle(R.string.region_deleted)
 
                 sDialog.dismissWithAnimation()

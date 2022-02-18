@@ -16,7 +16,7 @@ interface RegionsRepository {
 
     suspend fun updateRegion(regionEntity: RegionEntity)
 
-    suspend fun deleteRegion(regionEntity: RegionEntity)
+    suspend fun deleteRegion(regionEntity: RegionEntity) : Int
 
-    suspend fun deleteAllRegions() : Int
+    suspend fun deleteAllRegions(deletableRegions : List<RegionEntity>) : Int
 }

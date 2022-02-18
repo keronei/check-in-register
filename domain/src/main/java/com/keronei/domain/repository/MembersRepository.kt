@@ -13,7 +13,7 @@ interface MembersRepository {
 
     suspend fun updateMemberDetails(memberEntity: MemberEntity)
 
-    suspend fun removeMemberFromRegister(memberEntity: MemberEntity)
+    suspend fun removeMemberFromRegister(memberEntity: MemberEntity) : Int
 
     suspend fun getAllAttendanceData(): Flow<List<AttendanceEntity>>
 

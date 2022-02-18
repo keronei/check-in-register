@@ -26,8 +26,8 @@ interface RegionsDao {
     suspend fun updateRegion(regionDBO: RegionDBO)
 
     @Delete
-    suspend fun deleteRegion(regionDBO: RegionDBO)
+    suspend fun deleteRegion(regionDBO: RegionDBO) : Int
 
-    @Query("DELETE FROM RegionDBO")
-    suspend fun deleteAllRegions() : Int
+    @Query("DELETE FROM RegionDBO WHERE id in (:regionsIds)")
+    suspend fun deleteAllRegions(regionsIds: List<Int>) : Int
 }

@@ -3,10 +3,11 @@ package com.keronei.keroscheckin.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.keronei.domain.entities.MemberEntity
-import com.keronei.domain.usecases.*
+import com.keronei.domain.usecases.MembersUseCases
 import com.keronei.domain.usecases.base.UseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,15 +30,15 @@ class MemberViewModel @Inject constructor(
         }
     }
 
-    fun deleteMember(memberEntity: MemberEntity) {
-        viewModelScope.launch {
-            membersUseCases.deleteMemberUseCase(memberEntity)
-        }
+    suspend fun deleteMember(memberEntity: MemberEntity) : Int {
+       return withContext(viewModelScope.coroutineContext) {
+           membersUseCases.deleteMemberUseCase(memberEntity)
+       }
     }
 
-    fun deleteAllMembers() {
-        viewModelScope.launch {
-            membersUseCases.deleteAllMembersUseCase(Unit)
-        }
+    suspend fun deleteAllMembers() : Int {
+       return withContext(viewModelScope.coroutineContext) {
+           membersUseCases.deleteAllMembersUseCase(Unit)
+       }
     }
 }

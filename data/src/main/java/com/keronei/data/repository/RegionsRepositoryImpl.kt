@@ -43,11 +43,22 @@ class RegionsRepositoryImpl(
         regionsDao.updateRegion(regionEntityToRegionDBOMapper.map(regionEntity))
     }
 
-    override suspend fun deleteRegion(regionEntity: RegionEntity) {
-        regionsDao.deleteRegion(regionEntityToRegionDBOMapper.map(regionEntity))
+    override suspend fun deleteRegion(regionEntity: RegionEntity): Int {
+        return try {
+            regionsDao.deleteRegion(regionEntityToRegionDBOMapper.map(regionEntity))
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            0
+        }
     }
 
-    override suspend fun deleteAllRegions(): Int {
-        return regionsDao.deleteAllRegions()
+    override suspend fun deleteAllRegions(deletableRegions: List<RegionEntity>): Int {
+        return try {
+            val regionsDbo = regionEntityToRegionDBOMapper.mapList(deletableRegions)
+            regionsDao.deleteAllRegions(regionsDbo.map { regionDBO -> regionDBO.id })
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            0
+        }
     }
 }

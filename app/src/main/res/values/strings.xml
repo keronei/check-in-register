@@ -122,6 +122,12 @@
     <string name="unable_to_export_title">Unable to Export</string>
     <string name="unable_to_export_message">Could not create export file from your existing entries.</string>
     <string name="version_mismatch_title">Version Mismatch</string>
+    <string name="delete_all_option">All (Regions &amp; Members)</string>
+    <string name="wipe_data_message"><![CDATA[Choose an entry to clean up, this cannot be undone. <br/> Your PIN will be required.]]></string>
+    <string name="wipe_data_dialog_title">Select Entries To Delete</string>
+    <string name="delete_data_button_text">Delete</string>
+    <string name="undo_deletion">Undo</string>
+    <string name="deletion_suffix">%s deleted.</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>
@@ -138,6 +144,20 @@
         <item quantity="other">%d members</item>
         <item quantity="one">%d member</item>
         <item quantity="zero">%s members</item>
+    </plurals>
+
+
+    <plurals name="regions_deletion_option">
+        <item quantity="many">%d deletable regions</item>
+        <item quantity="one">%d deletable region</item>
+        <item quantity="other">Regions(%d deletable)</item>
+        <item quantity="zero">Regions(%d deletable)</item>
+    </plurals>
+
+    <plurals name="members_deletion_option">
+        <item quantity="many">%d members</item>
+        <item quantity="one">%d member</item>
+        <item quantity="other">%d members</item>
     </plurals>
 
 </resources>

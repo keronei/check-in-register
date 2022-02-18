@@ -5,8 +5,8 @@ import com.keronei.domain.repository.MembersRepository
 import com.keronei.domain.usecases.base.BaseUseCase
 
 class DeleteMemberUseCase(private val membersRepository: MembersRepository) :
-    BaseUseCase<MemberEntity, Unit> {
-    override suspend fun invoke(params: MemberEntity) {
+    BaseUseCase<MemberEntity, Int> {
+    override suspend fun invoke(params: MemberEntity): Int {
         return membersRepository.removeMemberFromRegister(params)
     }
 }

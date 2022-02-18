@@ -23,7 +23,7 @@ interface MemberDao {
     fun getAttendanceInformation(): Flow<List<Attendance>>
 
     @Delete
-    suspend fun deleteMember(memberDBO: MemberDBO)
+    suspend fun deleteMember(memberDBO: MemberDBO) : Int
 
     @Query("DELETE FROM MemberDBO")
     suspend fun deleteAllMembers() : Int

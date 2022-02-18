@@ -3,11 +3,12 @@ package com.keronei.keroscheckin.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.keronei.domain.entities.RegionEntity
-import com.keronei.domain.usecases.*
+import com.keronei.domain.usecases.RegionsUseCases
 import com.keronei.domain.usecases.base.UseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,15 +39,15 @@ class RegionViewModel @Inject constructor(
     suspend fun queryAllRegionsWithMembersData() =
         regionsUseCases.queryAllRegionsWithMembersUseCase(UseCaseParams.Empty)
 
-    fun deleteRegion(defectedRegion: RegionEntity) {
-        viewModelScope.launch {
+    suspend fun deleteRegion(defectedRegion: RegionEntity): Int {
+        return withContext(viewModelScope.coroutineContext) {
             regionsUseCases.deleteRegionUseCase(defectedRegion)
         }
     }
 
-    fun deleteAllRegions(){
-        viewModelScope.launch {
-            regionsUseCases.deleteAllRegionsUseCase(Unit)
+    suspend fun deleteAllRegions(deletableRegions : List<RegionEntity>): Int {
+        return withContext(viewModelScope.coroutineContext) {
+            regionsUseCases.deleteAllRegionsUseCase(deletableRegions)
         }
     }
 }

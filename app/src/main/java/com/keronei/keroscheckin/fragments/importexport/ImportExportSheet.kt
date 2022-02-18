@@ -11,8 +11,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,7 +34,6 @@ import timber.log.Timber
 import java.io.InputStream
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.HashMap
 
 @AndroidEntryPoint
 class ImportExportSheet : BottomSheetDialogFragment() {
@@ -415,12 +412,16 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         readRegionsList: List<RegionEntity>,
         readMembersList: List<MemberEntity>
     ) {
+        coroutineScope.launch {
 
-        regionsViewModel.deleteAllRegions()
+            //just re-query and delete all
+            val existingRegions = regionsViewModel.queryAllRegions().first()
 
-        memberViewModel.deleteAllMembers()
+            memberViewModel.deleteAllMembers()
 
+            regionsViewModel.deleteAllRegions(existingRegions)
 
+        }
 
     }
 

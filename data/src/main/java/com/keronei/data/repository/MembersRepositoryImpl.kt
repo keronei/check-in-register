@@ -29,8 +29,8 @@ class MembersRepositoryImpl(
         memberDao.updateMemberInformation(memberLocalEntityMapper.map(memberEntity))
     }
 
-    override suspend fun removeMemberFromRegister(memberEntity: MemberEntity) {
-        memberDao.deleteMember(memberLocalEntityMapper.map(memberEntity))
+    override suspend fun removeMemberFromRegister(memberEntity: MemberEntity) : Int {
+       return memberDao.deleteMember(memberLocalEntityMapper.map(memberEntity))
     }
 
     override suspend fun getAllAttendanceData(): Flow<List<AttendanceEntity>> {
@@ -39,7 +39,11 @@ class MembersRepositoryImpl(
     }
 
     override suspend fun deleteAllMembers(): Int {
-        return memberDao.deleteAllMembers()
-
+        return try {
+            memberDao.deleteAllMembers()
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            0
+        }
     }
 }

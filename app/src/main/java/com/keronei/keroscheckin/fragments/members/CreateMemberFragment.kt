@@ -25,8 +25,11 @@ import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.create_member_fragment.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CreateMemberFragment : Fragment() {
@@ -41,6 +44,9 @@ class CreateMemberFragment : Fragment() {
     private var isEditing = false
 
     private val args: CreateMemberFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var coroutineScope: CoroutineScope
 
     companion object {
         fun newInstance() = CreateMemberFragment()
@@ -217,7 +223,9 @@ class CreateMemberFragment : Fragment() {
                     "Yes"
                 ) { sDialog ->
 
-                    memberViewModel.deleteMember(selectedAttendee!!.toMemberEntity())
+                    coroutineScope.launch {
+                        memberViewModel.deleteMember(selectedAttendee!!.toMemberEntity())
+                    }
 
                     sDialog.dismissWithAnimation()
 
