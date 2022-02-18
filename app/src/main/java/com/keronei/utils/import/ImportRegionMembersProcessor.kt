@@ -71,7 +71,7 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
 
     private fun readAppVersion(readString: String): String {
         //"$THREE_HASHES$sectionName-$timeStamp$VERSION_FIX$versionNumber$TOTAL_FIX${items.size}$THREE_HASHES"
-        if (readString == "" || !readString.startsWith(THREE_HASHES)){
+        if (readString == "" || !readString.startsWith(THREE_HASHES)) {
             return ""
         }
 
@@ -79,12 +79,14 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
 
         val versionNumberWithPrefix = withVersionPrefixAndHash.replaceAfter(TOTAL_FIX, "")
 
-        return versionNumberWithPrefix.replace(VERSION_FIX, "")
+        val prefixWithTotalPrefix = versionNumberWithPrefix.replace(VERSION_FIX, "")
+
+        return prefixWithTotalPrefix.replace(TOTAL_FIX, "")
 
     }
 
     private fun readEntriesCount(readString: String): Int {
-        if (readString == "" || !readString.startsWith(THREE_HASHES)){
+        if (readString == "" || !readString.startsWith(THREE_HASHES)) {
             return 0
         }
 
@@ -107,14 +109,14 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
             regionsSheet.rowIterator().forEach { pointerRow ->
                 if (pointerRow.rowNum > 1) {//skip header row - two of them
 
-                        val builtEntityObject = RegionEntity(
-                            pointerRow.getCell(0).stringCellValue.toInt(),
-                            pointerRow.getCell(1).stringCellValue
-                        )
+                    val builtEntityObject = RegionEntity(
+                        pointerRow.getCell(0).stringCellValue.toInt(),
+                        pointerRow.getCell(1).stringCellValue
+                    )
 
-                        Timber.d("Read -> ${pointerRow.rowNum} with $builtEntityObject")
+                    Timber.d("Read -> ${pointerRow.rowNum} with $builtEntityObject")
 
-                        regionsList.add(builtEntityObject)
+                    regionsList.add(builtEntityObject)
 
                 }
 
