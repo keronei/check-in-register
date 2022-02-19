@@ -298,41 +298,45 @@ class ReportsFragment : Fragment() {
 
             val openingIntent = makeShareIntent(reportFileName, workBook, requireContext())
 
+          val reportsOutputFragment =  ReportsOutputFragment()
 
-            MaterialAlertDialogBuilder(requireContext()).setMessage(
-                resources.getQuantityString(
-                    R.plurals.reports_generated,
-                    generatedReport.size,
-                    generatedReport.size
-                )
-            )
+            reportsOutputFragment.show(childFragmentManager, ReportsOutputFragment.TAG)
 
-                .setNegativeButton("Share") { _, _ ->
-                    openingIntent.action = Intent.ACTION_SEND
-                    startActivity(Intent.createChooser(openingIntent, "Share report"))
 
-                }.setPositiveButton("View") { _, _ ->
-
-                    openingIntent.action = Intent.ACTION_VIEW
-
-                    try {
-                        startActivity(openingIntent)
-                    } catch (openingException: Exception) {
-
-                        openingException.printStackTrace()
-
-                        SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Error")
-                            .setContentText(
-                                "No app found in your phone that can open this Excel report."
-                            )
-                            .show()
-
-                        Log.d("TAG", "No Intent available to handle action")
-                    }
-
-                }
-                .show()
+//            MaterialAlertDialogBuilder(requireContext()).setMessage(
+//                resources.getQuantityString(
+//                    R.plurals.reports_generated,
+//                    generatedReport.size,
+//                    generatedReport.size
+//                )
+//            )
+//
+//                .setNegativeButton("Share") { _, _ ->
+//                    openingIntent.action = Intent.ACTION_SEND
+//                    startActivity(Intent.createChooser(openingIntent, "Share report"))
+//
+//                }.setPositiveButton("View") { _, _ ->
+//
+//                    openingIntent.action = Intent.ACTION_VIEW
+//
+//                    try {
+//                        startActivity(openingIntent)
+//                    } catch (openingException: Exception) {
+//
+//                        openingException.printStackTrace()
+//
+//                        SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
+//                            .setTitleText("Error")
+//                            .setContentText(
+//                                "No app found in your phone that can open this Excel report."
+//                            )
+//                            .show()
+//
+//                        Log.d("TAG", "No Intent available to handle action")
+//                    }
+//
+//                }
+//                .show()
 
 
         } catch (exception: Exception) {

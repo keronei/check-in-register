@@ -1,6 +1,6 @@
 <resources>
     <!-- Invalidate Preference -->
-    <string-array  name="invalidate_entries">
+    <string-array name="invalidate_entries">
         <item>4 hours</item>
         <item>8 hours</item>
         <item>12 hours</item>
@@ -11,4 +11,12 @@
         <item>8</item>
         <item>12</item>
     </string-array>
+
+
+    <array name="initial_slider_values">
+        <item>14.0</item>
+        <item>35.0</item>
+    </array>
+
+
 </resources>
