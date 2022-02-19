@@ -134,6 +134,7 @@
     <string name="operation_cancelled">Operation Cancelled.</string>
 
     <string name="delete_all_snack_message">%s and %s deleted.</string>
+    <string name="marital_status_constraint">Indicate: Matiral status</string>
 
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>

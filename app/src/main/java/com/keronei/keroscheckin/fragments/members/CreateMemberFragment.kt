@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+import com.google.android.material.snackbar.Snackbar
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
@@ -24,11 +26,12 @@ import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.create_member_fragment.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -83,7 +86,40 @@ class CreateMemberFragment : Fragment() {
             populateEditFields()
         }
 
+        watchAgeInput()
+
         return layoutBinding.root
+    }
+
+    private fun watchAgeInput() {
+        val currentDate = Calendar.getInstance()
+
+        val currentYear = currentDate.get(Calendar.YEAR)
+
+        with(layoutBinding.ageEdittext) {
+            doOnTextChanged { text, _, _, _ ->
+                try {
+                    if (text.isNullOrEmpty()) {
+                        return@doOnTextChanged
+                    }
+
+                    val birthYear = text.toString().toInt()
+
+                    val approxAge = currentYear - birthYear
+
+                    if (approxAge > 17) {
+                        layoutBinding.maritalStatus.visibility = View.VISIBLE
+                        layoutBinding.married.isChecked = false
+                        layoutBinding.notMarried.isChecked = false
+                    } else {
+                        layoutBinding.maritalStatus.visibility = View.GONE
+                    }
+                } catch (exception: Exception) {
+                    ToastUtils.showShortToast(exception.message.toString())
+                    exception.printStackTrace()
+                }
+            }
+        }
     }
 
     private fun configureToolBar() {
@@ -161,6 +197,13 @@ class CreateMemberFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            if (layoutBinding.maritalStatus.isVisible) {
+                if (!layoutBinding.married.isChecked && !layoutBinding.notMarried.isChecked) {
+                    ToastUtils.showLongToastInMiddle(R.string.marital_status_constraint)
+                    return@setOnClickListener
+                }
+            }
+
 
             lifecycleScope.launch {
 
@@ -223,30 +266,47 @@ class CreateMemberFragment : Fragment() {
                     "Yes"
                 ) { sDialog ->
 
-                    coroutineScope.launch {
-                        memberViewModel.deleteMember(selectedAttendee!!.toMemberEntity())
+                    lifecycleScope.launch {
+
+                        val deletionCount =
+                            memberViewModel.deleteMember(selectedAttendee!!.toMemberEntity())
+
+                        if (deletionCount > 0) {
+                            withContext(Dispatchers.Main) {
+                                showDeletionSuccess()
+                            }
+                        } else {
+                            ToastUtils.showShortToast("${selectedAttendee!!.firstName} not removed.")
+                        }
+
                     }
+
 
                     sDialog.dismissWithAnimation()
 
-                    //this.dismiss()
+                
 
-                    childFragmentManager.popBackStack()
+                    findNavController().popBackStack()
 
 
-                    showDeletionSuccess()
                 }
                 .show()
         }
     }
 
     private fun showDeletionSuccess() {
-        SweetAlertDialog(
-            requireContext(), SweetAlertDialog.SUCCESS_TYPE
-        )
-            .setTitleText("Deleted")
-            .setContentText("${selectedAttendee!!.firstName} removed completely!")
-            .show()
+        val deletionSnack = Snackbar.make(
+            layoutBinding.root,
+            "${selectedAttendee!!.firstName} removed.",
+            Snackbar.LENGTH_LONG
+        ).setAction(R.string.undo_deletion) {
+            //lifecycleScope.launch {
+            memberViewModel.createNewMember(listOf(selectedAttendee!!.toMemberEntity()))
+            //}
+        }
+
+        deletionSnack.show()
+
     }
 
     private fun watchRegions() {
