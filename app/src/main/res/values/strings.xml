@@ -164,7 +164,8 @@
     <plurals name="members_deletion_option">
         <item quantity="many">%d members</item>
         <item quantity="one">%d member</item>
-        <item quantity="other">%d members</item>
+        <item quantity="other">Members(%d deletable)</item>
+        <item quantity="zero">Members(%d deletable)</item>
     </plurals>
 
 </resources>
