@@ -128,6 +128,13 @@
     <string name="delete_data_button_text">Delete</string>
     <string name="undo_deletion">Undo</string>
     <string name="deletion_suffix">%s deleted.</string>
+    <string name="operation_not_completed">Operation Not Completed</string>
+    <string name="none_was_deleted">None was deleted.</string>
+    <string name="nothing_to_delete">Nothing to delete.</string>
+    <string name="operation_cancelled">Operation Cancelled.</string>
+
+    <string name="delete_all_snack_message">%s and %s deleted.</string>
+
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>

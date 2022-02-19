@@ -14,7 +14,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.guardanis.applock.dialogs.UnlockDialogBuilder
 import com.keronei.android.common.Constants.TELEGRAM_SUPPORT_GROUP_LINK
 import com.keronei.data.repository.mapper.MemberLocalEntityMapper
-import com.keronei.data.repository.mapper.RegionEntityToRegionDBOMapper
+import com.keronei.domain.entities.MemberEntity
+import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.fragments.importexport.ImportExportSheet
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
@@ -109,13 +110,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         checkedItem = which
                     }
                     .setPositiveButton(getString(R.string.delete_data_button_text)) { dialog, _ ->
+                        dialog.dismiss()
+
                         if (checkedItem == 0 && unusedRegions.isEmpty()) {
-                            ToastUtils.showLongToast("Nothing to delete.")
+                            ToastUtils.showLongToast(getString(R.string.nothing_to_delete))
                             return@setPositiveButton
                         }
 
                         if (checkedItem == 1 && members.isEmpty()) {
-                            ToastUtils.showLongToast("Nothing to delete.")
+                            ToastUtils.showLongToast(getString(R.string.nothing_to_delete))
                             return@setPositiveButton
                         }
 
@@ -123,6 +126,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
                         appLock
                             .onUnlocked {
+                                val regionsToBeDeletedBackup = mutableListOf<RegionEntity>()
+
+                                val membersToBeDeletedBackUp = mutableListOf<MemberEntity>()
+
+                                regionsToBeDeletedBackup.addAll(unusedRegions)
+                                membersToBeDeletedBackUp.addAll(members)
+
                                 when (checkedItem) {
                                     0 -> {
 
@@ -131,43 +141,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                             Filter those without associations then delete them.
                                              */
 
-
                                             Timber.d("Deletable regions -> $unusedRegions")
 
                                             lifecycleScope.launch {
 
-                                                val deletionCount =
-                                                    regionsViewModel.deleteAllRegions(unusedRegions)
-
-                                                withContext(Dispatchers.Main) {
-                                                    val regionsText = resources.getQuantityString(
-                                                        R.plurals.regions_prefix,
-                                                        deletionCount,
-                                                        deletionCount
-                                                    )
-
-                                                    val regionsDeletionSnackbar = Snackbar.make(
-                                                        this@SettingsFragment.requireView(),
-                                                        getString(
-                                                            R.string.deletion_suffix,
-                                                            regionsText
-                                                        ),
-                                                        Snackbar.LENGTH_SHORT
-                                                    ).setAction(
-                                                        getString(
-                                                            R.string.undo_deletion
-                                                        )
-                                                    ) {
-
-
-                                                    }
-
-                                                    if (deletionCount > 0) {
-                                                        regionsDeletionSnackbar.show()
-                                                    } else {
-                                                        ToastUtils.showLongToast("None was deleted.")
-                                                    }
-                                                }
+                                                deleteRegionsImpl(
+                                                    unusedRegions,
+                                                    regionsToBeDeletedBackup
+                                                )
 
                                             }
 
@@ -176,8 +157,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                 requireContext(),
                                                 SweetAlertDialog.ERROR_TYPE
                                             )
-                                                .setTitleText("Operation Not Completed")
-                                                .setContentText("Some regions still has associated members and could not be deleted.")
+                                                .setTitleText(getString(R.string.operation_not_completed))
+                                                .setContentText(exception.message)
                                                 .show()
 
                                             exception.printStackTrace()
@@ -188,45 +169,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                     1 -> {
                                         try {
                                             lifecycleScope.launch {
-                                                val deletedMembersCount =
-                                                    membersViewModel.deleteAllMembers()
-
-                                                withContext(Dispatchers.Main) {
-                                                    val membersText = resources.getQuantityString(
-                                                        R.plurals.members_prefix,
-                                                        deletedMembersCount,
-                                                        deletedMembersCount
-                                                    )
-
-                                                    val membersDeletionSnackbar = Snackbar.make(
-                                                        this@SettingsFragment.requireView(),
-                                                        getString(
-                                                            R.string.deletion_suffix,
-                                                            membersText
-                                                        ),
-                                                        Snackbar.LENGTH_SHORT
-                                                    ).setAction(
-                                                        getString(
-                                                            R.string.undo_deletion
-                                                        )
-                                                    ) {
-
-                                                        membersViewModel.createNewMember(members)
-                                                    }
-                                                    if (deletedMembersCount > 0) {
-                                                        membersDeletionSnackbar.show()
-                                                    } else {
-                                                        ToastUtils.showLongToast("None was deleted.")
-                                                    }
-                                                }
+                                                membersDeletionImpl(membersToBeDeletedBackUp)
                                             }
                                         } catch (exception: Exception) {
                                             SweetAlertDialog(
                                                 requireContext(),
                                                 SweetAlertDialog.ERROR_TYPE
                                             )
-                                                .setTitleText("Operation Not Completed")
-                                                .setContentText("Something unexpected happened and members could not be deleted.")
+                                                .setTitleText(getString(R.string.operation_not_completed))
+                                                .setContentText(exception.message)
                                                 .show()
 
                                             exception.printStackTrace()
@@ -236,24 +187,95 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                     2 -> {
                                         try {
                                             lifecycleScope.launch {
-                                                val unusedRegions =
-                                                    regions.filter { providedRegion ->
-                                                        providedRegion.id !in members.map { providedMember ->
-                                                            providedMember.regionId
+                                                membersToBeDeletedBackUp.clear()
+                                                membersToBeDeletedBackUp.addAll(members)
+
+                                                val deletedMembersCountInDeleteAll =
+                                                    membersViewModel.deleteAllMembers()
+
+                                                regionsToBeDeletedBackup.clear()
+                                                regionsToBeDeletedBackup.addAll(regions)
+
+                                                val deletedRegionsCountInDeleteAll =
+                                                    regionsViewModel.deleteAllRegions(
+                                                        regionsToBeDeletedBackup
+                                                    )
+
+                                                if (deletedMembersCountInDeleteAll > 0 && deletedRegionsCountInDeleteAll > 0) {
+
+                                                    val regionsText = resources.getQuantityString(
+                                                        R.plurals.regions_prefix,
+                                                        deletedRegionsCountInDeleteAll,
+                                                        deletedRegionsCountInDeleteAll
+                                                    )
+                                                    val membersText = resources.getQuantityString(
+                                                        R.plurals.members_prefix,
+                                                        deletedMembersCountInDeleteAll,
+                                                        deletedMembersCountInDeleteAll
+                                                    )
+                                                    withContext(Dispatchers.Main) {
+
+                                                        val snack = Snackbar.make(
+                                                            this@SettingsFragment.requireView(),
+                                                            getString(
+                                                                R.string.delete_all_snack_message,
+                                                                regionsText,
+                                                                membersText
+                                                            ),
+                                                            Snackbar.LENGTH_LONG
+                                                        ).setAction(R.string.undo_deletion) {
+
+                                                            regionsViewModel.createRegion(
+                                                                regionsToBeDeletedBackup
+                                                            )
+
+                                                            membersViewModel.createNewMember(
+                                                                membersToBeDeletedBackUp
+                                                            )
                                                         }
+
+                                                        snack.show()
                                                     }
 
-                                                regionsViewModel.deleteAllRegions(unusedRegions)
+                                                } else if (deletedMembersCountInDeleteAll > 0) {
+                                                    val snack = Snackbar.make(
+                                                        this@SettingsFragment.requireView(),
+                                                        getMemberDeletionCountString(
+                                                            deletedMembersCountInDeleteAll
+                                                        ),
+                                                        Snackbar.LENGTH_LONG
+                                                    ).setAction(R.string.undo_deletion) {
+                                                        membersViewModel.createNewMember(
+                                                            membersToBeDeletedBackUp
+                                                        )
+                                                    }
 
-                                                membersViewModel.deleteAllMembers()
+                                                    snack.show()
+                                                } else if (deletedRegionsCountInDeleteAll > 0) {
+                                                    val snack = Snackbar.make(
+                                                        this@SettingsFragment.requireView(),
+                                                        getRegionDeletionCountString(
+                                                            deletedRegionsCountInDeleteAll
+                                                        ),
+                                                        Snackbar.LENGTH_LONG
+                                                    ).setAction(R.string.undo_deletion) {
+                                                        regionsViewModel.createRegion(
+                                                            regionsToBeDeletedBackup
+                                                        )
+                                                    }
+
+                                                    snack.show()
+                                                } else {
+                                                    ToastUtils.showLongToast(getString(R.string.none_was_deleted))
+                                                }
                                             }
                                         } catch (exception: Exception) {
                                             SweetAlertDialog(
                                                 requireContext(),
                                                 SweetAlertDialog.ERROR_TYPE
                                             )
-                                                .setTitleText("Operation Not Completed")
-                                                .setContentText("Some regions still have associated members and could not be deleted.")
+                                                .setTitleText(getString(R.string.operation_not_completed))
+                                                .setContentText(exception.message)
                                                 .show()
 
                                             exception.printStackTrace()
@@ -262,12 +284,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                 }
 
                             }.onCanceled {
-                                ToastUtils.showShortToast("Operation Cancelled.")
+                                ToastUtils.showShortToast(getString(R.string.operation_cancelled))
 
                             }
                             .show()
                     }
-                    .setNeutralButton(getString(R.string.dialog_cancel)) { dialog, _ -> }
+                    .setNeutralButton(getString(R.string.dialog_cancel)) { dialog, _ ->
+                        dialog.dismiss()
+                    }
                     .show()
 
 
@@ -276,6 +300,94 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
     }
 
+    private suspend fun deleteRegionsImpl(
+        unusedRegions: List<RegionEntity>,
+        regionsToBeDeletedBackup: MutableList<RegionEntity>
+    ) {
+        val deletionCount =
+            regionsViewModel.deleteAllRegions(unusedRegions)
+
+        withContext(Dispatchers.Main) {
+            val regionsDeletionSnackbar = Snackbar.make(
+                this@SettingsFragment.requireView(),
+                getRegionDeletionCountString(deletionCount),
+                Snackbar.LENGTH_SHORT
+            ).setAction(
+                getString(
+                    R.string.undo_deletion
+                )
+            ) {
+                regionsViewModel.createRegion(
+                    regionsToBeDeletedBackup
+                )
+
+            }
+
+            if (deletionCount > 0) {
+                regionsDeletionSnackbar.show()
+            } else {
+                ToastUtils.showLongToast(getString(R.string.none_was_deleted))
+            }
+        }
+    }
+
+    private fun getMemberDeletionCountString(count: Int): String {
+        val membersText = resources.getQuantityString(
+            R.plurals.members_prefix,
+            count,
+            count
+        )
+
+        return getString(
+            R.string.deletion_suffix,
+            membersText
+        )
+    }
+
+    private fun getRegionDeletionCountString(count: Int): String {
+        val regionsText = resources.getQuantityString(
+            R.plurals.regions_prefix,
+            count,
+            count
+        )
+
+        return getString(
+            R.string.deletion_suffix,
+            regionsText
+        )
+    }
+
+    private suspend fun membersDeletionImpl(membersBackup: List<MemberEntity>) {
+
+        val deletedMembersCount =
+            membersViewModel.deleteAllMembers()
+
+        withContext(Dispatchers.Main) {
+
+
+            val membersDeletedSnackBar = Snackbar.make(
+                this@SettingsFragment.requireView(),
+                getMemberDeletionCountString(deletedMembersCount),
+                Snackbar.LENGTH_SHORT
+            ).setAction(
+                getString(
+                    R.string.undo_deletion
+                )
+            ) {
+
+                membersViewModel.createNewMember(
+                    membersBackup
+                )
+            }
+
+            if (deletedMembersCount > 0) {
+                membersDeletedSnackBar.show()
+            } else {
+                ToastUtils.showLongToast(getString(R.string.none_was_deleted))
+            }
+
+        }
+    }
 
     private fun retrieveVersionNumber() {
         val versionText = findPreference<Preference>(getString(R.string.version_number))
