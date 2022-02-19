@@ -245,8 +245,6 @@ class CreateMemberFragment : Fragment() {
 
             ToastUtils.showLongToastInMiddle(if (isEditing) R.string.member_updated else R.string.member_created)
 
-            //this.dismiss()
-
             findNavController().popBackStack()
         }
 
@@ -284,7 +282,7 @@ class CreateMemberFragment : Fragment() {
 
                     sDialog.dismissWithAnimation()
 
-                
+
 
                     findNavController().popBackStack()
 

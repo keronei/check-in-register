@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.keronei.data.remote.Constants
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
@@ -167,6 +168,10 @@ class RegionFragment : Fragment() {
     }
 
     private fun promptRegionDeletion(entry: RegionEntity) {
+        val regionBackUp = mutableListOf<RegionEntity>()
+
+        regionBackUp.add(entry)
+
         SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
             .setTitleText("Delete ${entry.name}")
             .setContentText(
@@ -175,10 +180,27 @@ class RegionFragment : Fragment() {
             .setConfirmText("Yes")
             .setConfirmClickListener { sDialog ->
                 coroutineScope.launch {
-                    viewModel.deleteRegion(entry)
+                    val deletionCount = viewModel.deleteRegion(entry)
+
+                    if (deletionCount > 0) {
+                        val snack = Snackbar.make(
+                            regionFragmentBinding.root,
+                            getString(R.string.region_deleted),
+                            Snackbar.LENGTH_LONG
+                        ).setAction(R.string.undo_deletion) {
+                            lifecycleScope.launch {
+                                viewModel.createRegion(regionBackUp)
+                            }
+                        }
+
+                        snack.show()
+
+                    } else {
+                        ToastUtils.showShortToast(R.string.operation_not_completed)
+
+                    }
 
                 }
-                ToastUtils.showLongToastInMiddle(R.string.region_deleted)
 
                 sDialog.dismissWithAnimation()
             }
@@ -192,8 +214,6 @@ class RegionFragment : Fragment() {
         lifecycleScope.launch {
 
             viewModel.queryAllRegionsWithMembersData().collect { info ->
-
-                Log.d("RegionFragment", "Collected $info")
 
                 val list = info.map { regionEmbedEntity -> regionEmbedEntity.toPresentation() }
 
