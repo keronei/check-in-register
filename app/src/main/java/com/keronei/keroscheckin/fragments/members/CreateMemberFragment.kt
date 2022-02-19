@@ -109,8 +109,7 @@ class CreateMemberFragment : Fragment() {
 
                     if (approxAge > 17) {
                         layoutBinding.maritalStatus.visibility = View.VISIBLE
-                        layoutBinding.married.isChecked = false
-                        layoutBinding.notMarried.isChecked = false
+                        layoutBinding.maritalStatus.clearCheck()
                     } else {
                         layoutBinding.maritalStatus.visibility = View.GONE
                     }
