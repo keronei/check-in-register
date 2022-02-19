@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+    
+    <Toolbar
+        android:id="@+id/prefs_toolbar"
+        android:title="@string/settings"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@android:id/list_container"
+        tools:tartgetApi="n"/>
+
+</LinearLayout>

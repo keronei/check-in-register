@@ -4,8 +4,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -62,6 +65,28 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         wipeAllData()
 
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val toolbar = view.findViewById<Toolbar>(R.id.prefs_toolbar)
+
+        if (toolbar != null) {
+            configureToolBar(toolbar)
+            ToastUtils.showShortToast("Tool found")
+        } else {
+            ToastUtils.showShortToast("No Tool ")
+
+        }
+    }
+
+    private fun configureToolBar(toolbar: Toolbar) {
+        toolbar.setNavigationIcon(R.drawable.ic_navigate_back_24)
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun wipeAllData() {
