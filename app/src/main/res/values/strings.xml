@@ -134,8 +134,10 @@
     <string name="operation_cancelled">Operation Cancelled.</string>
 
     <string name="delete_all_snack_message">%s and %s deleted.</string>
-    <string name="marital_status_constraint">Indicate: Matiral status</string>
+    <string name="marital_status_constraint">Indicate: Marital status</string>
     <string name="settings">Settings</string>
+    <string name="range_selector_for_age_groups">Range selector for age groups.</string>
+    <string name="married_individual_is_an_adult">Married youth is an adult.</string>
 
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>

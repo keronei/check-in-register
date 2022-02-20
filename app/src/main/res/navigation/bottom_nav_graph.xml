@@ -83,5 +83,10 @@
         android:id="@+id/settingsFragment"
         android:name="com.keronei.keroscheckin.preference.SettingsFragment"
         android:label="SettingsFragment" />
+    <dialog
+        android:id="@+id/reportsOutputFragment"
+        android:name="com.keronei.keroscheckin.fragments.reports.ReportsOutputFragment"
+       tools:layout="@layout/fragment_reports_output_list_dialog"
+        android:label="ReportsOutputFragment" />
 
 </navigation>
