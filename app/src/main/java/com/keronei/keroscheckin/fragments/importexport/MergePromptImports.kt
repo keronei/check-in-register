@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import androidx.fragment.app.Fragment
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.BottomModalMergeImportsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,7 +14,7 @@ import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 
 @AndroidEntryPoint
-class MergePromptImports : BottomSheetDialogFragment() {
+class MergePromptImports : Fragment() {
 
     lateinit var importBindingOptions: BottomModalMergeImportsBinding
 

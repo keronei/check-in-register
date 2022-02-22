@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keronei.keroscheckin.R
@@ -298,9 +299,12 @@ class ReportsFragment : Fragment() {
 
             val openingIntent = makeShareIntent(reportFileName, workBook, requireContext())
 
-          val reportsOutputFragment =  ReportsOutputFragment()
+            val outputLauncher =
+                ReportsFragmentDirections.actionReportsFragmentToReportsOutputFragment(
+                    generatedReport.toTypedArray()
+                )
 
-            reportsOutputFragment.show(childFragmentManager, ReportsOutputFragment.TAG)
+            findNavController().navigate(outputLauncher)
 
 
 //            MaterialAlertDialogBuilder(requireContext()).setMessage(

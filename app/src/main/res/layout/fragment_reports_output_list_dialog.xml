@@ -5,14 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
+    <ImageButton
         android:id="@+id/divider_bottom_sheet"
-        android:layout_width="40dp"
-        android:layout_height="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/close_report_summary_output"
+        android:src="@drawable/ic_baseline_close_24"
         android:layout_marginTop="10dp"
-        android:background="@color/primaryColor"
+        android:layout_marginEnd="@dimen/dimen_12"
+        android:background="@android:color/transparent"
+        app:tint="@color/primaryColor"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -22,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Summary"
+        android:text="@string/summary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -70,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Kids 0 - 13"
+        android:text="@string/kids_0_13"
         app:layout_constraintEnd_toStartOf="@id/youth_range_indicator"
         app:layout_constraintStart_toStartOf="@id/child_youth_adult_slider"
         app:layout_constraintTop_toBottomOf="@id/checkbox_married_youth" />
@@ -80,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Youth 14 - 35"
+        android:text="@string/youth_14_35"
         app:layout_constraintEnd_toStartOf="@id/adult_range_indicator"
         app:layout_constraintStart_toEndOf="@id/kids_range_indicator"
         app:layout_constraintTop_toBottomOf="@id/checkbox_married_youth" />
@@ -90,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Adults 36 - 81"
+        android:text="@string/adults_36_81"
         app:layout_constraintEnd_toEndOf="@id/child_youth_adult_slider"
         app:layout_constraintStart_toEndOf="@id/youth_range_indicator"
         app:layout_constraintTop_toBottomOf="@id/checkbox_married_youth" />
@@ -129,7 +132,7 @@
         android:drawableStart="@drawable/ic_left_arrow"
         android:drawableEnd="@drawable/ic_rotated_right_arrow"
         android:drawablePadding="10dp"
-        android:text="Share, or copy it"
+        android:text="@string/share_or_copy_it"
         app:layout_constraintEnd_toStartOf="@id/img_btn_copy_report_summary"
         app:layout_constraintStart_toEndOf="@id/img_btn_share_report_summary"
         app:layout_constraintTop_toBottomOf="@id/child_youth_adult_slider" />
@@ -154,7 +157,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="6dp"
         android:layout_marginBottom="14dp"
-        android:text="Export Full Report"
+        android:text="@string/export_full_report"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -6,6 +6,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-android-extensions")
     id("com.google.gms.google-services")
+    id("kotlin-parcelize")
 }
 
 android {

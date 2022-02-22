@@ -138,6 +138,13 @@
     <string name="settings">Settings</string>
     <string name="range_selector_for_age_groups">Range selector for age groups.</string>
     <string name="married_individual_is_an_adult">Married youth is an adult.</string>
+    <string name="summary">Summary</string>
+    <string name="kids_0_13">Kids 0 - 13</string>
+    <string name="youth_14_35">Youth 14 - 35</string>
+    <string name="adults_36_81">Adults 36 - 81</string>
+    <string name="share_or_copy_it">Share, or copy it</string>
+    <string name="export_full_report">Export Full Report</string>
+    <string name="close_report_summary_output">CLose report summary output</string>
 
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>

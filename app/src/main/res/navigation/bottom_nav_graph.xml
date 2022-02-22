@@ -23,6 +23,9 @@
             android:id="@+id/action_membersFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
             app:popUpTo="@id/membersFragment" />
+        <action
+            android:id="@+id/action_membersFragment_to_mergePromptImports"
+            app:destination="@id/mergePromptImports" />
     </fragment>
 
     <fragment
@@ -45,7 +48,13 @@
         android:id="@+id/reportsFragment"
         android:name="com.keronei.keroscheckin.fragments.reports.ReportsFragment"
         android:label="reports_fragment"
-        tools:layout="@layout/reports_fragment" />
+        tools:layout="@layout/reports_fragment" >
+        <action
+            android:id="@+id/action_reportsFragment_to_reportsOutputFragment"
+            app:destination="@id/reportsOutputFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_bottom" />
+    </fragment>
 
     <fragment
         android:id="@+id/createRegionFragment"
@@ -83,10 +92,22 @@
         android:id="@+id/settingsFragment"
         android:name="com.keronei.keroscheckin.preference.SettingsFragment"
         android:label="SettingsFragment" />
-    <dialog
+
+    <fragment
         android:id="@+id/reportsOutputFragment"
         android:name="com.keronei.keroscheckin.fragments.reports.ReportsOutputFragment"
        tools:layout="@layout/fragment_reports_output_list_dialog"
-        android:label="ReportsOutputFragment" />
+        android:label="ReportsOutputFragment" >
+
+        <argument
+            android:name="attendaceList"
+            app:argType="com.keronei.domain.entities.AttendanceEntity[]" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mergePromptImports"
+        android:name="com.keronei.keroscheckin.fragments.importexport.MergePromptImports"
+        tools:layout="@layout/bottom_modal_merge_imports"
+        android:label="MergePromptImports" />
 
 </navigation>

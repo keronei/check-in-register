@@ -4,16 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.slider.LabelFormatter
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.keronei.domain.entities.AttendanceEntity
 import com.keronei.keroscheckin.databinding.FragmentReportsOutputListDialogBinding
 import kotlinx.android.synthetic.main.fragment_reports_output_list_dialog.*
-import timber.log.Timber
 import java.util.*
 
 
-class ReportsOutputFragment : BottomSheetDialogFragment() {
+class ReportsOutputFragment : Fragment() {
 
     private var _binding: FragmentReportsOutputListDialogBinding? = null
 
@@ -27,6 +26,8 @@ class ReportsOutputFragment : BottomSheetDialogFragment() {
 
     private val currentYear = currentDate.get(Calendar.YEAR)
 
+    val args : ReportsOutputFragmentArgs by navArgs()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +39,8 @@ class ReportsOutputFragment : BottomSheetDialogFragment() {
         sliderListener()
 
         prepareSliderLimitValues()
+
+        attendanceListData = args.attendaceList.toMutableList()
 
 
         return binding.root
