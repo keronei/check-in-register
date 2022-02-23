@@ -22,6 +22,10 @@
         <action
             android:id="@+id/action_membersFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/membersFragment" />
     </fragment>
 
@@ -93,7 +97,18 @@
         android:label="SettingsFragment" >
         <action
             android:id="@+id/action_settingsFragment_to_importExportSheet"
-            app:destination="@id/importExportSheet" />
+            app:destination="@id/importExportSheet"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_bottom"
+            app:popEnterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_bottom" />
+        <action
+            android:id="@+id/action_settingsFragment_to_mergePromptImports"
+            app:destination="@id/mergePromptImports"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_bottom"
+            app:popEnterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_bottom" />
     </fragment>
 
     <fragment
@@ -117,10 +132,6 @@
         android:id="@+id/importExportSheet"
         android:name="com.keronei.keroscheckin.fragments.importexport.ImportExportSheet"
        tools:layout="@layout/dialog_import_export_layout"
-        android:label="ImportExportSheet" >
-        <action
-            android:id="@+id/action_importExportSheet_to_mergePromptImports"
-            app:destination="@id/mergePromptImports" />
-    </dialog>
+        android:label="ImportExportSheet" />
 
 </navigation>

@@ -176,6 +176,15 @@
     <string name="failed_operation_dialog_title">Failed</string>
     <string name="unable_to_import_new_entries">Unable to import new entries.</string>
     <string name="unable_to_import_found_entries_message">Something unexpected happened.</string>
+    <string name="close_nerge_options_btn_text">Close merge options button</string>
+    <string name="here_s_what_we_can_do">Here\'s what we can do</string>
+    <string name="merge_option_icon_safer">Merge option icon - safer.</string>
+    <string name="merge">Merge</string>
+    <string name="merge_context_message">This will keep all your existing data and try to add the imported ones.</string>
+    <string name="replace_data_option_icon">Replace data option icon.</string>
+    <string name="replace_imports_button_text">Replace</string>
+    <string name="clean_up_context_message">This option will clean your existing data and add the newly imported ones. \nYou will loose existing entries.</string>
+    <string name="merge_header_message">You have %s and %s to be imported while your device already contains %s and %s.</string>
 
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>

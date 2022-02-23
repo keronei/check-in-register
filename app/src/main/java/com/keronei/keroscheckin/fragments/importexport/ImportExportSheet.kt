@@ -478,7 +478,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
             cleanUpAndAddImports(readRegionsList, readMembersList)
         } else {
-            findNavController().navigate(R.id.action_importExportSheet_to_mergePromptImports)
+            findNavController().navigate(R.id.action_settingsFragment_to_mergePromptImports)
         }
         this.dismiss()
 

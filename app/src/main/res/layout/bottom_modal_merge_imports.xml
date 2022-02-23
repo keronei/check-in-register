@@ -6,16 +6,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageButton
+            android:id="@+id/img_btn_close_merge_options"
+            android:contentDescription="@string/close_nerge_options_btn_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_close_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/dimen_12"
+            android:background="@color/float_transparent"
+            app:tint="@color/primaryColor" />
+
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/summary_heading"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="center"
             android:fontFamily="@font/helveticaneue"
             android:padding="12dp"
-            android:text="You have 45 regions and 520 members to be imported while your device already contains 51 regions and 401 members. "
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="@string/merge_header_message"
+            app:layout_constraintTop_toBottomOf="@id/img_btn_close_merge_options" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/here_is_what_to_do"
@@ -24,7 +38,7 @@
             android:fontFamily="@font/helveticaneue"
             android:gravity="center"
             android:padding="6dp"
-            android:text="Here's what we can do"
+            android:text="@string/here_s_what_we_can_do"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/summary_heading" />
@@ -35,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:padding="12dp"
+            android:contentDescription="@string/merge_option_icon_safer"
             android:src="@drawable/ic_baseline_merge_entries_24"
             app:layout_constraintEnd_toStartOf="@id/merge_explanation"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:paddingTop="12dp"
-            android:text="Merge"
+            android:text="@string/merge"
             app:layout_constraintStart_toStartOf="@id/merge_explanation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/merge_icon"
@@ -62,7 +77,7 @@
             android:paddingStart="12dp"
             android:paddingTop="6dp"
             android:paddingEnd="4dp"
-            android:text="This will keep all your existing data and try to add the imported ones."
+            android:text="@string/merge_context_message"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/merge_icon"
@@ -74,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:padding="12dp"
+            android:contentDescription="@string/replace_data_option_icon"
             android:src="@drawable/ic_baseline_import_replace_24"
             app:layout_constraintEnd_toStartOf="@id/replace_explanation"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:paddingTop="12dp"
-            android:text="Replace"
+            android:text="@string/replace_imports_button_text"
             app:layout_constraintStart_toStartOf="@id/replace_explanation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/replace_icon"
@@ -102,7 +118,7 @@
             android:paddingStart="12dp"
             android:paddingTop="6dp"
             android:paddingEnd="4dp"
-            android:text="This option will clean your existing data and add the newly imported ones. \nYou will loose existing entries."
+            android:text="@string/clean_up_context_message"
             android:textSize="18sp"
             android:paddingBottom="14dp"
             app:layout_constraintEnd_toEndOf="parent"
