@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RegionsDao {
     @Insert(onConflict = REPLACE)
-    suspend fun createRegion(regionDBOs: List<RegionDBO>)
+    suspend fun createRegion(regionDBOs: List<RegionDBO>) : List<Long>
 
     @Query("SELECT * FROM RegionDBO ORDER BY name DESC")
     fun queryAllRegions(): Flow<List<RegionDBO>>

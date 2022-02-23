@@ -6,7 +6,7 @@ import com.keronei.domain.entities.RegionEntity
 import kotlinx.coroutines.flow.Flow
 
 interface RegionsRepository {
-    suspend fun createNewRegion(regionEntity: List<RegionEntity>)
+    suspend fun createNewRegion(regionEntity: List<RegionEntity>) : List<Long>
 
     suspend fun getAllRegions(): Flow<List<RegionEntity>>
 

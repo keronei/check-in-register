@@ -6,6 +6,7 @@ import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.usecases.MembersUseCases
 import com.keronei.domain.usecases.base.UseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -16,10 +17,11 @@ class MemberViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    fun createNewMember(newMember: List<MemberEntity>) {
-        viewModelScope.launch {
+    suspend fun createNewMember(newMember: List<MemberEntity>) : List<Long> {
+       val insertionCount = viewModelScope.async {
             membersUseCases.createMemberUseCase(newMember)
         }
+        return insertionCount.await()
     }
 
     suspend fun queryAllMembers() = membersUseCases.queryAllMembersUseCase(UseCaseParams.Empty)
