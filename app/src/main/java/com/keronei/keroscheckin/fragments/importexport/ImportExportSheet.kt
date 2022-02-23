@@ -4,22 +4,27 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.keronei.android.common.Constants
+import com.keronei.android.common.Constants.EXPORT_FILE_NAME
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.DialogImportExportLayoutBinding
 import com.keronei.keroscheckin.preference.SELECTION
+import com.keronei.keroscheckin.viewmodels.ImportExportViewModel
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
@@ -31,6 +36,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.*
 import javax.inject.Inject
@@ -44,13 +51,19 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
     private val memberViewModel: MemberViewModel by activityViewModels()
 
+    private val importExportViewModel: ImportExportViewModel by activityViewModels()
+
     private var displayedPrompt: androidx.appcompat.app.AlertDialog? = null
 
     private var selection = SELECTION.UNSELECTED
 
     lateinit var getContent: ActivityResultLauncher<String>
 
+    lateinit var createExportFileContract: ActivityResultLauncher<Intent>
+
     private lateinit var processingDialog: SweetAlertDialog
+
+    private lateinit var hssfWorkbookToWriteOut: HSSFWorkbook
 
     @Inject
     lateinit var coroutineScope: CoroutineScope
@@ -62,16 +75,40 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
             handleImportFileSelection(result!!)
         }
+
+
+    }
+
+    private fun registerContractForCreatingExportFile() {
+        createExportFileContract =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { createdFileUri ->
+                if (this::hssfWorkbookToWriteOut.isInitialized) {
+                    if (createdFileUri?.data?.data != null) {
+                        val fileOutputStream =
+                            requireContext().contentResolver.openOutputStream(createdFileUri.data!!.data!!)
+                        hssfWorkbookToWriteOut.write(fileOutputStream)
+                    } else {
+                        ToastUtils.showShortToast(getString(R.string.null_uri_message_to_user_save_file))
+                    }
+                } else {
+                    ToastUtils.showShortToast(getString(R.string.workbok_no_initialized_message))
+                }
+            }
     }
 
     private fun unregisterContract() {
         getContent.unregister()
+
+        createExportFileContract.unregister()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         processingDialog = SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE)
         registerContract()
+
+        registerContractForCreatingExportFile()
+
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -175,7 +212,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
                     val sendingIntent =
                         makeShareIntent(
-                            Constants.EXPORT_FILE_NAME,
+                            EXPORT_FILE_NAME,
                             preparedWorkBook,
                             requireContext()
                         )
@@ -202,7 +239,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                         membersPrefix
                     )
 
-                    launchSendData(sendingIntent, summary)
+                    launchSendData(sendingIntent, preparedWorkBook, summary)
                 }
 
             } catch (exception: Exception) {
@@ -239,7 +276,11 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         return preparedWorkBook.await()
     }
 
-    private fun launchSendData(sendDataIntent: Intent, summary: String) {
+    private fun launchSendData(
+        sendDataIntent: Intent,
+        preparedWorkBook: HSSFWorkbook,
+        summary: String
+    ) {
         try {
 
             SweetAlertDialog(requireContext(), SweetAlertDialog.BUTTON_CONFIRM)
@@ -258,7 +299,28 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                             getString(R.string.export_regions_members)
                         )
                     )
-                }.show()
+                }
+                .setNeutralButton(getString(R.string.save_option_export)) { alertDialog ->
+
+                    val dataUri = sendDataIntent.data
+
+                    hssfWorkbookToWriteOut = preparedWorkBook
+
+
+                    val saveOptionIntent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "application/vnd.ms-excel"
+                        putExtra(Intent.EXTRA_TITLE, EXPORT_FILE_NAME)
+
+                        putExtra(Intent.EXTRA_STREAM, dataUri)
+                    }
+
+                    alertDialog.dismissWithAnimation()
+
+                    createExportFileContract.launch(saveOptionIntent)
+                }
+
+                .show()
 
         } catch (exception: java.lang.Exception) {
             SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
@@ -283,8 +345,6 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         val importRegionMembersProcessor = ImportRegionMembersProcessor(file)
 
         val overview = importRegionMembersProcessor.readBasicInformation() //.readEntries()
-
-        //this.dismiss()
 
         if (overview.appVersion == "" || overview.membersEntrySize == 0) {
             showErrorDialog(
@@ -337,8 +397,6 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                     coroutineScope.launch {
                         val result = waitForResults(importRegionMembersProcessor)
 
-                        Timber.d("Parsed result $result")
-
                         withContext(Dispatchers.Main) {
                             processingDialog.dismissWithAnimation()
 
@@ -355,7 +413,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                     confirmationPrompt.dismissWithAnimation()
 
                     SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE).setContentText(
-                        exception.message ?: "Something unexpected happened."
+                        exception.message ?: getString(R.string.unable_to_import_found_entries_message)
                     ).show()
 
                 }
@@ -368,6 +426,18 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         SweetAlertDialog(
             requireContext(),
             SweetAlertDialog.ERROR_TYPE
+        ).setContentText(message)
+            .setTitleText(title)
+            .setCancelButton(getString(R.string.close_dialog)) { dialog ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showInfoDialog(title: String, message: String) {
+        SweetAlertDialog(
+            requireContext(),
+            SweetAlertDialog.NORMAL_TYPE
         ).setContentText(message)
             .setTitleText(title)
             .setCancelButton(getString(R.string.close_dialog)) { dialog ->
@@ -397,12 +467,18 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
         val members = runBlocking { memberViewModel.queryAllMembers().first() }
 
+        importExportViewModel.parsedRegionsToImport.value =
+            readRegionsList as MutableList<RegionEntity>
+
+        importExportViewModel.parsedMembersToImport.value =
+            readMembersList as MutableList<MemberEntity>
+
         if (members.size < 2 || regions.size < 2) {
+            processingDialog.show()
+
             cleanUpAndAddImports(readRegionsList, readMembersList)
         } else {
-            //val proceedToOptions = MergePromptImports()
-            //proceedToOptions.show(requireActivity().supportFragmentManager, MergePromptImports.TAG)
-
+            findNavController().navigate(R.id.action_importExportSheet_to_mergePromptImports)
         }
         this.dismiss()
 
@@ -421,6 +497,35 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
             regionsViewModel.deleteAllRegions(existingRegions)
 
+            val finalRegionsAfterAdd = regionsViewModel.createRegion(readRegionsList)
+
+            val finalMembersAfterAdd = memberViewModel.createNewMember(readMembersList)
+
+            withContext(Dispatchers.Main) {
+                processingDialog.dismissWithAnimation()
+            }
+
+            withContext(Dispatchers.Main) {
+
+                if (finalMembersAfterAdd.isNotEmpty() || finalRegionsAfterAdd.isNotEmpty()) {
+
+                    showInfoDialog(
+                        getString(R.string.success_import_operation_title),
+                        getString(
+                            R.string.success_import_operation_message,
+                            finalRegionsAfterAdd.size,
+                            finalMembersAfterAdd.size
+                        )
+
+                    )
+
+                } else {
+                    showErrorDialog(
+                        getString(R.string.failed_operation_dialog_title),
+                        getString(R.string.unable_to_import_new_entries)
+                    )
+                }
+            }
         }
 
     }

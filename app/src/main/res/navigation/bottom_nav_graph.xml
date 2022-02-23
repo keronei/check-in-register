@@ -23,9 +23,6 @@
             android:id="@+id/action_membersFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
             app:popUpTo="@id/membersFragment" />
-        <action
-            android:id="@+id/action_membersFragment_to_mergePromptImports"
-            app:destination="@id/mergePromptImports" />
     </fragment>
 
     <fragment
@@ -93,7 +90,11 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.keronei.keroscheckin.preference.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_importExportSheet"
+            app:destination="@id/importExportSheet" />
+    </fragment>
 
     <fragment
         android:id="@+id/reportsOutputFragment"
@@ -112,5 +113,14 @@
         android:name="com.keronei.keroscheckin.fragments.importexport.MergePromptImports"
         tools:layout="@layout/bottom_modal_merge_imports"
         android:label="MergePromptImports" />
+    <dialog
+        android:id="@+id/importExportSheet"
+        android:name="com.keronei.keroscheckin.fragments.importexport.ImportExportSheet"
+       tools:layout="@layout/dialog_import_export_layout"
+        android:label="ImportExportSheet" >
+        <action
+            android:id="@+id/action_importExportSheet_to_mergePromptImports"
+            app:destination="@id/mergePromptImports" />
+    </dialog>
 
 </navigation>

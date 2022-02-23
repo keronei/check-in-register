@@ -249,14 +249,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                             ),
                                                             Snackbar.LENGTH_LONG
                                                         ).setAction(R.string.undo_deletion) {
+                                                            lifecycleScope.launch {
+                                                                regionsViewModel.createRegion(
+                                                                    regionsToBeDeletedBackup
+                                                                )
 
-                                                            regionsViewModel.createRegion(
-                                                                regionsToBeDeletedBackup
-                                                            )
-
-                                                            membersViewModel.createNewMember(
-                                                                membersToBeDeletedBackUp
-                                                            )
+                                                                membersViewModel.createNewMember(
+                                                                    membersToBeDeletedBackUp
+                                                                )
+                                                            }
                                                         }
 
                                                         snack.show()
@@ -270,9 +271,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                         ),
                                                         Snackbar.LENGTH_LONG
                                                     ).setAction(R.string.undo_deletion) {
-                                                        membersViewModel.createNewMember(
-                                                            membersToBeDeletedBackUp
-                                                        )
+                                                        lifecycleScope.launch {
+                                                            membersViewModel.createNewMember(
+                                                                membersToBeDeletedBackUp
+                                                            )
+                                                        }
                                                     }
 
                                                     snack.show()
@@ -284,9 +287,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                         ),
                                                         Snackbar.LENGTH_LONG
                                                     ).setAction(R.string.undo_deletion) {
-                                                        regionsViewModel.createRegion(
-                                                            regionsToBeDeletedBackup
-                                                        )
+                                                        lifecycleScope.launch {
+                                                            regionsViewModel.createRegion(
+                                                                regionsToBeDeletedBackup
+                                                            )
+                                                        }
                                                     }
 
                                                     snack.show()
@@ -342,10 +347,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     R.string.undo_deletion
                 )
             ) {
-                regionsViewModel.createRegion(
-                    regionsToBeDeletedBackup
-                )
-
+                lifecycleScope.launch {
+                    regionsViewModel.createRegion(
+                        regionsToBeDeletedBackup
+                    )
+                }
             }
 
             if (deletionCount > 0) {
@@ -399,10 +405,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     R.string.undo_deletion
                 )
             ) {
-
-                membersViewModel.createNewMember(
-                    membersBackup
-                )
+                lifecycleScope.launch {
+                    membersViewModel.createNewMember(
+                        membersBackup
+                    )
+                }
             }
 
             if (deletedMembersCount > 0) {

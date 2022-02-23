@@ -297,9 +297,9 @@ class CreateMemberFragment : Fragment() {
             "${selectedAttendee!!.firstName} removed.",
             Snackbar.LENGTH_LONG
         ).setAction(R.string.undo_deletion) {
-            //lifecycleScope.launch {
+            lifecycleScope.launch {
             memberViewModel.createNewMember(listOf(selectedAttendee!!.toMemberEntity()))
-            //}
+            }
         }
 
         deletionSnack.show()

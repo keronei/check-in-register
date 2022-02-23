@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.keronei.domain.entities.RegionEntity
@@ -17,6 +18,7 @@ import com.keronei.keroscheckin.models.constants.GUEST_ENTRY
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CreateRegionFragment : Fragment() {
@@ -80,7 +82,9 @@ class CreateRegionFragment : Fragment() {
                     viewModel.updateRegion(RegionEntity(selectedRegion!!.id.toInt(), providedName))
                     ToastUtils.showLongToastOnTop(R.string.entry_updated)
                 } else {
-                    viewModel.createRegion(listOf(RegionEntity(0, providedName.trim())))
+                    lifecycleScope.launch {
+                        viewModel.createRegion(listOf(RegionEntity(0, providedName.trim())))
+                    }
                     ToastUtils.showLongToastOnTop(R.string.entry_added)
                 }
                 findNavController().popBackStack()
