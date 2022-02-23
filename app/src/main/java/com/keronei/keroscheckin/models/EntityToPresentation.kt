@@ -28,6 +28,8 @@ fun AttendanceEntity.toPresentation(checkInInvalidationPeriod: Int): AttendeePre
 
     val parser = SimpleDateFormat("hh:mm a", Locale.US)
 
+    val currentYear = currentTime.get(Calendar.YEAR)
+
     return AttendeePresentation(
         memberEntity.firstName,
         memberEntity.secondName,
@@ -35,7 +37,7 @@ fun AttendanceEntity.toPresentation(checkInInvalidationPeriod: Int): AttendeePre
         memberEntity.sex,
         memberEntity.id,
         memberEntity.firstName + " " + memberEntity.secondName + " " + memberEntity.otherNames,
-        memberEntity.birthYear,
+        currentYear - memberEntity.birthYear,
         memberEntity.isMarried,
         memberEntity.phoneNumber,
         memberEntity.isActive,

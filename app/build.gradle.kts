@@ -2,11 +2,11 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs.kotlin")
-    id("kotlin-android-extensions")
+    //id("kotlin-android-extensions")
     id("com.google.gms.google-services")
-    id("kotlin-parcelize")
 }
 
 android {
@@ -62,6 +62,8 @@ android {
 }
 
 dependencies {
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
 
     //Local Modules
     implementation(project(LocalModules.dataModule))

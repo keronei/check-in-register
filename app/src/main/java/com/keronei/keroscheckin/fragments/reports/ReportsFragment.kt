@@ -1,6 +1,7 @@
 package com.keronei.keroscheckin.fragments.reports
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -17,18 +18,22 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.ReportsFragmentBinding
 import com.keronei.keroscheckin.fragments.checkin.DatePickerFragment
+import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD
+import com.keronei.keroscheckin.models.toPresentation
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.keroscheckin.viewmodels.ReportsViewModel
 import com.keronei.utils.exportDataIntoWorkbook
 import com.keronei.utils.makeShareIntent
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
 import java.lang.Exception
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class ReportsFragment : Fragment() {
 
     companion object {
@@ -39,8 +44,13 @@ class ReportsFragment : Fragment() {
     private val reportsViewModel: ReportsViewModel by activityViewModels()
     private val allMembersViewModel: AllMembersViewModel by activityViewModels()
     private val parser = SimpleDateFormat("dd - MMM - yyyy", Locale.US)
+    private var invalidationPeriod = CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
 
     private var startOfDateSelectedTimeStamp = 0L
+
+    @Inject
+    lateinit var preferences: SharedPreferences
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +58,12 @@ class ReportsFragment : Fragment() {
     ): View {
         reportsBinding =
             DataBindingUtil.inflate(layoutInflater, R.layout.reports_fragment, container, false)
+
+        val key = getString(R.string.invalidate_period_key)
+
+        invalidationPeriod = preferences.getString(key, CHECK_IN_INVALIDATE_DEFAULT_PERIOD)?.toInt()
+            ?: CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
+
 
         return reportsBinding.root
     }
@@ -301,7 +317,8 @@ class ReportsFragment : Fragment() {
 
             val outputLauncher =
                 ReportsFragmentDirections.actionReportsFragmentToReportsOutputFragment(
-                    generatedReport.toTypedArray()
+                    generatedReport.map { entry -> entry.toPresentation(invalidationPeriod) }
+                        .toTypedArray()
                 )
 
             findNavController().navigate(outputLauncher)

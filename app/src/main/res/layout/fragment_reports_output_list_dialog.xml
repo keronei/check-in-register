@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageButton
-        android:id="@+id/divider_bottom_sheet"
+        android:id="@+id/close_window"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/close_report_summary_output"
@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider_bottom_sheet" />
+        app:layout_constraintTop_toBottomOf="@+id/close_window" />
 
 
     <com.google.android.material.card.MaterialCardView

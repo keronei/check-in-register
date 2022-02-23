@@ -99,9 +99,10 @@
        tools:layout="@layout/fragment_reports_output_list_dialog"
         android:label="ReportsOutputFragment" >
 
+
         <argument
-            android:name="attendaceList"
-            app:argType="com.keronei.domain.entities.AttendanceEntity[]" />
+            android:name="attendanceList"
+            app:argType="com.keronei.keroscheckin.models.AttendeePresentation[]" />
     </fragment>
 
     <fragment

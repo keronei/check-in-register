@@ -400,8 +400,8 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         if (members.size < 2 || regions.size < 2) {
             cleanUpAndAddImports(readRegionsList, readMembersList)
         } else {
-            val proceedToOptions = MergePromptImports()
-            proceedToOptions.show(requireActivity().supportFragmentManager, MergePromptImports.TAG)
+            //val proceedToOptions = MergePromptImports()
+            //proceedToOptions.show(requireActivity().supportFragmentManager, MergePromptImports.TAG)
 
         }
         this.dismiss()

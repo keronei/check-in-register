@@ -23,7 +23,7 @@ object Versions {
     const val timber = "5.0.1"
 
     //Network
-    const val hilt_version = "2.37"
+    const val hilt_version = "2.38.1"
     const val retrofit = "2.9.0"
     const val okhttp3 = "4.9.0"
 
@@ -34,7 +34,7 @@ object Versions {
     const val coroutinesCore = "1.3.3"
 
     //Kotlin
-    const val kotlin = "1.4.21"
+    const val kotlin = "1.5.31"
 
     //Testing
     const val junit = "4.13.2"

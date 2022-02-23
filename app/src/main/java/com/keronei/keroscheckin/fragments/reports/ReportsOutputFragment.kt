@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.keronei.domain.entities.AttendanceEntity
 import com.keronei.keroscheckin.databinding.FragmentReportsOutputListDialogBinding
-import kotlinx.android.synthetic.main.fragment_reports_output_list_dialog.*
+import com.keronei.keroscheckin.models.AttendeePresentation
+import timber.log.Timber
 import java.util.*
 
 
@@ -16,7 +17,7 @@ class ReportsOutputFragment : Fragment() {
 
     private var _binding: FragmentReportsOutputListDialogBinding? = null
 
-    private var attendanceListData = mutableListOf<AttendanceEntity>()
+    private var attendanceListData = mutableListOf<AttendeePresentation>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -40,11 +41,19 @@ class ReportsOutputFragment : Fragment() {
 
         prepareSliderLimitValues()
 
-        attendanceListData = args.attendaceList.toMutableList()
+        attendanceListData = args.attendanceList.toMutableList()
+
+        closeOutputsWindow()
 
 
         return binding.root
 
+    }
+
+    private fun closeOutputsWindow() {
+        binding.closeWindow.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,35 +84,26 @@ class ReportsOutputFragment : Fragment() {
     private fun prepareSliderLimitValues() {
 
         val lowestBirthYearAsOldest =
-            attendanceListData.minByOrNull { entry -> entry.memberEntity.birthYear }?.memberEntity?.birthYear
+            attendanceListData.minByOrNull { entry -> entry.age }?.age
 
         val highestBirthYearAsYoungest =
-            attendanceListData.maxByOrNull { entry -> entry.memberEntity.birthYear }?.memberEntity?.birthYear
+            attendanceListData.maxByOrNull { entry -> entry.age}?.age
 
-        binding.childYouthAdultSlider.valueTo = if (lowestBirthYearAsOldest != null) {
+        binding.childYouthAdultSlider.valueTo = lowestBirthYearAsOldest?.toFloat() ?: 100F
 
-            (currentYear - lowestBirthYearAsOldest).toFloat()
-        } else {
-            100F
-        }
-
-        binding.childYouthAdultSlider.valueFrom = if (highestBirthYearAsYoungest != null) {
-            (currentYear - highestBirthYearAsYoungest).toFloat()
-        } else {
-            0F
-        }
+        binding.childYouthAdultSlider.valueFrom = highestBirthYearAsYoungest?.toFloat() ?: 0F
 
         binding.childYouthAdultSlider
     }
 
     private fun splitToAgeGroups(endOfKidsAge: Int, endOfYouthAge: Int) {
         val (kids, youthsAndAdults) = attendanceListData.partition { attendee ->
-            attendee.memberEntity.birthYear >= (currentYear - endOfKidsAge)
+            attendee.age <  endOfKidsAge
 
         }
 
         val (youths, adults) = youthsAndAdults.partition { attendee ->
-            attendee.memberEntity.birthYear <= (currentYear - endOfKidsAge) && attendee.memberEntity.birthYear >= (currentYear - endOfYouthAge) && !binding.checkboxMarriedYouth.isChecked//1987,
+            attendee.age in endOfKidsAge..endOfYouthAge+1 && (!attendee.isMarried && binding.checkboxMarriedYouth.isChecked )
         }
 
         //post values to gender partitioner
@@ -113,22 +113,22 @@ class ReportsOutputFragment : Fragment() {
     }
 
     private fun splitBySexOrientation(
-        kids: List<AttendanceEntity>,
-        youths: List<AttendanceEntity>,
-        adults: List<AttendanceEntity>
+        kids: List<AttendeePresentation>,
+        youths: List<AttendeePresentation>,
+        adults: List<AttendeePresentation>
     ) {
 
-        val (femaleKids, remainingKids) = kids.partition { allKids -> allKids.memberEntity.sex == 0 }
+        val (femaleKids, remainingKids) = kids.partition { allKids -> allKids.sex == 0 }
 
-        val (maleKids, otherSexKids) = remainingKids.partition { unsorted -> unsorted.memberEntity.sex == 1 }
+        val (maleKids, otherSexKids) = remainingKids.partition { unsorted -> unsorted.sex == 1 }
 
-        val (femaleYouths, remainingYouths) = youths.partition { allYouths -> allYouths.memberEntity.sex == 0 }
+        val (femaleYouths, remainingYouths) = youths.partition { allYouths -> allYouths.sex == 0 }
 
-        val (maleYouths, otherSexYouths) = remainingYouths.partition { unsorted -> unsorted.memberEntity.sex == 1 }
+        val (maleYouths, otherSexYouths) = remainingYouths.partition { unsorted -> unsorted.sex == 1 }
 
-        val (femaleAdults, remainingAdults) = adults.partition { allAdults -> allAdults.memberEntity.sex == 0 }
+        val (femaleAdults, remainingAdults) = adults.partition { allAdults -> allAdults.sex == 0 }
 
-        val (maleAdults, otherSexAdults) = remainingAdults.partition { unsorted -> unsorted.memberEntity.sex == 1 }
+        val (maleAdults, otherSexAdults) = remainingAdults.partition { unsorted -> unsorted.sex == 1 }
 
         val summaryText = "Total ${attendanceListData.size} \n\n" +
                 "Kids ${kids.size} \n" +
@@ -146,7 +146,7 @@ class ReportsOutputFragment : Fragment() {
                 "Female adults ${femaleAdults.size}\n" +
                 "Other sex adults ${otherSexAdults.size}"
 
-        text_view_summary.text = summaryText
+        binding.textViewSummary.text = summaryText
 
     }
 
