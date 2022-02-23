@@ -1,16 +1,26 @@
 package com.keronei.keroscheckin.fragments.reports
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import cn.pedant.SweetAlert.SweetAlertDialog
+import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.FragmentReportsOutputListDialogBinding
 import com.keronei.keroscheckin.models.AttendeePresentation
+import com.keronei.keroscheckin.viewmodels.ReportsViewModel
+import com.keronei.utils.ToastUtils
 import timber.log.Timber
-import java.util.*
 
 
 class ReportsOutputFragment : Fragment() {
@@ -19,16 +29,16 @@ class ReportsOutputFragment : Fragment() {
 
     private var attendanceListData = mutableListOf<AttendeePresentation>()
 
+    private val reportsViewModel: ReportsViewModel by activityViewModels()
+
+    private var summaryText = ""
+
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val currentDate = Calendar.getInstance()
-
-    private val currentYear = currentDate.get(Calendar.YEAR)
-
-    val args : ReportsOutputFragmentArgs by navArgs()
-
+    private val args: ReportsOutputFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,41 +53,126 @@ class ReportsOutputFragment : Fragment() {
 
         attendanceListData = args.attendanceList.toMutableList()
 
-        closeOutputsWindow()
+        onclickListeners()
 
 
         return binding.root
 
     }
 
-    private fun closeOutputsWindow() {
+    private fun onclickListeners() {
         binding.closeWindow.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.imgBtnShareReportSummary.setOnClickListener {
+            val shareSummaryIntent = Intent(Intent.ACTION_SEND)
+            shareSummaryIntent.type = "text/plain"
+            shareSummaryIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.report_summary_heading))
+            shareSummaryIntent.putExtra(Intent.EXTRA_TEXT, summaryText)
+            startActivity(Intent.createChooser(shareSummaryIntent, "Share Via"))
+
+        }
+
+        binding.imgBtnCopyReportSummary.setOnClickListener {
+            val clipboard =
+                getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
+
+            val clip = ClipData.newPlainText( getString(R.string.report_summary_heading), summaryText)
+
+            clipboard.setPrimaryClip(clip)
+
+            ToastUtils.showShortToastInMiddle(R.string.copied_to_clipboard)
+        }
+
+
+        binding.exportFullReport.setOnClickListener {
+
+            val generatedReportIntent = reportsViewModel.preparedShareReportIntent.value
+
+            SweetAlertDialog(requireContext(), SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText("Report is ready")
+                .setContentText(
+                    "You can either open or send it"
+                ).setNeutralButton("View") {
+
+                    generatedReportIntent.action = Intent.ACTION_VIEW
+
+                    openGeneratedReport(generatedReportIntent)
+
+                }.setConfirmButton("Share") {
+
+                    generatedReportIntent.action = Intent.ACTION_SEND
+
+                    startActivity(Intent.createChooser(generatedReportIntent, "Share report"))
+
+                }
+                .show()
+
+        }
+    }
+
+    private fun openGeneratedReport(generatedReportIntent: Intent) {
+        try {
+            startActivity(generatedReportIntent)
+        } catch (openingException: Exception) {
+
+            openingException.printStackTrace()
+
+            SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("Error")
+                .setContentText(
+                    "No app found in your phone that can open this Excel report. You can install WPS Office and try again."
+                )
+                .show()
+
+            Timber.d("TAG", "No Intent available to handle action")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val kidsCeil = binding.childYouthAdultSlider.values[0].toInt()
+        val youthCeil = binding.childYouthAdultSlider.values[1].toInt()
+
         splitToAgeGroups(
-            binding.childYouthAdultSlider.values[0].toInt(),
-            binding.childYouthAdultSlider.values[1].toInt()
+            kidsCeil,
+            youthCeil
         )
+
+        binding.checkboxMarriedYouth.setOnCheckedChangeListener { _, _ ->
+            splitToAgeGroups(
+                kidsCeil,
+                youthCeil
+            )
+        }
     }
 
     private fun sliderListener() {
         binding.childYouthAdultSlider.addOnChangeListener { slider, _, _ ->
 
-            binding.kidsRangeIndicator.text =
-                "Kids ${slider.valueFrom.toInt()} - ${slider.values[0].toInt()}"
+            val kidsCeil = slider.values[0].toInt()
+            val youthsCeil = slider.values[1].toInt()
 
-            binding.youthRangeIndicator.text =
-                "Youths ${(slider.values[0] + 1).toInt()} - ${slider.values[1].toInt()}"
+            binding.kidsRangeIndicator.text = getString(
+                R.string.kids_template,
+                slider.valueFrom.toInt(),
+                kidsCeil
+            )
 
-            binding.adultRangeIndicator.text =
-                "Adults ${(slider.values[1] + 1).toInt()} - ${slider.valueTo.toInt()}"
+            binding.youthRangeIndicator.text = getString(
+                R.string.youths_template,
+                kidsCeil + 1, youthsCeil
+            )
 
-            splitToAgeGroups(slider.values[0].toInt(), slider.values[1].toInt())
+
+            binding.adultRangeIndicator.text = getString(
+                R.string.adults_template,
+                youthsCeil + 1, slider.valueTo.toInt()
+            )
+
+            splitToAgeGroups(kidsCeil, youthsCeil)
         }
     }
 
@@ -87,7 +182,7 @@ class ReportsOutputFragment : Fragment() {
             attendanceListData.minByOrNull { entry -> entry.age }?.age
 
         val highestBirthYearAsYoungest =
-            attendanceListData.maxByOrNull { entry -> entry.age}?.age
+            attendanceListData.maxByOrNull { entry -> entry.age }?.age
 
         binding.childYouthAdultSlider.valueTo = lowestBirthYearAsOldest?.toFloat() ?: 100F
 
@@ -98,12 +193,12 @@ class ReportsOutputFragment : Fragment() {
 
     private fun splitToAgeGroups(endOfKidsAge: Int, endOfYouthAge: Int) {
         val (kids, youthsAndAdults) = attendanceListData.partition { attendee ->
-            attendee.age <  endOfKidsAge
+            attendee.age < endOfKidsAge
 
         }
 
         val (youths, adults) = youthsAndAdults.partition { attendee ->
-            attendee.age in endOfKidsAge..endOfYouthAge+1 && (!attendee.isMarried && binding.checkboxMarriedYouth.isChecked )
+            attendee.age in endOfKidsAge..endOfYouthAge + 1 && (attendee.isMarried && !binding.checkboxMarriedYouth.isChecked)
         }
 
         //post values to gender partitioner
@@ -130,21 +225,25 @@ class ReportsOutputFragment : Fragment() {
 
         val (maleAdults, otherSexAdults) = remainingAdults.partition { unsorted -> unsorted.sex == 1 }
 
-        val summaryText = "Total ${attendanceListData.size} \n\n" +
-                "Kids ${kids.size} \n" +
-                "Male kids ${maleKids.size}\n" +
-                "Female kids ${femaleKids.size}\n" +
-                "Other sex kids ${otherSexKids.size} \n\n" +
-                "" +
-                "Youths ${youths.size}\n" +
-                "Male youths ${maleYouths.size}\n" +
-                "Female youths ${femaleYouths.size}\n" +
-                "Other sex youths ${otherSexYouths.size}\n\n" +
-                "" +
-                "Adults ${adults.size}\n" +
-                "Male adults ${maleAdults.size}\n" +
-                "Female adults ${femaleAdults.size}\n" +
-                "Other sex adults ${otherSexAdults.size}"
+        summaryText = getString(
+            R.string.summary_report_text,
+            attendanceListData.size,
+
+            kids.size,
+            maleKids.size,
+            femaleKids.size,
+            otherSexKids.size,
+
+            youths.size,
+            maleYouths.size,
+            femaleYouths.size,
+            otherSexYouths.size,
+
+            adults.size,
+            maleAdults.size,
+            femaleAdults.size,
+            otherSexAdults.size
+        )
 
         binding.textViewSummary.text = summaryText
 

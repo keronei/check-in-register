@@ -315,6 +315,8 @@ class ReportsFragment : Fragment() {
 
             val openingIntent = makeShareIntent(reportFileName, workBook, requireContext())
 
+            reportsViewModel.preparedShareReportIntent.value = openingIntent
+
             val outputLauncher =
                 ReportsFragmentDirections.actionReportsFragmentToReportsOutputFragment(
                     generatedReport.map { entry -> entry.toPresentation(invalidationPeriod) }
@@ -322,43 +324,6 @@ class ReportsFragment : Fragment() {
                 )
 
             findNavController().navigate(outputLauncher)
-
-
-//            MaterialAlertDialogBuilder(requireContext()).setMessage(
-//                resources.getQuantityString(
-//                    R.plurals.reports_generated,
-//                    generatedReport.size,
-//                    generatedReport.size
-//                )
-//            )
-//
-//                .setNegativeButton("Share") { _, _ ->
-//                    openingIntent.action = Intent.ACTION_SEND
-//                    startActivity(Intent.createChooser(openingIntent, "Share report"))
-//
-//                }.setPositiveButton("View") { _, _ ->
-//
-//                    openingIntent.action = Intent.ACTION_VIEW
-//
-//                    try {
-//                        startActivity(openingIntent)
-//                    } catch (openingException: Exception) {
-//
-//                        openingException.printStackTrace()
-//
-//                        SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
-//                            .setTitleText("Error")
-//                            .setContentText(
-//                                "No app found in your phone that can open this Excel report."
-//                            )
-//                            .show()
-//
-//                        Log.d("TAG", "No Intent available to handle action")
-//                    }
-//
-//                }
-//                .show()
-
 
         } catch (exception: Exception) {
             SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)

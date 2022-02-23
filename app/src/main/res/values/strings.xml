@@ -139,12 +139,33 @@
     <string name="range_selector_for_age_groups">Range selector for age groups.</string>
     <string name="married_individual_is_an_adult">Married youth is an adult.</string>
     <string name="summary">Summary</string>
-    <string name="kids_0_13">Kids 0 - 13</string>
-    <string name="youth_14_35">Youth 14 - 35</string>
-    <string name="adults_36_81">Adults 36 - 81</string>
+    <string name="kids_0_13">Kids 0 – 13</string>
+    <string name="youth_14_35">Youth 14 – 35</string>
+    <string name="adults_36_81">Adults 36 – 81</string>
     <string name="share_or_copy_it">Share, or copy it</string>
     <string name="export_full_report">Export Full Report</string>
     <string name="close_report_summary_output">CLose report summary output</string>
+    <string name="kids_template">Kids %d – %d</string>
+    <string name="youths_template">Youths %d – %d</string>
+    <string name="adults_template">Adults %d – %d</string>
+
+    <string name="summary_report_text"><b><big><u>Total %d</u></big></b> \n\n
+                <b>Cumulative kids %d </b>\n
+                \tMale  %d\n
+                \tFemale  %d\n
+                \tOther sex  %d \n\n
+
+                <b>Cumulative youths %d</b>\n
+                &#160;Male  %d\n
+                &#160;Female  %d\n
+                &#160;Other sex  %d\n\n
+
+                <b>Cumulative adults %d</b>\n
+                &#160;Male  %d\n
+                &#160;Female  %d\n
+                &#160;Other sex  %d</string>
+    <string name="copied_to_clipboard">Copied to clipboard!</string>
+    <string name="report_summary_heading">Report Summary</string>
 
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
