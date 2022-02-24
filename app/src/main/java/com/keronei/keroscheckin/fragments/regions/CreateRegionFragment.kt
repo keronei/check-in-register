@@ -12,7 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
-import com.keronei.keroscheckin.databinding.CreateRegionFragmentBinding
+import com.keronei.keroscheckin.databinding.FragmentCreateMemberBinding
+import com.keronei.keroscheckin.databinding.FragmentCreateRegionBinding
 import com.keronei.keroscheckin.models.RegionPresentation
 import com.keronei.keroscheckin.models.constants.GUEST_ENTRY
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
@@ -34,7 +35,7 @@ class CreateRegionFragment : Fragment() {
     }
 
     val viewModel: RegionViewModel by activityViewModels()
-    lateinit var createRegionFragmentBindings: CreateRegionFragmentBinding
+    lateinit var createRegionFragmentBindings: FragmentCreateRegionBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

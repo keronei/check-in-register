@@ -144,7 +144,7 @@
     <string name="adults_36_81">Adults 36 – 81</string>
     <string name="share_or_copy_it">Share, or copy it</string>
     <string name="export_full_report">Export Full Report</string>
-    <string name="close_report_summary_output">CLose report summary output</string>
+    <string name="close_report_summary_output">Close report summary output</string>
     <string name="kids_template">Kids %d – %d</string>
     <string name="youths_template">Youths %d – %d</string>
     <string name="adults_template">Adults %d – %d</string>
@@ -166,8 +166,8 @@
                 &#160;Other sex  %d</string>
     <string name="copied_to_clipboard">Copied to clipboard!</string>
     <string name="report_summary_heading">Report Summary</string>
-    <string name="send_the_summary_button">Send the summary button</string>
-    <string name="copt_to_clipboard_description">Copy summary to clipboard button</string>
+    <string name="send_the_summary_button">Send the summary</string>
+    <string name="copt_to_clipboard_description">Copy summary to clipboard</string>
     <string name="success_import_operation_title">Success</string>
     <string name="success_import_operation_message">%d region(s) and %d member(s) imported.</string>
     <string name="save_option_export">Save</string>

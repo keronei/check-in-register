@@ -19,7 +19,7 @@ import com.keronei.android.common.Constants.EXPORT_FILE_NAME
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
-import com.keronei.keroscheckin.databinding.DialogImportExportLayoutBinding
+import com.keronei.keroscheckin.databinding.FragmentImportExportLayoutBinding
 import com.keronei.keroscheckin.preference.SELECTION
 import com.keronei.keroscheckin.viewmodels.ImportExportViewModel
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
@@ -39,7 +39,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ImportExportSheet : BottomSheetDialogFragment() {
 
-    lateinit var binding: DialogImportExportLayoutBinding
+    lateinit var binding: FragmentImportExportLayoutBinding
 
     private val regionsViewModel: RegionViewModel by activityViewModels()
 
@@ -491,6 +491,8 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
             regionsViewModel.deleteAllRegions(existingRegions)
 
+            //TODO fix relationship
+
             val finalRegionsAfterAdd = regionsViewModel.createRegion(readRegionsList)
 
             val finalMembersAfterAdd = memberViewModel.createNewMember(readMembersList)
@@ -512,6 +514,9 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                         )
 
                     )
+//TODO FindnavigationController and navigate to members
+                    //childFragmentManager
+                    //findNavController().popBackStack(R.id.membersFragment, false)
 
                 } else {
                     showErrorDialog(

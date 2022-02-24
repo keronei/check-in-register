@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,7 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
-import com.keronei.keroscheckin.databinding.CreateMemberFragmentBinding
+import com.keronei.keroscheckin.databinding.FragmentCreateMemberBinding
 import com.keronei.keroscheckin.models.AttendeePresentation
 import com.keronei.keroscheckin.models.toMemberEntity
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
@@ -35,7 +37,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CreateMemberFragment : Fragment() {
 
-    lateinit var layoutBinding: CreateMemberFragmentBinding
+    lateinit var layoutBinding: FragmentCreateMemberBinding
     lateinit var regionsSpinner: SmartMaterialSpinner<RegionEntity>
 
     private var selectedRegion: RegionEntity? = null

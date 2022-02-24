@@ -12,7 +12,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
-import com.keronei.keroscheckin.databinding.BottomModalMergeImportsBinding
+import com.keronei.keroscheckin.databinding.FragmentMergeImportsBinding
 import com.keronei.keroscheckin.viewmodels.ImportExportViewModel
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
@@ -25,7 +25,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MergePromptImports : Fragment() {
 
-    lateinit var importBindingOptions: BottomModalMergeImportsBinding
+    private lateinit var importBindingOptions: FragmentMergeImportsBinding
 
     private val importExportViewModel: ImportExportViewModel by activityViewModels()
 

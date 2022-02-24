@@ -114,7 +114,7 @@
     <fragment
         android:id="@+id/reportsOutputFragment"
         android:name="com.keronei.keroscheckin.fragments.reports.ReportsOutputFragment"
-       tools:layout="@layout/fragment_reports_output_list_dialog"
+       tools:layout="@layout/fragment_reports_output_summary"
         android:label="ReportsOutputFragment" >
 
 

@@ -13,7 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.adapter.AttendanceRecyclerAdapter
-import com.keronei.keroscheckin.databinding.YetToCheckedInFragmentBinding
+import com.keronei.keroscheckin.databinding.FragmentYetToCheckedInBinding
 import com.keronei.keroscheckin.models.AttendeePresentation
 import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD
 import com.keronei.keroscheckin.models.toPresentation
@@ -32,7 +32,7 @@ class YetToCheckInFragment : Fragment() {
     }
 
     private val allMembersViewModel: AllMembersViewModel by activityViewModels()
-    private lateinit var yetToCheckInBinding: YetToCheckedInFragmentBinding
+    private lateinit var yetToCheckInBinding: FragmentYetToCheckedInBinding
     lateinit var yetToCheckInAdapter: AttendanceRecyclerAdapter
     lateinit var searchView: androidx.appcompat.widget.SearchView
     private var invalidationPeriod = CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
@@ -46,7 +46,7 @@ class YetToCheckInFragment : Fragment() {
     ): View {
         yetToCheckInBinding = DataBindingUtil.inflate(
             layoutInflater,
-            R.layout.yet_to_checked_in_fragment,
+            R.layout.fragment_yet_to_checked_in,
             container,
             false
         )

@@ -18,8 +18,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keronei.domain.entities.CheckInEntity
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.adapter.AttendanceRecyclerAdapter
-import com.keronei.keroscheckin.databinding.AllMembersFragmentBinding
-import com.keronei.keroscheckin.databinding.LayoutCheckInDialogBinding
+import com.keronei.keroscheckin.databinding.DialogLayoutCheckInBinding
+import com.keronei.keroscheckin.databinding.FragmentAllMembersBinding
 import com.keronei.keroscheckin.databinding.SelectedAttendeeOptionsBinding
 import com.keronei.keroscheckin.fragments.checkin.TimePickerFragment
 import com.keronei.keroscheckin.models.AttendeePresentation
@@ -46,10 +46,10 @@ class AllMembersFragment : Fragment() {
     private val checkInViewModel: CheckInViewModel by activityViewModels()
     private val memberViewModel: MemberViewModel by activityViewModels()
     lateinit var allMembersAdapter: AttendanceRecyclerAdapter
-    lateinit var allMembersFragmentBinding: AllMembersFragmentBinding
+    lateinit var allMembersFragmentBinding: FragmentAllMembersBinding
     lateinit var selectedAttendeeOptions: SelectedAttendeeOptionsBinding
     lateinit var searchView: androidx.appcompat.widget.SearchView
-    private var checkInViewBinding: LayoutCheckInDialogBinding? = null
+    private var checkInViewBinding: DialogLayoutCheckInBinding? = null
     private val parser = SimpleDateFormat("hh:mm:ss a", Locale.US)
     private lateinit var checkInPrompt: androidx.appcompat.app.AlertDialog
     private var memberAtCheckIn: AttendeePresentation? = null
@@ -69,7 +69,7 @@ class AllMembersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         allMembersFragmentBinding =
-            DataBindingUtil.inflate(inflater, R.layout.all_members_fragment, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_all_members, container, false)
 
         searchView = allMembersFragmentBinding.searchViewAllMembers
 
@@ -279,7 +279,7 @@ class AllMembersFragment : Fragment() {
                 }
             }
 
-            checkInViewBinding = LayoutCheckInDialogBinding.inflate(layoutInflater)
+            checkInViewBinding = DialogLayoutCheckInBinding.inflate(layoutInflater)
 
             checkInPrompt =
                 MaterialAlertDialogBuilder(requireContext()).setView(checkInViewBinding!!.root)

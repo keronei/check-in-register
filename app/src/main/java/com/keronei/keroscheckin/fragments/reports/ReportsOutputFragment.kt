@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.keronei.keroscheckin.R
-import com.keronei.keroscheckin.databinding.FragmentReportsOutputListDialogBinding
+import com.keronei.keroscheckin.databinding.FragmentReportsOutputSummaryBinding
 import com.keronei.keroscheckin.models.AttendeePresentation
 import com.keronei.keroscheckin.viewmodels.ReportsViewModel
 import com.keronei.utils.ToastUtils
@@ -23,7 +23,7 @@ import timber.log.Timber
 
 class ReportsOutputFragment : Fragment() {
 
-    private var _binding: FragmentReportsOutputListDialogBinding? = null
+    private var _binding: FragmentReportsOutputSummaryBinding? = null
 
     private var attendanceListData = mutableListOf<AttendeePresentation>()
 
@@ -43,7 +43,7 @@ class ReportsOutputFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentReportsOutputListDialogBinding.inflate(inflater, container, false)
+        _binding = FragmentReportsOutputSummaryBinding.inflate(inflater, container, false)
 
         sliderListener()
 
