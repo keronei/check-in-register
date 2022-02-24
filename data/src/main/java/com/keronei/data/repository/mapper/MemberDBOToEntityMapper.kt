@@ -11,6 +11,7 @@ class MemberDBOToEntityMapper : Mapper<MemberDBO, MemberEntity>() {
             input.firstName,
             input.secondName,
             input.otherNames,
+            input.identificationNumber,
             input.sex,
             input.birthYear,
             input.isMarried,

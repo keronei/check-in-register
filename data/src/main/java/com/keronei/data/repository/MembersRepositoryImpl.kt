@@ -25,8 +25,8 @@ class MembersRepositoryImpl(
             .map { memberDBO -> memberDBOToEntityMapper.mapList(memberDBO) }
     }
 
-    override suspend fun updateMemberDetails(memberEntity: MemberEntity) {
-        memberDao.updateMemberInformation(memberLocalEntityMapper.map(memberEntity))
+    override suspend fun updateMemberDetails(memberEntity: MemberEntity) : List<Long> {
+        return memberDao.updateMemberInformation(memberLocalEntityMapper.map(memberEntity))
     }
 
     override suspend fun removeMemberFromRegister(memberEntity: MemberEntity) : Int {

@@ -19,7 +19,8 @@ import kotlinx.coroutines.launch
     version = 2,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2, spec = KODatabase.AutoMigrationSpecFrom1to2::class)
+        AutoMigration(from = 1, to = 2, spec = KODatabase.AutoMigrationSpecFrom1to2::class),
+        AutoMigration(from = 2, to = 3)
     ]
 )
 abstract class KODatabase : RoomDatabase() {
@@ -31,8 +32,6 @@ abstract class KODatabase : RoomDatabase() {
 
     @RenameColumn(fromColumnName = "age", toColumnName = "birthYear", tableName = "MemberDBO")
     class AutoMigrationSpecFrom1to2 : AutoMigrationSpec
-
-
 
     companion object {
 
@@ -53,8 +52,6 @@ abstract class KODatabase : RoomDatabase() {
             }
         }
     }
-
-
 
 
     private class KODatabaseCallBack(private val scope: CoroutineScope) : RoomDatabase.Callback() {

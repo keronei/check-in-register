@@ -110,8 +110,16 @@ class CreateMemberFragment : Fragment() {
                     if (approxAge > 17) {
                         layoutBinding.maritalStatus.visibility = View.VISIBLE
                         layoutBinding.maritalStatus.clearCheck()
+
+                        if (approxAge > 19) {
+                            layoutBinding.identificationNumberEdittext.visibility = View.VISIBLE
+                        } else {
+                            layoutBinding.identificationNumberEdittext.visibility = View.GONE
+                        }
+
                     } else {
                         layoutBinding.maritalStatus.visibility = View.GONE
+
                     }
                 } catch (exception: Exception) {
                     ToastUtils.showShortToast(exception.message.toString())
@@ -131,8 +139,8 @@ class CreateMemberFragment : Fragment() {
     private fun populateEditFields() {
         layoutBinding.deleteMemberButton.visibility = View.VISIBLE
         layoutBinding.memberActivityStatus.visibility = View.VISIBLE
-        layoutBinding.createMemberButton.text = "Update"
-        layoutBinding.createMemberToolBar.title = "Update Member Info"
+        layoutBinding.createMemberButton.text = getString(R.string.update_member_header)
+        layoutBinding.createMemberToolBar.title = getString(R.string.update_member_title)
 
         layoutBinding.firstNameEdittext.setText(selectedAttendee?.firstName)
         layoutBinding.secondNameEdittext.setText(selectedAttendee?.secondName)
@@ -142,6 +150,14 @@ class CreateMemberFragment : Fragment() {
         layoutBinding.otherSexSelector.isChecked = selectedAttendee?.sex == 2
         layoutBinding.ageEdittext.setText(selectedAttendee?.age.toString())
         layoutBinding.phoneEdittext.setText(selectedAttendee?.phoneNumber)
+
+        layoutBinding.married.isChecked = selectedAttendee?.isMarried == true
+
+        layoutBinding.notMarried.isChecked = selectedAttendee?.isMarried == false
+
+        layoutBinding.identificationNumberEdittext.setText(
+            selectedAttendee?.identificationNumber ?: ""
+        )
 
         layoutBinding.memberActivityStatus.isChecked = selectedAttendee?.isActive ?: true
 
@@ -164,35 +180,37 @@ class CreateMemberFragment : Fragment() {
             val femaleSex = layoutBinding.femaleSelector
             val otherSex = layoutBinding.otherSexSelector
 
+            val identificationNumber = layoutBinding.identificationNumberEdittext.text
+
 
             if (selectedRegion == null) {
-                regionsSpinner.errorText = "Please select region!"
+                regionsSpinner.errorText = getString(R.string.select_region_prompt)
                 return@setOnClickListener
             }
 
             if (firstName?.isEmpty() == true || firstName?.length ?: 0 < 2) {
-                layoutBinding.firstNameEdittext.error = "Provider this field!"
+                layoutBinding.firstNameEdittext.error = getString(R.string.provide_field_prompt)
                 return@setOnClickListener
             }
 
             if (secondName?.isEmpty() == true || secondName?.length ?: 0 < 2) {
-                layoutBinding.secondNameEdittext.error = "Provider this field!"
+                layoutBinding.secondNameEdittext.error = getString(R.string.provide_field_prompt)
                 return@setOnClickListener
             }
 
             if (!(maleSex.isChecked || femaleSex.isChecked || otherSex.isChecked)) {
-                ToastUtils.showShortToastInMiddle("Select sex identity")
+                ToastUtils.showShortToastInMiddle(getString(R.string.prompt_select_sex_message))
                 return@setOnClickListener
             }
 
 
             if (yob?.isEmpty() == true) {
-                layoutBinding.ageEdittext.error = "Provider this field!"
+                layoutBinding.ageEdittext.error = getString(R.string.provide_field_prompt)
                 return@setOnClickListener
             }
 
             if (yob?.length ?: 0 < 4) {
-                layoutBinding.ageEdittext.error = "Needs 4 digits eg. 1999."
+                layoutBinding.ageEdittext.error = getString(R.string.prompt_input_age)
                 return@setOnClickListener
             }
 
@@ -201,6 +219,11 @@ class CreateMemberFragment : Fragment() {
                     ToastUtils.showLongToastInMiddle(R.string.marital_status_constraint)
                     return@setOnClickListener
                 }
+            }
+
+            if (layoutBinding.identificationNumberEdittext.isVisible) {
+                ToastUtils.showLongToastInMiddle(R.string.id_is_required_message)
+                return@setOnClickListener
             }
 
 
@@ -221,6 +244,7 @@ class CreateMemberFragment : Fragment() {
                     firstName!!.trim().toString(),
                     secondName!!.trim().toString(),
                     otherNames!!.trim().toString(),
+                    identificationNumber!!.trim().toString(),
                     sexSelection,
                     yob!!.trim().toString().toInt(),
                     layoutBinding.married.isChecked,
@@ -229,7 +253,7 @@ class CreateMemberFragment : Fragment() {
                     selectedRegion!!.id
                 )
 
-                if (isEditing) {
+                val alterCount = if (isEditing) {
                     memberViewModel.updateMember(
                         subjectMember
                     )
@@ -240,27 +264,36 @@ class CreateMemberFragment : Fragment() {
                         )
                     )
                 }
+
+                if (alterCount.isNotEmpty()) {
+                    ToastUtils.showLongToastInMiddle(if (isEditing) R.string.member_updated else R.string.member_created)
+                    findNavController().popBackStack()
+
+                } else {
+                    ToastUtils.showLongToast(
+                        if (isEditing) getString(
+                            R.string.failed_member_update_message,
+                            selectedAttendee!!.firstName
+                        ) else getString(R.string.failed_create_member_message, firstName.trim())
+                    )
+                }
             }
-
-            ToastUtils.showLongToastInMiddle(if (isEditing) R.string.member_updated else R.string.member_created)
-
-            findNavController().popBackStack()
         }
 
         layoutBinding.deleteMemberButton.setOnClickListener {
             SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("Completely Delete")
+                .setTitleText(getString(R.string.delete_member_dialog_prompt_title))
                 .setContentText(
                     "${selectedAttendee?.firstName}'s data will be completely wiped out. \n " +
                             "This is irreversible, are you sure you want to proceed?"
                 )
-                .setConfirmText("No")
+                .setConfirmText(getString(R.string.no_option_dialog))
                 .setConfirmClickListener { sDialog ->
 
                     sDialog.dismissWithAnimation()
                 }
                 .setCancelButton(
-                    "Yes"
+                    getString(R.string.yes_option_dialog)
                 ) { sDialog ->
 
                     lifecycleScope.launch {
@@ -278,10 +311,7 @@ class CreateMemberFragment : Fragment() {
 
                     }
 
-
                     sDialog.dismissWithAnimation()
-
-
 
                     findNavController().popBackStack()
 
@@ -298,7 +328,7 @@ class CreateMemberFragment : Fragment() {
             Snackbar.LENGTH_LONG
         ).setAction(R.string.undo_deletion) {
             lifecycleScope.launch {
-            memberViewModel.createNewMember(listOf(selectedAttendee!!.toMemberEntity()))
+                memberViewModel.createNewMember(listOf(selectedAttendee!!.toMemberEntity()))
             }
         }
 

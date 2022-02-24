@@ -25,6 +25,8 @@ data class MemberDBO(
 
     val otherNames: String,
 
+    val identificationNumber : String?,
+
     val sex: Int,
 
     val birthYear: Int,

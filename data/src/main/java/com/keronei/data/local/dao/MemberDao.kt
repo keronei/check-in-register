@@ -13,7 +13,7 @@ interface MemberDao {
     suspend fun createNewMember(memberDBOs: List<MemberDBO>) : List<Long>
 
     @Update(entity = MemberDBO::class)
-    suspend fun updateMemberInformation(memberDBO: MemberDBO)
+    suspend fun updateMemberInformation(memberDBO: MemberDBO) : List<Long>
 
     @Query("SELECT * from MemberDBO ORDER BY firstName DESC")
     fun getAllMembers(): Flow<List<MemberDBO>>

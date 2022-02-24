@@ -7,6 +7,7 @@ data class MemberEntity(
     var firstName: String,
     var secondName: String,
     var otherNames: String,
+    var identificationNumber : String?,
     var sex: Int,
     var birthYear: Int,
     var isMarried : Boolean,
@@ -20,6 +21,7 @@ data class MemberEntity(
             "firstName" -> firstName
             "secondName" -> secondName
             "otherNames" -> otherNames
+            "identificationNumber" -> identificationNumber ?: ""
             "sex" -> sex
             "birthYear" -> birthYear
             "isMarried" -> isMarried
@@ -31,7 +33,4 @@ data class MemberEntity(
 
     }
 
-//    override fun toString(): String {
-//        return "$firstName $secondName $otherNames"
-//    }
 }

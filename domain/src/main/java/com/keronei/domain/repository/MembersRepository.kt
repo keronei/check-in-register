@@ -11,7 +11,7 @@ interface MembersRepository {
 
     fun getAllMembers(): Flow<List<MemberEntity>>
 
-    suspend fun updateMemberDetails(memberEntity: MemberEntity)
+    suspend fun updateMemberDetails(memberEntity: MemberEntity) : List<Long>
 
     suspend fun removeMemberFromRegister(memberEntity: MemberEntity) : Int
 
