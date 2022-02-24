@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import androidx.core.view.isVisible
-import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -66,7 +64,7 @@ class CreateMemberFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         layoutBinding =
-            DataBindingUtil.inflate(inflater, R.layout.create_member_fragment, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_create_member, container, false)
 
         regionsSpinner =
             layoutBinding.searchRegionSpinner as SmartMaterialSpinner<RegionEntity>

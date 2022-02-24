@@ -76,6 +76,7 @@
                 app:borderWidth="0dp"
                 app:elevation="0dp"
                 app:fabSize="normal"
+                app:tint="@android:color/white"
                 app:shapeAppearance="@style/ShapeAppearance.KO.ProfileImageComponent"
                 app:srcCompat="@drawable/ic_baseline_add_member_24"
                 app:useCompatPadding="false" />

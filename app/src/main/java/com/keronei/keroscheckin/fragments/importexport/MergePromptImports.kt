@@ -46,7 +46,7 @@ class MergePromptImports : Fragment() {
     ): View {
 
         importBindingOptions =
-            DataBindingUtil.inflate(inflater, R.layout.bottom_modal_merge_imports, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_merge_imports, container, false)
 
         processingDialog = SweetAlertDialog(requireContext(), SweetAlertDialog.PROGRESS_TYPE)
 
@@ -191,7 +191,7 @@ class MergePromptImports : Fragment() {
 
     private fun updateRegionIDForMember(member: MemberEntity, id: Long): MemberEntity {
         return MemberEntity(
-            member.id,
+            0,
             member.firstName,
             member.secondName,
             member.otherNames,

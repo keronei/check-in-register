@@ -4,14 +4,11 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -35,9 +32,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
-import timber.log.Timber
-import java.io.File
-import java.io.FileOutputStream
 import java.io.InputStream
 import java.util.*
 import javax.inject.Inject
@@ -124,7 +118,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.dialog_import_export_layout,
+            R.layout.fragment_import_export_layout,
             container,
             false
         )

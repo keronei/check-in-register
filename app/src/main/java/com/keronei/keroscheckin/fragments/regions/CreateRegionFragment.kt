@@ -60,7 +60,7 @@ class CreateRegionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         createRegionFragmentBindings = DataBindingUtil.inflate(
-            inflater, R.layout.create_region_fragment, container, false
+            inflater, R.layout.fragment_create_region, container, false
         )
 
         setupOnClickListeners()

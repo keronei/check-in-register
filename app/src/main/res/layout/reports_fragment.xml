@@ -71,7 +71,7 @@
                             android:drawablePadding="20dp"
                             android:fontFamily="@font/halveticaneue"
                             android:paddingTop="10dp"
-                            android:text="27 - Oct - 2021"
+                            android:text="@string/date_place_holder_in_reports"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -367,6 +367,7 @@
                 app:backgroundTint="@color/colorAccent"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
+                app:tint="@android:color/white"
                 app:fabSize="normal"
                 app:useCompatPadding="false"/>
 

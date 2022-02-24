@@ -8,14 +8,16 @@
 
         <ImageButton
             android:id="@+id/img_btn_close_merge_options"
-            android:contentDescription="@string/close_nerge_options_btn_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_12"
+            android:background="@color/float_transparent"
+            android:contentDescription="@string/close_nerge_options_btn_text"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
             android:src="@drawable/ic_baseline_close_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="@dimen/dimen_12"
-            android:background="@color/float_transparent"
             app:tint="@color/primaryColor" />
 
 

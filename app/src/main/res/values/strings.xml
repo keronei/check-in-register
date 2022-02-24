@@ -185,6 +185,9 @@
     <string name="replace_imports_button_text">Replace</string>
     <string name="clean_up_context_message">This option will clean your existing data and add the newly imported ones. \nYou will loose existing entries.</string>
     <string name="merge_header_message">You have %s and %s to be imported while your device already contains %s and %s.</string>
+    <string name="tab_content_description">All members and yet to check in members.</string>
+    <string name="date_place_holder_in_reports">27 - Oct - 2021</string>
+    <string name="arrival_time_clock">Arrival time clock</string>
 
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>

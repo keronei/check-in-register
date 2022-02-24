@@ -61,7 +61,7 @@
 
     <fragment
         android:id="@+id/createRegionFragment"
-        tools:layout="@layout/create_region_fragment"
+        tools:layout="@layout/fragment_create_region"
         android:name="com.keronei.keroscheckin.fragments.regions.CreateRegionFragment"
         android:label="CreateRegionFragment" >
         <argument
@@ -78,7 +78,7 @@
     <fragment
         android:id="@+id/createMemberFragment"
         android:name="com.keronei.keroscheckin.fragments.members.CreateMemberFragment"
-        tools:layout="@layout/create_member_fragment"
+        tools:layout="@layout/fragment_create_member"
         android:label="CreateMemberFragment" >
         <argument
             android:name="isEditing"
@@ -126,12 +126,12 @@
     <fragment
         android:id="@+id/mergePromptImports"
         android:name="com.keronei.keroscheckin.fragments.importexport.MergePromptImports"
-        tools:layout="@layout/bottom_modal_merge_imports"
+        tools:layout="@layout/fragment_merge_imports"
         android:label="MergePromptImports" />
     <dialog
         android:id="@+id/importExportSheet"
         android:name="com.keronei.keroscheckin.fragments.importexport.ImportExportSheet"
-       tools:layout="@layout/dialog_import_export_layout"
+       tools:layout="@layout/fragment_import_export_layout"
         android:label="ImportExportSheet" />
 
 </navigation>
