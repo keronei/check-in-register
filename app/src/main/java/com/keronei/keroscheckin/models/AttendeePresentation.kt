@@ -8,6 +8,7 @@ data class AttendeePresentation(
     val firstName: String,
     val secondName : String,
     val otherNames : String,
+    val identificationNumber : String?,
     val sex : Int,
     val memberId : Int,
     val name: String,

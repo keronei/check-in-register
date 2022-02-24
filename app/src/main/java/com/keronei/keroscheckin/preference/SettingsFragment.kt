@@ -14,6 +14,7 @@ import androidx.preference.PreferenceFragmentCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.guardanis.applock.dialogs.LockCreationDialogBuilder
 import com.guardanis.applock.dialogs.UnlockDialogBuilder
 import com.keronei.android.common.Constants.TELEGRAM_SUPPORT_GROUP_LINK
 import com.keronei.data.repository.mapper.MemberLocalEntityMapper

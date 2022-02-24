@@ -174,14 +174,15 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
                     val builtEntityObject = MemberEntity(
                         pointerRow.getCell(2).stringCellValue.toInt(),
                         pointerRow.getCell(1).stringCellValue,
-                        pointerRow.getCell(8).stringCellValue,
-                        pointerRow.getCell(5).stringCellValue,
-                        pointerRow.getCell(9).stringCellValue.toInt(),
-                        pointerRow.getCell(0).stringCellValue.toInt(),
-                        pointerRow.getCell(4).stringCellValue.toBoolean(),
+                        pointerRow.getCell(9).stringCellValue,
                         pointerRow.getCell(6).stringCellValue,
-                        pointerRow.getCell(3).stringCellValue.toBoolean(),
-                        pointerRow.getCell(7).stringCellValue.toInt()
+                        pointerRow.getCell(3).stringCellValue,
+                        pointerRow.getCell(10).stringCellValue.toInt(),
+                        pointerRow.getCell(0).stringCellValue.toInt(),
+                        pointerRow.getCell(5).stringCellValue.toBoolean(),
+                        pointerRow.getCell(7).stringCellValue,
+                        pointerRow.getCell(4).stringCellValue.toBoolean(),
+                        pointerRow.getCell(8).stringCellValue.toInt()
                     )
 
                     Timber.d("Iterating through cell ${cellIterator.next().columnIndex}")

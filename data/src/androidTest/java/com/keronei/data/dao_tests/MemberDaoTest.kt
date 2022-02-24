@@ -100,7 +100,7 @@ class MemberDaoTest {
 
             createMember()
 
-            memberDao.createNewMember(listOf(memberLocalEntityMapper.map(member2)))
+            memberDao.createNewMembers(listOf(memberLocalEntityMapper.map(member2)))
 
             memberDao.deleteMember(memberLocalEntityMapper.map(member))
 
@@ -116,7 +116,7 @@ class MemberDaoTest {
         return runBlocking {
             createMember()
 
-            memberDao.createNewMember(listOf(memberLocalEntityMapper.map(member2)))
+            memberDao.createNewMembers(listOf(memberLocalEntityMapper.map(member2)))
 
             createMember()
 
@@ -147,7 +147,7 @@ class MemberDaoTest {
                     1
                 )
 
-            memberDao.createNewMember(listOf(memberLocalEntityMapper.map(member2)))
+            memberDao.createNewMembers(listOf(memberLocalEntityMapper.map(member2)))
 
             memberDao.updateMemberInformation(memberLocalEntityMapper.map(updatedMember))
 
@@ -167,7 +167,7 @@ class MemberDaoTest {
     fun deleteAllMembersDeletesCreatedMembers(){
         return runBlocking {
             createMember()
-            memberDao.createNewMember(listOf(memberLocalEntityMapper.map(member2)))
+            memberDao.createNewMembers(listOf(memberLocalEntityMapper.map(member2)))
 
             memberDao.deleteAllMembers()
 
@@ -180,7 +180,7 @@ class MemberDaoTest {
 
     private suspend fun createMember() {
         regionsDao.createRegion(listOf(RegionDBO(0, "Test region.")))
-        memberDao.createNewMember(memberDBOs = listOf(memberLocalEntityMapper.map(member)))
+        memberDao.createNewMembers(memberDBOs = listOf(memberLocalEntityMapper.map(member)))
     }
 
     @After

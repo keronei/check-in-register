@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MemberDao {
     @Insert(onConflict = REPLACE)
-    suspend fun createNewMember(memberDBOs: List<MemberDBO>) : List<Long>
+    suspend fun createNewMembers(memberDBOs: List<MemberDBO>) : List<Long>
 
     @Update(entity = MemberDBO::class)
-    suspend fun updateMemberInformation(memberDBO: MemberDBO) : List<Long>
+    suspend fun updateMemberInformation(memberDBO: MemberDBO) : Int
 
     @Query("SELECT * from MemberDBO ORDER BY firstName DESC")
     fun getAllMembers(): Flow<List<MemberDBO>>

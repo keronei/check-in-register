@@ -118,7 +118,7 @@ class CheckInDaoTest {
     private suspend fun createMember() {
         regionDao.createRegion(listOf(RegionDBO(1, "Test Region.")))
 
-        memberDao.createNewMember(listOf(memberLocalEntityMapper.map(member)))
+        memberDao.createNewMembers(listOf(memberLocalEntityMapper.map(member)))
     }
 
     @After

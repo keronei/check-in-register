@@ -13,6 +13,7 @@ fun updateRegionIDForMember(member: MemberEntity, id: Long): MemberEntity {
         member.firstName,
         member.secondName,
         member.otherNames,
+        member.identificationNumber,
         member.sex,
         member.birthYear,
         member.isMarried,

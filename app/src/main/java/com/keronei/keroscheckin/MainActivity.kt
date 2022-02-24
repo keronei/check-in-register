@@ -76,60 +76,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun initiateAuth() {
-
-        unlocker = UnlockDialogBuilder(this)
-
-
-        unlocker?.onUnlocked { dismissedWithAuth = true }
-        unlocker?.onCanceled {
-            onUserCancelAuth()
-            dismissedWithAuth = false
-        }
-        //val necessary = unlocker?.showIfRequiredOrSuccess(TimeUnit.MINUTES.toMillis(15))
-
-        unlocker?.show()
-
-    }
-
-    private fun onUserCancelAuth() {
-        val cancelAuthAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-        cancelAuthAlert.titleText = "Data Safety"
-        cancelAuthAlert.contentText =
-            "The data in this application is sensitive and cannot be accessed without authentication."
-        cancelAuthAlert.confirmText = "Proceed"
-        cancelAuthAlert.setConfirmClickListener { sDialog ->
-
-            sDialog.dismissWithAnimation()
-
-            dismissedWithAuth = true
-
-            initiateAuth()
-
-        }
-        cancelAuthAlert.setCancelButton(
-            "Exit"
-        ) { sDialog ->
-
-            sDialog.dismissWithAnimation()
-
-            this.finish()
-
-        }
-        cancelAuthAlert.setCanceledOnTouchOutside(false)
-
-        cancelAuthAlert.setOnDismissListener {
-            if (!dismissedWithAuth) {
-                initiateAuth()
-            }
-        }
-
-        cancelAuthAlert.show()
-
-
-    }
-
     private fun createAuth() {
         lockCreator = LockCreationDialogBuilder(this)
 
@@ -192,14 +138,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPostResume() {
         super.onPostResume()
-        dismissedWithAuth = false
-
-        val isFirstTime = sharedPreferences.getBoolean(IS_FIRST_TIME_KEY, true)
-
-        if (!isFirstTime) {
-            AppLock.onActivityResumed(this)
-        }
-
+        AppLock.onActivityResumed(this)
     }
 
 

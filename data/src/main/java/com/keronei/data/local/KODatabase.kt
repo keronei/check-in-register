@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [CheckInDBO::class, MemberDBO::class, RegionDBO::class],
-    version = 2,
+    version = 3,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2, spec = KODatabase.AutoMigrationSpecFrom1to2::class),

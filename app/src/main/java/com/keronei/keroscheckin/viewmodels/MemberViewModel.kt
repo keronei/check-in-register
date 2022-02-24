@@ -26,10 +26,12 @@ class MemberViewModel @Inject constructor(
 
     suspend fun queryAllMembers() = membersUseCases.queryAllMembersUseCase(UseCaseParams.Empty)
 
-    fun updateMember(memberEntity: MemberEntity) {
-        viewModelScope.launch {
+    suspend fun updateMember(memberEntity: MemberEntity) : Int {
+      val updateCount = viewModelScope.async {
             membersUseCases.updateMemberUseCase(memberEntity)
         }
+
+        return updateCount.await()
     }
 
     suspend fun deleteMember(memberEntity: MemberEntity) : Int {

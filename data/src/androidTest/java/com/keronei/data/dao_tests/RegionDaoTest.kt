@@ -125,7 +125,7 @@ class RegionDaoTest {
             //6
             regionDao.createRegion(listOf(region))
 
-            memberDao.createNewMember(memberLocalEntityMapper.mapList(listOf(KOTestDatabaseInstance.getMemberEntity())))
+            memberDao.createNewMembers(memberLocalEntityMapper.mapList(listOf(KOTestDatabaseInstance.getMemberEntity())))
 
             regionDao.deleteRegion(RegionDBO(6, region.name))
 

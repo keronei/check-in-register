@@ -338,7 +338,9 @@ class AllMembersFragment : Fragment() {
             .setConfirmText("Yes")
             .setConfirmClickListener { sDialog ->
 
-                memberViewModel.updateMember(member.toMemberEntity().copy(isActive = true))
+                lifecycleScope.launch {
+                    memberViewModel.updateMember(member.toMemberEntity().copy(isActive = true))
+                }
                 checkInViewModel.checkInMember(checkInEntity, member.toMemberEntity())
 
                 sDialog.dismissWithAnimation()

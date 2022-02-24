@@ -188,7 +188,19 @@
     <string name="tab_content_description">All members and yet to check in members.</string>
     <string name="date_place_holder_in_reports">27 - Oct - 2021</string>
     <string name="arrival_time_clock">Arrival time clock</string>
-
+    <string name="id_number">ID Number</string>
+    <string name="id_is_required_message">ID is required for over 18.</string>
+    <string name="failed_member_update_message">Could not update %s\'s info.</string>
+    <string name="failed_create_member_message">Could not add %s</string>
+    <string name="update_member_header">Update</string>
+    <string name="update_member_title">Update Member Info</string>
+    <string name="select_region_prompt">Please select region!</string>
+    <string name="provide_field_prompt">Provider this field!</string>
+    <string name="prompt_select_sex_message">Select sex identity</string>
+    <string name="prompt_input_age">Needs 4 digits eg. 1999.</string>
+    <string name="delete_member_dialog_prompt_title">Completely Delete</string>
+    <string name="no_option_dialog">No</string>
+    <string name="yes_option_dialog">Yes</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>

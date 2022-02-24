@@ -5,8 +5,8 @@ import com.keronei.domain.repository.MembersRepository
 import com.keronei.domain.usecases.base.BaseUseCase
 
 class UpdateMemberUseCase(private val membersRepository: MembersRepository) :
-    BaseUseCase<MemberEntity, List<Long>> {
-    override suspend fun invoke(params: MemberEntity) : List<Long> {
+    BaseUseCase<MemberEntity, Int> {
+    override suspend fun invoke(params: MemberEntity) : Int {
         return membersRepository.updateMemberDetails(params)
     }
 

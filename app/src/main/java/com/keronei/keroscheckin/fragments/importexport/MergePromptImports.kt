@@ -172,12 +172,24 @@ class MergePromptImports : Fragment() {
 
         withContext(Dispatchers.Main) {
             processingDialog.dismissWithAnimation()
+
+            val regionsText = resources.getQuantityString(
+                R.plurals.regions_prefix,
+                totalImportedRegions.size,
+                totalImportedRegions.size
+            )
+            val membersText = resources.getQuantityString(
+                R.plurals.members_prefix,
+                totalImportedMembers.size,
+                totalImportedMembers.size
+            )
+
             if (totalImportedMembers.isNotEmpty() || totalImportedRegions.isNotEmpty()) {
                 ToastUtils.showLongToast(
                     getString(
                         R.string.success_import_operation_message,
-                        totalImportedRegions.size,
-                        totalImportedMembers.size
+                        regionsText,
+                        membersText
                     )
                 )
 

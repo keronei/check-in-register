@@ -102,24 +102,20 @@ class CreateMemberFragment : Fragment() {
                     if (text.isNullOrEmpty()) {
                         return@doOnTextChanged
                     }
-
                     val birthYear = text.toString().toInt()
-
                     val approxAge = currentYear - birthYear
-
                     if (approxAge > 17) {
-                        layoutBinding.maritalStatus.visibility = View.VISIBLE
+                        toggleMaritalStatusSelection(true)
                         layoutBinding.maritalStatus.clearCheck()
 
                         if (approxAge > 19) {
-                            layoutBinding.identificationNumberEdittext.visibility = View.VISIBLE
+                            toggleIdNumberVisibility(true)
                         } else {
-                            layoutBinding.identificationNumberEdittext.visibility = View.GONE
+                            toggleIdNumberVisibility(false)
                         }
-
                     } else {
-                        layoutBinding.maritalStatus.visibility = View.GONE
-
+                        toggleMaritalStatusSelection(false)
+                        toggleIdNumberVisibility(false)
                     }
                 } catch (exception: Exception) {
                     ToastUtils.showShortToast(exception.message.toString())
@@ -127,6 +123,17 @@ class CreateMemberFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun toggleIdNumberVisibility(status: Boolean) {
+        layoutBinding.identificationNumberEdittext.visibility =
+            if (status) View.VISIBLE else View.GONE
+        layoutBinding.identificationNumberLayout.visibility =
+            if (status) View.VISIBLE else View.GONE
+    }
+
+    private fun toggleMaritalStatusSelection(status: Boolean) {
+        layoutBinding.maritalStatus.visibility = if (status) View.VISIBLE else View.GONE
     }
 
     private fun configureToolBar() {
@@ -148,7 +155,12 @@ class CreateMemberFragment : Fragment() {
         layoutBinding.maleSelector.isChecked = selectedAttendee?.sex == 1
         layoutBinding.femaleSelector.isChecked = selectedAttendee?.sex == 0
         layoutBinding.otherSexSelector.isChecked = selectedAttendee?.sex == 2
-        layoutBinding.ageEdittext.setText(selectedAttendee?.age.toString())
+
+        val birthYear = Calendar.getInstance().get(Calendar.YEAR) - (selectedAttendee?.age ?: 0)
+
+        toggleIdNumberVisibility(selectedAttendee?.age ?: 0 > 19)
+
+        layoutBinding.ageEdittext.setText(birthYear.toString())
         layoutBinding.phoneEdittext.setText(selectedAttendee?.phoneNumber)
 
         layoutBinding.married.isChecked = selectedAttendee?.isMarried == true
@@ -214,18 +226,19 @@ class CreateMemberFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            if (layoutBinding.identificationNumberEdittext.isVisible) {
+                if (identificationNumber?.isBlank() == true) {
+                    ToastUtils.showLongToastInMiddle(R.string.id_is_required_message)
+                    return@setOnClickListener
+                }
+            }
+
             if (layoutBinding.maritalStatus.isVisible) {
                 if (!layoutBinding.married.isChecked && !layoutBinding.notMarried.isChecked) {
                     ToastUtils.showLongToastInMiddle(R.string.marital_status_constraint)
                     return@setOnClickListener
                 }
             }
-
-            if (layoutBinding.identificationNumberEdittext.isVisible) {
-                ToastUtils.showLongToastInMiddle(R.string.id_is_required_message)
-                return@setOnClickListener
-            }
-
 
             lifecycleScope.launch {
 
@@ -253,19 +266,23 @@ class CreateMemberFragment : Fragment() {
                     selectedRegion!!.id
                 )
 
-                val alterCount = if (isEditing) {
-                    memberViewModel.updateMember(
+                var createMemberCount = listOf<Long>()
+
+                var updatedMemberCount = 0
+
+                if (isEditing) {
+                    updatedMemberCount = memberViewModel.updateMember(
                         subjectMember
                     )
                 } else {
-                    memberViewModel.createNewMember(
+                    createMemberCount = memberViewModel.createNewMember(
                         listOf(
                             subjectMember
                         )
                     )
                 }
 
-                if (alterCount.isNotEmpty()) {
+                if (createMemberCount.isNotEmpty() || updatedMemberCount > 0) {
                     ToastUtils.showLongToastInMiddle(if (isEditing) R.string.member_updated else R.string.member_created)
                     findNavController().popBackStack()
 

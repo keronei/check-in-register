@@ -476,8 +476,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
             cleanUpAndAddImports(readRegionsList, readMembersList)
         } else {
             findNavController().navigate(R.id.action_settingsFragment_to_mergePromptImports)
-
-            this.dismiss()
+                .also { this@ImportExportSheet.dismiss() }
         }
 
 
@@ -550,7 +549,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
                         )
 
-                        findNavController().popBackStack(R.id.membersFragment, true)
+                        findNavController().popBackStack(R.id.membersFragment, false)
 
                     } else {
                         showErrorDialog(
@@ -569,6 +568,9 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                     exception.printStackTrace()
                     ToastUtils.showLongToast(getString(R.string.unable_to_import_new_entries))
                     findNavController().popBackStack(R.id.membersFragment, true)
+                        .also { this@ImportExportSheet.dismiss() }
+
+
                 }
             }
         }

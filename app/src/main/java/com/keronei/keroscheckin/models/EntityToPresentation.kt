@@ -34,6 +34,7 @@ fun AttendanceEntity.toPresentation(checkInInvalidationPeriod: Int): AttendeePre
         memberEntity.firstName,
         memberEntity.secondName,
         memberEntity.otherNames,
+        memberEntity.identificationNumber,
         memberEntity.sex,
         memberEntity.id,
         memberEntity.firstName + " " + memberEntity.secondName + " " + memberEntity.otherNames,
