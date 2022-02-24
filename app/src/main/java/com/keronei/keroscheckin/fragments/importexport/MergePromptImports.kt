@@ -17,6 +17,7 @@ import com.keronei.keroscheckin.viewmodels.ImportExportViewModel
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
+import com.keronei.utils.updateRegionIDForMember
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
@@ -187,21 +188,6 @@ class MergePromptImports : Fragment() {
             }
         }
 
-    }
-
-    private fun updateRegionIDForMember(member: MemberEntity, id: Long): MemberEntity {
-        return MemberEntity(
-            0,
-            member.firstName,
-            member.secondName,
-            member.otherNames,
-            member.sex,
-            member.birthYear,
-            member.isMarried,
-            member.phoneNumber,
-            member.isActive,
-            id.toInt()
-        )
     }
 
     //TODO find duplicates in names and remove those without members

@@ -169,7 +169,7 @@
     <string name="send_the_summary_button">Send the summary</string>
     <string name="copt_to_clipboard_description">Copy summary to clipboard</string>
     <string name="success_import_operation_title">Success</string>
-    <string name="success_import_operation_message">%d region(s) and %d member(s) imported.</string>
+    <string name="success_import_operation_message">%s and %s imported.</string>
     <string name="save_option_export">Save</string>
     <string name="null_uri_message_to_user_save_file">Did you save the file?</string>
     <string name="workbok_no_initialized_message">Export file was not prepared.</string>

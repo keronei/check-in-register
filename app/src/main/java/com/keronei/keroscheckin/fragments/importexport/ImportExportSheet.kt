@@ -28,10 +28,12 @@ import com.keronei.utils.ToastUtils
 import com.keronei.utils.export.ExportRegionMembersProcessor
 import com.keronei.utils.import.ImportRegionMembersProcessor
 import com.keronei.utils.makeShareIntent
+import com.keronei.utils.updateRegionIDForMember
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import timber.log.Timber
 import java.io.InputStream
 import java.util.*
 import javax.inject.Inject
@@ -407,7 +409,8 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                     confirmationPrompt.dismissWithAnimation()
 
                     SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE).setContentText(
-                        exception.message ?: getString(R.string.unable_to_import_found_entries_message)
+                        exception.message
+                            ?: getString(R.string.unable_to_import_found_entries_message)
                     ).show()
 
                 }
@@ -473,8 +476,10 @@ class ImportExportSheet : BottomSheetDialogFragment() {
             cleanUpAndAddImports(readRegionsList, readMembersList)
         } else {
             findNavController().navigate(R.id.action_settingsFragment_to_mergePromptImports)
+
+            this.dismiss()
         }
-        this.dismiss()
+
 
     }
 
@@ -484,45 +489,86 @@ class ImportExportSheet : BottomSheetDialogFragment() {
     ) {
         coroutineScope.launch {
 
-            //just re-query and delete all
-            val existingRegions = regionsViewModel.queryAllRegions().first()
+            try {
+                //just re-query and delete all
+                val existingRegions = regionsViewModel.queryAllRegions().first()
 
-            memberViewModel.deleteAllMembers()
+                memberViewModel.deleteAllMembers()
 
-            regionsViewModel.deleteAllRegions(existingRegions)
+                regionsViewModel.deleteAllRegions(existingRegions)
 
-            //TODO fix relationship
+                val idsOfCreatedRegions = mutableListOf<Long>()
+                val idsOfCreatedMembers = mutableListOf<Long>()
 
-            val finalRegionsAfterAdd = regionsViewModel.createRegion(readRegionsList)
+                readRegionsList.forEach { readRegionEntry ->
+                    val createdRegionId = regionsViewModel.createRegion(listOf(readRegionEntry))
 
-            val finalMembersAfterAdd = memberViewModel.createNewMember(readMembersList)
+                    idsOfCreatedRegions.addAll(createdRegionId)
 
-            withContext(Dispatchers.Main) {
-                processingDialog.dismissWithAnimation()
-            }
+                    val readMembersUnderCreatedRegion =
+                        readMembersList.filter { memberEntity -> memberEntity.regionId == readRegionEntry.id }
 
-            withContext(Dispatchers.Main) {
+                    val membersWithUpdatedRegionIds =
+                        readMembersUnderCreatedRegion.map { memberEntity ->
+                            updateRegionIDForMember(
+                                memberEntity,
+                                createdRegionId.first()
+                            )
+                        }
 
-                if (finalMembersAfterAdd.isNotEmpty() || finalRegionsAfterAdd.isNotEmpty()) {
+                    val finalMembersAfterAdd =
+                        memberViewModel.createNewMember(membersWithUpdatedRegionIds)
 
-                    showInfoDialog(
-                        getString(R.string.success_import_operation_title),
-                        getString(
-                            R.string.success_import_operation_message,
-                            finalRegionsAfterAdd.size,
-                            finalMembersAfterAdd.size
+                    idsOfCreatedMembers.addAll(finalMembersAfterAdd)
+
+                }
+
+                withContext(Dispatchers.Main) {
+                    processingDialog.dismissWithAnimation()
+
+                    if (idsOfCreatedMembers.isNotEmpty() || idsOfCreatedRegions.isNotEmpty()) {
+
+                        val membersCountString = resources.getQuantityString(
+                            R.plurals.members_prefix,
+                            idsOfCreatedMembers.size,
+                            idsOfCreatedMembers.size
                         )
 
-                    )
-//TODO FindnavigationController and navigate to members
-                    //childFragmentManager
-                    //findNavController().popBackStack(R.id.membersFragment, false)
+                        val regionsCountString = resources.getQuantityString(
+                            R.plurals.regions_prefix,
+                            idsOfCreatedRegions.size,
+                            idsOfCreatedRegions.size
+                        )
 
-                } else {
-                    showErrorDialog(
-                        getString(R.string.failed_operation_dialog_title),
-                        getString(R.string.unable_to_import_new_entries)
-                    )
+                        showInfoDialog(
+                            getString(R.string.success_import_operation_title),
+                            getString(
+                                R.string.success_import_operation_message,
+                                regionsCountString,
+                                membersCountString
+                            )
+
+                        )
+
+                        findNavController().popBackStack(R.id.membersFragment, true)
+
+                    } else {
+                        showErrorDialog(
+                            getString(R.string.failed_operation_dialog_title),
+                            getString(R.string.unable_to_import_new_entries)
+                        )
+                    }
+
+                    this@ImportExportSheet.dismiss()
+
+                }
+            } catch (exception: Exception) {
+                withContext(Dispatchers.Main) {
+                    processingDialog.dismissWithAnimation()
+
+                    exception.printStackTrace()
+                    ToastUtils.showLongToast(getString(R.string.unable_to_import_new_entries))
+                    findNavController().popBackStack(R.id.membersFragment, true)
                 }
             }
         }
