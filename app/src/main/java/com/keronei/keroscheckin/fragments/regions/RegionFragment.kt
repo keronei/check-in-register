@@ -218,6 +218,15 @@ class RegionFragment : Fragment() {
                 val list = info.map { regionEmbedEntity -> regionEmbedEntity.toPresentation() }
 
                 regionsAdapter.modifyList(list)
+
+                if (list.isEmpty()) {
+                    regionFragmentBinding.emptyStateRegion.visibility = View.VISIBLE
+                    regionFragmentBinding.searchViewRegions.visibility = View.GONE
+                } else {
+                    regionFragmentBinding.emptyStateRegion.visibility = View.GONE
+                    regionFragmentBinding.searchViewRegions.visibility = View.VISIBLE
+
+                }
             }
 
         }
