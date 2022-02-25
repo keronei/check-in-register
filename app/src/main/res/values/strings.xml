@@ -227,6 +227,16 @@
     <string name="member_checked_in_success_header">%s checked In!</string>
     <string name="member_last_seen_detail">%s last Checked-In %s</string>
     <string name="member_never_checked_in">%s has never been Checked-In</string>
+    <string name="no_reports_header">No Reports</string>
+    <string name="no_report_message">No entries matching your selection criteria.</string>
+    <string name="share_via">Share Via</string>
+    <string name="report_is_ready_header">Report is ready</string>
+    <string name="ready_report_options">You can either open or send it</string>
+    <string name="dialog_view_option">View</string>
+    <string name="dialog_share_option">Share</string>
+    <string name="share_report_intent_message">Share report</string>
+    <string name="error_dialog_header">Error</string>
+    <string name="no_app_to_open_report">No app found in your phone that can open this Excel report. You can install WPS Office and try again.</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>

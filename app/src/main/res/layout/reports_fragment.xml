@@ -215,7 +215,7 @@
                     android:id="@+id/fields"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="wrap_content"
-                    android:layout_height="300dp"
+                    android:layout_height="350dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/sex_selection_header">
@@ -252,6 +252,15 @@
                             android:text="@string/phone" />
 
                         <CheckBox
+                            android:id="@+id/id_number_field"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/phone_field"
+                            android:layout_marginStart="20dp"
+                            android:checked="false"
+                            android:text="@string/id_number" />
+
+                        <CheckBox
                             android:id="@+id/temperature_field"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -271,7 +280,7 @@
                             android:id="@+id/region_field"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/phone_field"
+                            android:layout_below="@id/id_number_field"
                             android:layout_marginStart="20dp"
                             android:text="@string/region" />
 

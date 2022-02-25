@@ -68,7 +68,7 @@ class ReportsOutputFragment : Fragment() {
             shareSummaryIntent.type = "text/plain"
             shareSummaryIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.report_summary_heading))
             shareSummaryIntent.putExtra(Intent.EXTRA_TEXT, summaryText)
-            startActivity(Intent.createChooser(shareSummaryIntent, "Share Via"))
+            startActivity(Intent.createChooser(shareSummaryIntent, getString(R.string.share_via)))
 
         }
 
@@ -89,21 +89,24 @@ class ReportsOutputFragment : Fragment() {
             val generatedReportIntent = reportsViewModel.preparedShareReportIntent.value
 
             SweetAlertDialog(requireContext(), SweetAlertDialog.NORMAL_TYPE)
-                .setTitleText("Report is ready")
+                .setTitleText(getString(R.string.report_is_ready_header))
                 .setContentText(
-                    "You can either open or send it"
-                ).setNeutralButton("View") {
+                    getString(R.string.ready_report_options)
+                ).setNeutralButton(getString(R.string.dialog_view_option)) {dialog ->
 
                     generatedReportIntent.action = Intent.ACTION_VIEW
 
                     openGeneratedReport(generatedReportIntent)
 
-                }.setConfirmButton("Share") {
+                    dialog.dismissWithAnimation()
+
+                }.setConfirmButton(getString(R.string.dialog_share_option)) { dialog ->
 
                     generatedReportIntent.action = Intent.ACTION_SEND
 
-                    startActivity(Intent.createChooser(generatedReportIntent, "Share report"))
+                    startActivity(Intent.createChooser(generatedReportIntent, getString(R.string.share_report_intent_message)))
 
+                    dialog.dismissWithAnimation()
                 }
                 .show()
 
@@ -118,13 +121,13 @@ class ReportsOutputFragment : Fragment() {
             openingException.printStackTrace()
 
             SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("Error")
+                .setTitleText(getString(R.string.error_dialog_header))
                 .setContentText(
-                    "No app found in your phone that can open this Excel report. You can install WPS Office and try again."
+                    getString(R.string.no_app_to_open_report)
                 )
                 .show()
 
-            Timber.d("TAG", "No Intent available to handle action")
+            Timber.d(getString(R.string.no_app_to_open_report))
         }
     }
 

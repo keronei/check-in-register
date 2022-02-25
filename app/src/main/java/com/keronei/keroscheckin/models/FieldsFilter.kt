@@ -4,6 +4,7 @@ import com.keronei.keroscheckin.models.constants.ReportInclusion
 
 data class FieldsFilter(
     val includePhone: Boolean = true,
+    val includeIdNumber : Boolean = false,
     val includeRegion: Boolean = false,
     val includeAge: Boolean = false,
     val includeTemperature: Boolean = false,
@@ -16,6 +17,10 @@ data class FieldsFilter(
 
         if (includePhone) {
             inclusions.add(ReportInclusion.PHONE)
+        }
+
+        if (includeIdNumber){
+            inclusions.add(ReportInclusion.ID_NUMBER)
         }
 
         if (includeRegion) {

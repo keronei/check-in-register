@@ -123,6 +123,7 @@ private fun fillDataIntoExcel(dataList: List<AttendanceEntity>, fields: FieldsFi
 
             when (selection) {
                 ReportInclusion.PHONE -> cell.setCellValue(dataList[i].memberEntity.phoneNumber)
+                ReportInclusion.ID_NUMBER -> cell.setCellValue(dataList[i].memberEntity.identificationNumber ?: "")
                 ReportInclusion.REGION -> cell.setCellValue(dataList[i].regionEntity.name)
                 ReportInclusion.AGE -> {
                     //convert YOB to Age

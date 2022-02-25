@@ -209,6 +209,17 @@ class ReportsFragment : Fragment() {
             }
 
         }
+        reportsBinding.idNumberField.setOnCheckedChangeListener { _, checked ->
+
+            lifecycleScope.launch {
+                reportsViewModel.fieldsFilterModel.emit(
+                    value = reportsViewModel.fieldsFilterModel.value.copy(
+                        includeIdNumber = checked
+                    )
+                )
+            }
+
+        }
 
         reportsBinding.regionField.setOnCheckedChangeListener { _, checked ->
             lifecycleScope.launch {
@@ -267,7 +278,7 @@ class ReportsFragment : Fragment() {
     }
 
     private fun showDateSelectionDialog() {
-        DatePickerFragment().show(childFragmentManager, "date_picker")
+        DatePickerFragment().show(childFragmentManager, DatePickerFragment.TAG)
     }
 
     private fun actionListeners() {
@@ -290,9 +301,9 @@ class ReportsFragment : Fragment() {
 
         if (generatedReport.isEmpty()) {
             SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("No Reports")
+                .setTitleText(getString(R.string.no_reports_header))
                 .setContentText(
-                    "No entries matching your selection criteria."
+                    getString(R.string.no_report_message)
                 )
                 .show()
 

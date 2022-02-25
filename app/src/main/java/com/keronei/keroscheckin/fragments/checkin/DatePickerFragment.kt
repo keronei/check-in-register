@@ -53,4 +53,8 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         }
 
     }
+
+    companion object {
+        const val TAG = "DatePickerFragment"
+    }
 }
