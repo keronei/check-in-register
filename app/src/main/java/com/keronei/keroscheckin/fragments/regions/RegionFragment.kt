@@ -220,10 +220,10 @@ class RegionFragment : Fragment() {
                 regionsAdapter.modifyList(list)
 
                 if (list.isEmpty()) {
-                    regionFragmentBinding.emptyStateRegion.visibility = View.VISIBLE
+                    regionFragmentBinding.emptyStateMessageRegion.visibility = View.VISIBLE
                     regionFragmentBinding.searchViewRegions.visibility = View.GONE
                 } else {
-                    regionFragmentBinding.emptyStateRegion.visibility = View.GONE
+                    regionFragmentBinding.emptyStateMessageRegion.visibility = View.GONE
                     regionFragmentBinding.searchViewRegions.visibility = View.VISIBLE
 
                 }

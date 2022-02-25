@@ -201,6 +201,8 @@
     <string name="delete_member_dialog_prompt_title">Completely Delete</string>
     <string name="no_option_dialog">No</string>
     <string name="yes_option_dialog">Yes</string>
+    <string name="all_checked_in">All members have checked In</string>
+    <string name="all_active_checked_in">All active members have checked In. \n Inactive members are not shown here, you can enable this in settings.</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>

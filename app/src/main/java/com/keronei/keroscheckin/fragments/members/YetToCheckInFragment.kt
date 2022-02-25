@@ -18,6 +18,7 @@ import com.keronei.keroscheckin.models.AttendeePresentation
 import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD
 import com.keronei.keroscheckin.models.toPresentation
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
+import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class YetToCheckInFragment : Fragment() {
     }
 
     private val allMembersViewModel: AllMembersViewModel by activityViewModels()
+    private val membersViewModel: MemberViewModel by activityViewModels()
     private lateinit var yetToCheckInBinding: FragmentYetToCheckedInBinding
     lateinit var yetToCheckInAdapter: AttendanceRecyclerAdapter
     lateinit var searchView: androidx.appcompat.widget.SearchView
@@ -157,6 +159,24 @@ class YetToCheckInFragment : Fragment() {
                                 if (inactiveShouldBeHidden) temp.filter { memberEntry -> memberEntry.isActive } else temp
 
                             yetToCheckInAdapter.modifyList(filteredList)
+
+                            if (filteredList.isEmpty()) {
+                                yetToCheckInBinding.allMembersCheckedInTextview.visibility =
+                                    View.VISIBLE
+                                yetToCheckInBinding.searchViewYetToCheckIn.visibility = View.GONE
+                                if (temp.isEmpty()) {
+                                    yetToCheckInBinding.allMembersCheckedInTextview.text =
+                                        getString(R.string.all_checked_in)
+                                } else {
+                                    yetToCheckInBinding.allMembersCheckedInTextview.text =
+                                        getString(R.string.all_active_checked_in)
+
+                                }
+                            } else {
+                                yetToCheckInBinding.allMembersCheckedInTextview.visibility =
+                                    View.GONE
+                                yetToCheckInBinding.searchViewYetToCheckIn.visibility = View.VISIBLE
+                            }
 
                         }
                 }
