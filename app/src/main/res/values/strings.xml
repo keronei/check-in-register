@@ -81,7 +81,6 @@
     <string name="check_in_time">Check-In time</string>
     <string name="region">Region</string>
     <string name="other_sex">Other</string>
-    <string name="either_all_have_checked_in_or_there_s_no_registered_member">Either all have checked-in or there\'s no registered member.</string>
     <string name="age">Age</string>
     <string name="help">Help</string>
     <string name="version_number">version_number</string>
@@ -202,8 +201,9 @@
     <string name="no_option_dialog">No</string>
     <string name="yes_option_dialog">Yes</string>
     <string name="all_checked_in">All members have checked In</string>
-    <string name="all_active_checked_in">All active members have checked In. \n You have %s marked as inactive \n Inactive members are not shown here, you can enable this in settings.</string>
+    <string name="all_active_checked_in">All active members have checked In but you have %s marked as inactive. \n Inactive members are not shown here, you can enable this in settings.</string>
     <string name="no_active_member">You have %s that are not being displayed. \n Inactive members are not shown here, you can enable this in settings.</string>
+    <string name="you_do_not_have_any_regions_you_can_add_some_using_add_region">You do not have any regions. You can add some using \'Add Region\'</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>
