@@ -33,7 +33,6 @@ class YetToCheckInFragment : Fragment() {
     }
 
     private val allMembersViewModel: AllMembersViewModel by activityViewModels()
-    private val membersViewModel: MemberViewModel by activityViewModels()
     private lateinit var yetToCheckInBinding: FragmentYetToCheckedInBinding
     lateinit var yetToCheckInAdapter: AttendanceRecyclerAdapter
     lateinit var searchView: androidx.appcompat.widget.SearchView
@@ -168,8 +167,16 @@ class YetToCheckInFragment : Fragment() {
                                     yetToCheckInBinding.allMembersCheckedInTextview.text =
                                         getString(R.string.all_checked_in)
                                 } else {
+                                    val diff = temp - filteredList
+                                    val membersText = resources.getQuantityString(
+                                        R.plurals.members_prefix,
+                                        diff.size,
+                                        diff.size
+                                    )
+
+
                                     yetToCheckInBinding.allMembersCheckedInTextview.text =
-                                        getString(R.string.all_active_checked_in)
+                                        getString(R.string.all_active_checked_in, membersText)
 
                                 }
                             } else {

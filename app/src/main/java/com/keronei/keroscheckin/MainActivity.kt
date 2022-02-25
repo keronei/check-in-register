@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity() {
 
     private var navController: NavController? = null
 
-    private var unlocker: UnlockDialogBuilder? = null
-
     private var lockCreator: LockCreationDialogBuilder? = null
 
     private var dismissedWithAuth = false
