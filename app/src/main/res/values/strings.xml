@@ -224,6 +224,7 @@
     <string name="all_members_tab_header">All</string>
     <string name="yet_to_check_in_header">Yet to check in</string>
     <string name="filter_hint">Filter %s.</string>
+    <string name="filter_regions_hint">Filter %s.</string>
     <string name="member_checked_in_success_header">%s checked In!</string>
     <string name="member_last_seen_detail">%s last Checked-In %s</string>
     <string name="member_never_checked_in">%s has never been Checked-In</string>
@@ -237,6 +238,8 @@
     <string name="share_report_intent_message">Share report</string>
     <string name="error_dialog_header">Error</string>
     <string name="no_app_to_open_report">No app found in your phone that can open this Excel report. You can install WPS Office and try again.</string>
+    <string name="duplicate_region">Duplicate</string>
+    <string name="duplicate_region_message">%s seems to be existing already. Please search for it instead.</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>

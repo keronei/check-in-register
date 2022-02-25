@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.FragmentCreateMemberBinding
@@ -20,7 +21,10 @@ import com.keronei.keroscheckin.models.constants.GUEST_ENTRY
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -84,17 +88,46 @@ class CreateRegionFragment : Fragment() {
 
                     viewModel.updateRegion(RegionEntity(selectedRegion!!.id.toInt(), providedName))
                     ToastUtils.showLongToastOnTop(R.string.entry_updated)
+                    findNavController().popBackStack()
+
                 } else {
                     lifecycleScope.launch {
+                        val existingRegions = viewModel.queryAllRegions().first()
+
+                        val couldMatchThis =
+                            existingRegions.firstOrNull { existingRegion -> existingRegion.name == providedName.trim() }
+
+                        if (couldMatchThis != null) {
+                            SweetAlertDialog(
+                                requireContext(),
+                                SweetAlertDialog.WARNING_TYPE
+                            ).setTitleText(
+                                getString(
+                                    R.string.duplicate_region
+                                )
+                            ).setContentText(
+                                getString(R.string.duplicate_region_message, providedName.trim())
+                            ).show()
+                            findNavController().popBackStack(R.id.regionsFragment, false)
+                            return@launch
+                        }
+
                         try {
-                            viewModel.createRegion(listOf(RegionEntity(0, providedName.trim())))
+                            val countId =
+                                viewModel.createRegion(listOf(RegionEntity(0, providedName.trim())))
+                            if (countId.isNotEmpty()) {
+                                ToastUtils.showLongToastOnTop(R.string.entry_added)
+
+                                withContext(Dispatchers.Main){
+                                    findNavController().popBackStack()
+                                }
+                            }
                         } catch (exception: Exception) {
                             Timber.log(Log.ERROR, "Error creating region.", exception)
                         }
                     }
-                    ToastUtils.showLongToastOnTop(R.string.entry_added)
                 }
-                findNavController().popBackStack()
+
 
 
             } else {

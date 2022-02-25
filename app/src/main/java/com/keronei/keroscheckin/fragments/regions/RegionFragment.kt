@@ -40,6 +40,7 @@ class RegionFragment : Fragment() {
 
     companion object {
         fun newInstance() = RegionFragment()
+        const val TAG = "RegionFragment"
     }
 
     @Inject
@@ -232,6 +233,11 @@ class RegionFragment : Fragment() {
                 } else {
                     regionFragmentBinding.emptyStateMessageRegion.visibility = View.GONE
                     regionFragmentBinding.searchViewRegions.visibility = View.VISIBLE
+                    val regionsText =
+                        resources.getQuantityString(R.plurals.regions_prefix, list.size, list.size)
+                    regionFragmentBinding.searchViewRegions.queryHint =
+                        getString(R.string.filter_regions_hint, regionsText)
+
 
                 }
             }

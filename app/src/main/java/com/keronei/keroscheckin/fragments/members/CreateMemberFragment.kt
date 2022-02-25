@@ -161,7 +161,9 @@ class CreateMemberFragment : Fragment() {
 
         val birthYear = Calendar.getInstance().get(Calendar.YEAR) - (selectedAttendee?.age ?: 0)
 
-        toggleIdNumberVisibility(selectedAttendee?.age ?: 0 > 19)
+        Timber.d("Age -> ${selectedAttendee?.age}, birthYear -> $birthYear")
+
+        toggleIdNumberVisibility((selectedAttendee?.age ?: 0) > 19)
 
         layoutBinding.ageEdittext.setText(birthYear.toString())
         layoutBinding.phoneEdittext.setText(selectedAttendee?.phoneNumber)
