@@ -1,6 +1,6 @@
 package com.keronei.keroscheckin.fragments.reports
 
-import android.content.Intent
+import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
@@ -14,15 +14,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.ReportsFragmentBinding
-import com.keronei.keroscheckin.fragments.checkin.DatePickerFragment
 import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD
 import com.keronei.keroscheckin.models.toPresentation
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.keroscheckin.viewmodels.ReportsViewModel
-import com.keronei.utils.TAG
 import com.keronei.utils.exportDataIntoWorkbook
 import com.keronei.utils.makeShareIntent
 import dagger.hilt.android.AndroidEntryPoint
@@ -280,7 +277,41 @@ class ReportsFragment : Fragment() {
     }
 
     private fun showDateSelectionDialog() {
-        DatePickerFragment().show(childFragmentManager, DatePickerFragment.TAG)
+
+        val myCalendar = Calendar.getInstance()
+        val currentYear = myCalendar.get(Calendar.YEAR)
+        val month = myCalendar.get(Calendar.MONTH)
+        val day = myCalendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerOnDataSetListener =
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                val controlInstance = Calendar.getInstance()
+
+                controlInstance.set(Calendar.YEAR, year)
+                controlInstance.set(Calendar.MONTH, monthOfYear)
+                controlInstance.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                lifecycleScope.launch {
+                    reportsViewModel.customSelectedDate.emit(controlInstance)
+                }
+
+            }
+
+
+        DatePickerDialog(
+            requireContext(),
+            datePickerOnDataSetListener,
+            currentYear,
+            month,
+            day
+        ).run {
+            myCalendar.time.time.also { date ->
+                datePicker.maxDate = date
+            }
+
+            show()
+        }
+
     }
 
     private fun actionListeners() {
