@@ -197,6 +197,7 @@ class CreateMemberFragment : Fragment() {
 
             if (selectedRegion == null) {
                 regionsSpinner.errorText = getString(R.string.select_region_prompt)
+                ToastUtils.showLongToastOnTop(R.string.select_region_prompt)
                 return@setOnClickListener
             }
 

@@ -204,6 +204,9 @@
     <string name="all_active_checked_in">All active members have checked In but you have %s marked as inactive. \n Inactive members are not shown here, you can enable this in settings.</string>
     <string name="no_active_member">You have %s that are not being displayed. \n Inactive members are not shown here, you can enable this in settings.</string>
     <string name="you_do_not_have_any_regions_you_can_add_some_using_add_region">You do not have any regions. You can add some using \'Add Region\'</string>
+    <string name="region_name_hint">Region name e.g Eastern Estate</string>
+    <string name="create_region_btn_text">Create</string>
+    <string name="add_a_new_region">Add a new region</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>
