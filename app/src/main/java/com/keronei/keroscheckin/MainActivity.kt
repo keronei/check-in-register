@@ -99,12 +99,12 @@ class MainActivity : AppCompatActivity() {
     private fun onUserCancelAuthCreation() {
 
         val authCreationAlert = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-        authCreationAlert.titleText = "Data Safety"
+        authCreationAlert.titleText = getString(R.string.enforce_auth_creation_header)
 
         authCreationAlert.contentText =
-            "Authentication is required to secure information to be stored in this application."
+            getString(R.string.auth_creation_prompt)
 
-        authCreationAlert.confirmText = "Create"
+        authCreationAlert.confirmText = getString(R.string.create_code_btn_text)
         authCreationAlert.setConfirmClickListener { sDialog ->
             sDialog.dismissWithAnimation()
 
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         authCreationAlert.setCancelButton(
-            "Exit"
+            getString(R.string.exit_app_option)
         ) { sDialog ->
 
             sDialog.dismissWithAnimation()
