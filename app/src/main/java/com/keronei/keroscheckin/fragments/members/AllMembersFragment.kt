@@ -380,6 +380,20 @@ class AllMembersFragment : Fragment() {
                     searchView.queryHint = "Filter ${filteredList.size} member(s)."
 
                     allMembersAdapter.modifyList(filteredList)
+
+                    if (filteredList.isEmpty()) {
+                        allMembersFragmentBinding.noRegisteredMemberTextView.visibility =
+                            View.VISIBLE
+                        allMembersFragmentBinding.searchViewAllMembers.visibility = View.GONE
+                        val diff = defaultList - filteredList
+                        val membersText = resources.getQuantityString(
+                            R.plurals.members_prefix,
+                            diff.size,
+                            diff.size
+                        )
+                        allMembersFragmentBinding.noRegisteredMemberTextView.text =
+                            getString(R.string.no_active_member, membersText)
+                    }
                 }
             }
         }
