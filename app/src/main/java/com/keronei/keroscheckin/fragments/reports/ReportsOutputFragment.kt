@@ -67,7 +67,10 @@ class ReportsOutputFragment : Fragment() {
         binding.imgBtnShareReportSummary.setOnClickListener {
             val shareSummaryIntent = Intent(Intent.ACTION_SEND)
             shareSummaryIntent.type = "text/plain"
-            shareSummaryIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.report_summary_heading))
+            shareSummaryIntent.putExtra(
+                Intent.EXTRA_SUBJECT,
+                getString(R.string.report_summary_heading)
+            )
             shareSummaryIntent.putExtra(Intent.EXTRA_TEXT, summaryText)
             startActivity(Intent.createChooser(shareSummaryIntent, getString(R.string.share_via)))
             Timber.log(Log.INFO, "Shared summary report : $summaryText")
@@ -78,7 +81,8 @@ class ReportsOutputFragment : Fragment() {
             val clipboard =
                 getSystemService(requireContext(), ClipboardManager::class.java) as ClipboardManager
 
-            val clip = ClipData.newPlainText( getString(R.string.report_summary_heading), summaryText)
+            val clip =
+                ClipData.newPlainText(getString(R.string.report_summary_heading), summaryText)
 
             clipboard.setPrimaryClip(clip)
 
@@ -96,13 +100,16 @@ class ReportsOutputFragment : Fragment() {
                 .setTitleText(getString(R.string.report_is_ready_header))
                 .setContentText(
                     getString(R.string.ready_report_options)
-                ).setNeutralButton(getString(R.string.dialog_view_option)) {dialog ->
+                ).setNeutralButton(getString(R.string.dialog_view_option)) { dialog ->
 
                     generatedReportIntent.action = Intent.ACTION_VIEW
 
                     openGeneratedReport(generatedReportIntent)
 
-                    Timber.log(Log.INFO, "View full report with ${attendanceListData.size} entries.")
+                    Timber.log(
+                        Log.INFO,
+                        "View full report with ${attendanceListData.size} entries."
+                    )
 
                     dialog.dismissWithAnimation()
 
@@ -110,9 +117,17 @@ class ReportsOutputFragment : Fragment() {
 
                     generatedReportIntent.action = Intent.ACTION_SEND
 
-                    startActivity(Intent.createChooser(generatedReportIntent, getString(R.string.share_report_intent_message)))
+                    startActivity(
+                        Intent.createChooser(
+                            generatedReportIntent,
+                            getString(R.string.share_report_intent_message)
+                        )
+                    )
 
-                    Timber.log(Log.INFO, "Going to share full report with ${attendanceListData.size} entries.")
+                    Timber.log(
+                        Log.INFO,
+                        "Going to share full report with ${attendanceListData.size} entries."
+                    )
 
                     dialog.dismissWithAnimation()
                 }
@@ -165,7 +180,10 @@ class ReportsOutputFragment : Fragment() {
             val kidsCeil = slider.values[0].toInt()
             val youthsCeil = slider.values[1].toInt()
 
-            Timber.log(Log.INFO, "Adjusted summary report age slider to have kids age at ${slider.values[0]} and youths age at ${slider.values[1]}")
+            Timber.log(
+                Log.INFO,
+                "Adjusted summary report age slider to have kids age at ${slider.values[0]} and youths age at ${slider.values[1]}"
+            )
 
             binding.kidsRangeIndicator.text = getString(
                 R.string.kids_template,
@@ -205,15 +223,19 @@ class ReportsOutputFragment : Fragment() {
 
     private fun splitToAgeGroups(endOfKidsAge: Int, endOfYouthAge: Int) {
         val (kids, youthsAndAdults) = attendanceListData.partition { attendee ->
-            attendee.age < endOfKidsAge
+            attendee.age <= endOfKidsAge
 
         }
 
         val (youths, adults) = youthsAndAdults.partition { attendee ->
-            attendee.age in endOfKidsAge..endOfYouthAge + 1 && (attendee.isMarried && !binding.checkboxMarriedYouth.isChecked)
+            attendee.age > endOfKidsAge && attendee.age < (endOfYouthAge + 1) && (attendee.isMarried && !binding.checkboxMarriedYouth.isChecked)
         }
 
         //post values to gender partitioner
+
+        Timber.d("kids - $kids")
+        Timber.d("youths - $youths")
+        Timber.d("adults - $adults")
 
         splitBySexOrientation(kids, youths, adults)
 
