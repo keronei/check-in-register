@@ -27,13 +27,17 @@
             android:textAlignment="center"
             android:textColor="@color/on_surface_color"
             android:textSize="15sp"
+            android:drawablePadding="@dimen/dimen_12"
             android:visibility="gone"
             android:fontFamily="@font/halveticaneue"
             style="@style/TextAppearance.AppCompat.Body2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:drawableTopCompat="@drawable/ic_empty_folder"
+            app:drawableTint="@color/on_surface_color"
+            app:drawableBottomCompat="@drawable/ic_curved_arrow_to_bottom" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nested_scroll_view_members"

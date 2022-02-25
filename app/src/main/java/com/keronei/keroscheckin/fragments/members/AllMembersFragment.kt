@@ -32,6 +32,9 @@ import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.keroscheckin.viewmodels.CheckInViewModel
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -55,6 +58,11 @@ class AllMembersFragment : Fragment() {
     private var memberAtCheckIn: AttendeePresentation? = null
     private var invalidationPeriod = CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
     private var optionsPrompt: androidx.appcompat.app.AlertDialog? = null
+
+    private lateinit var checkInDialogSuccess: SweetAlertDialog
+
+    @Inject
+    lateinit var coroutineScope: CoroutineScope
 
     @Inject
     lateinit var preferences: SharedPreferences
@@ -149,7 +157,7 @@ class AllMembersFragment : Fragment() {
 
             if (checkInViewBinding?.recordedTemperatureEdittext?.text.isNullOrEmpty()) {
                 checkInViewBinding?.recordedTemperatureEdittext?.error =
-                    "Provide measured temperature."
+                    getString(R.string.provide_measured_temp_prompt_text)
                 return@setOnClickListener
             }
 
@@ -160,13 +168,13 @@ class AllMembersFragment : Fragment() {
             when {
                 providedTemperature.toDouble() > TEMPERATURE_CEIL -> {
                     SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("Too high")
+                        .setTitleText(getString(R.string.too_high_temp_warning_text))
                         .setContentText("$providedTemperature ºC is higher than accepted.")
                         .show()
                 }
                 providedTemperature.toDouble() < TEMPERATURE_FLOOR -> {
                     SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("Too low")
+                        .setTitleText(getString(R.string.too_low_warning_dialog_text))
                         .setContentText("$providedTemperature ºC is lower than accepted.")
                         .show()
                 }
@@ -204,16 +212,27 @@ class AllMembersFragment : Fragment() {
     }
 
     private fun showCheckedInSuccess() {
-        SweetAlertDialog(
+        checkInDialogSuccess = SweetAlertDialog(
             requireContext(), SweetAlertDialog.SUCCESS_TYPE
         )
-            .setTitleText("Done")
-            .setContentText("${memberAtCheckIn!!.firstName} checked In!")
-            .show()
+            .setTitleText(getString(R.string.done_dialog_btn_text))
+            .setContentText(
+                getString(
+                    R.string.member_checked_in_success_header,
+                    memberAtCheckIn!!.firstName
+                )
+            )
+
+        checkInDialogSuccess.show().also {
+            coroutineScope.launch {
+                delay(4000)
+                checkInDialogSuccess.dismissWithAnimation()
+            }
+        }
     }
 
     private fun alternateTimeSelectionForArrivalTime() {
-        TimePickerFragment().show(childFragmentManager, "custom_time_selector")
+        TimePickerFragment().show(childFragmentManager, TimePickerFragment.TAG)
 
         lifecycleScope.launch {
             checkInViewModel.customSelectedTime.collect { customTimeSelection ->
@@ -293,7 +312,7 @@ class AllMembersFragment : Fragment() {
     private fun attemptingToCheckInAlreadyCheckedIn(member: AttendeePresentation) {
 
         SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
-            .setTitleText("Already checked-In")
+            .setTitleText(getString(R.string.already_checked_in_dialog_header))
             .setContentText(
                 "${member.firstName} already checked-In ${
                     DateUtils.getRelativeTimeSpanString(
@@ -301,7 +320,7 @@ class AllMembersFragment : Fragment() {
                     )
                 }."
             )
-            .setConfirmText("Undo Check-In")
+            .setConfirmText(getString(R.string.undo_ckeckin_btn_text))
             .setConfirmClickListener { sDialog ->
 
                 checkInViewModel.undoCheckInForMember(
@@ -316,7 +335,7 @@ class AllMembersFragment : Fragment() {
                 sDialog.dismissWithAnimation()
             }
             .setCancelButton(
-                "Cancel"
+                getString(R.string.dialog_cancel)
             ) { sDialog -> sDialog.dismissWithAnimation() }
             .show()
     }
@@ -330,12 +349,12 @@ class AllMembersFragment : Fragment() {
             if (member.sex == 1) " him " else if (member.sex == 0) " her " else " them "
 
         SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
-            .setTitleText("Inactive Member")
+            .setTitleText(getString(R.string.inactive_member_dialog_header))
             .setContentText(
                 "${member.firstName} was previously marked as inactive. \n" +
                         "Would you wish to update as active and check $addressing In?"
             )
-            .setConfirmText("Yes")
+            .setConfirmText(getString(R.string.yes_option_dialog))
             .setConfirmClickListener { sDialog ->
 
                 lifecycleScope.launch {
@@ -349,7 +368,7 @@ class AllMembersFragment : Fragment() {
 
             }
             .setCancelButton(
-                "No"
+                getString(R.string.no_option_dialog)
             ) { sDialog ->
 
                 sDialog.dismissWithAnimation()
@@ -377,7 +396,14 @@ class AllMembersFragment : Fragment() {
                     val filteredList =
                         if (inactiveShouldBeHidden) defaultList.filter { memberEntry -> memberEntry.isActive } else defaultList
 
-                    searchView.queryHint = "Filter ${filteredList.size} member(s)."
+                    val memberText = resources.getQuantityString(
+                        R.plurals.members_prefix,
+                        filteredList.size,
+                        filteredList.size
+                    )
+
+                    searchView.queryHint =
+                        getString(R.string.filter_hint, filteredList.size, memberText)
 
                     allMembersAdapter.modifyList(filteredList)
 
@@ -391,8 +417,10 @@ class AllMembersFragment : Fragment() {
                             diff.size,
                             diff.size
                         )
+                        val pluralAddress =
+                            if (diff.size > 1) getString(R.string.text_are) else getString(R.string.text_is)
                         allMembersFragmentBinding.noRegisteredMemberTextView.text =
-                            getString(R.string.no_active_member, membersText)
+                            getString(R.string.no_active_member, membersText, pluralAddress)
                     }
                 }
             }

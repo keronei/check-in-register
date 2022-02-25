@@ -29,6 +29,7 @@ class MembersFragment : Fragment() {
 
 
     companion object {
+        const val TAG = "MemberFragment"
         fun newInstance() = MembersFragment()
     }
 
@@ -47,8 +48,8 @@ class MembersFragment : Fragment() {
 
         val adapter = AttendanceTabsAdapter(this)
 
-        adapter.addFragment(AllMembersFragment(), "All")
-        adapter.addFragment(YetToCheckInFragment(), "Yet to check in")
+        adapter.addFragment(AllMembersFragment(), getString(R.string.all_members_tab_header))
+        adapter.addFragment(YetToCheckInFragment(), getString(R.string.yet_to_check_in_header))
 
 
         mViewPager.adapter = adapter
