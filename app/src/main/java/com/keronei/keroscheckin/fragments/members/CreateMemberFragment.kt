@@ -25,6 +25,7 @@ import com.keronei.keroscheckin.models.toMemberEntity
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
+import com.keronei.utils.dismissKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -266,6 +267,8 @@ class CreateMemberFragment : Fragment() {
                     if (isEditing) layoutBinding.memberActivityStatus.isChecked else true,
                     selectedRegion!!.id
                 )
+
+                activity?.dismissKeyboard()
 
                 var createMemberCount = listOf<Long>()
 
