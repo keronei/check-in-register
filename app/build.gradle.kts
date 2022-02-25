@@ -85,9 +85,6 @@ dependencies {
 
     kapt(Dependencies.hiltCompiler)
 
-    //motion toas
-    implementation(Dependencies.motionToast)
-
     //Room
     implementation(Dependencies.room)
     kapt(Dependencies.room_compiler)
