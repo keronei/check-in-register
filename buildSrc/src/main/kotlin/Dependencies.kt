@@ -83,6 +83,8 @@ object Dependencies {
     //Firebase
     const val firebase_bom = "com.google.firebase:firebase-bom:${Versions.firebase_bom}"
     const val firebase_analytics = "com.google.firebase:firebase-analytics-ktx"
+    const val firebase_crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
+    const val firebase_crashlytics_plugin = "com.google.firebase:firebase-crashlytics-gradle:${Versions.firebase_plugin_version}"
 
     //Preference
     const val shared_preference = "androidx.preference:preference-ktx:${Versions.preference}"

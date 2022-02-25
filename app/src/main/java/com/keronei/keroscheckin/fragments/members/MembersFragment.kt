@@ -1,6 +1,7 @@
 package com.keronei.keroscheckin.fragments.members
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.keronei.keroscheckin.databinding.MembersFragmentBinding
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MembersFragment : Fragment() {
@@ -85,6 +87,7 @@ class MembersFragment : Fragment() {
 
         membersContentBinding.settingsIcon.setOnClickListener {
             val settingsAction = MembersFragmentDirections.actionMembersFragmentToSettingsFragment()
+            Timber.log(Log.INFO, "User opened settings.")
 
             findNavController().navigate(settingsAction)
         }

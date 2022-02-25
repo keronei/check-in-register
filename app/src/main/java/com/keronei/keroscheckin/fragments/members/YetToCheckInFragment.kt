@@ -137,13 +137,10 @@ class YetToCheckInFragment : Fragment() {
                         entry.toPresentation(invalidationPeriod)
 
                     }
-                    Timber.d("All members $presentationList")
 
                     val finalList = presentationList.filter { entry ->
                         entry.lastCheckInStamp == null || entry.lastCheckInStamp < currentTime.timeInMillis
                     }
-
-                    Timber.d("Members not checked-in today $finalList")
 
                     val inactiveShouldBeHidden =
                         preferences.getBoolean(

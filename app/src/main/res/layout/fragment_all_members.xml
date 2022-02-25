@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="12dp"
+                android:paddingTop="@dimen/dimen_12"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/layout_attendee_item" />
         </androidx.core.widget.NestedScrollView>

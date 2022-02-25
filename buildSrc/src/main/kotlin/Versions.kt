@@ -1,4 +1,5 @@
 object Versions {
+    const val firebase_plugin_version = "2.8.1"
     const val preference: String = "1.1.1"
     const val firebase_bom: String = "28.4.2"
     const val screenlock: String = "3.0.2"

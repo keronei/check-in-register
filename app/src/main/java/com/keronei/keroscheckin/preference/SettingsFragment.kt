@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toolbar
 import androidx.fragment.app.activityViewModels
@@ -76,9 +77,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         if (toolbar != null) {
             configureToolBar(toolbar)
-            ToastUtils.showShortToast("Tool found")
+            //ToastUtils.showShortToast("Tool found")
         } else {
-            ToastUtils.showShortToast("No Tool ")
+            //ToastUtils.showShortToast("No Tool ")
 
         }
     }
@@ -228,6 +229,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                     )
 
                                                 if (deletedMembersCountInDeleteAll > 0 && deletedRegionsCountInDeleteAll > 0) {
+                                                    Timber.log(Log.INFO, "User cleaned up all the data successfully.")
 
                                                     val regionsText = resources.getQuantityString(
                                                         R.plurals.regions_prefix,
@@ -309,7 +311,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                 .setContentText(exception.message)
                                                 .show()
 
-                                            exception.printStackTrace()
+                                            Timber.log(Log.ERROR, "Exception in cleaning up data.", exception)
                                         }
                                     }
                                 }
@@ -395,8 +397,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             membersViewModel.deleteAllMembers()
 
         withContext(Dispatchers.Main) {
-
-
             val membersDeletedSnackBar = Snackbar.make(
                 this@SettingsFragment.requireView(),
                 getMemberDeletionCountString(deletedMembersCount),
@@ -450,6 +450,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             try {
                 val browserIntent =
                     Intent(Intent.ACTION_VIEW, Uri.parse(TELEGRAM_SUPPORT_GROUP_LINK))
+                Timber.log(Log.INFO, "User opened support group link.")
                 startActivity(browserIntent)
             } catch (exception: Exception) {
                 SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
@@ -460,9 +461,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         )
                     )
                     .show()
+
+                Timber.log(Log.ERROR, "Error attempting to join support group.", exception)
             }
             true
         }
+    }
+
+    companion object {
+        const val TAG = "MergePromptImports"
     }
 
 }

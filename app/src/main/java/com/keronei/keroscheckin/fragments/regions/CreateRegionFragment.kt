@@ -1,6 +1,7 @@
 package com.keronei.keroscheckin.fragments.regions
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class CreateRegionFragment : Fragment() {
@@ -84,7 +86,11 @@ class CreateRegionFragment : Fragment() {
                     ToastUtils.showLongToastOnTop(R.string.entry_updated)
                 } else {
                     lifecycleScope.launch {
-                        viewModel.createRegion(listOf(RegionEntity(0, providedName.trim())))
+                        try {
+                            viewModel.createRegion(listOf(RegionEntity(0, providedName.trim())))
+                        } catch (exception: Exception) {
+                            Timber.log(Log.ERROR, "Error creating region.", exception)
+                        }
                     }
                     ToastUtils.showLongToastOnTop(R.string.entry_added)
                 }

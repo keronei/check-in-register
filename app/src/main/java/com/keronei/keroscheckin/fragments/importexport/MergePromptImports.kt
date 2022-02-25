@@ -1,6 +1,7 @@
 package com.keronei.keroscheckin.fragments.importexport
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
-import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.FragmentMergeImportsBinding
@@ -21,6 +21,7 @@ import com.keronei.utils.updateRegionIDForMember
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,6 +36,8 @@ class MergePromptImports : Fragment() {
     private val memberViewModel: MemberViewModel by activityViewModels()
 
     private lateinit var processingDialog: SweetAlertDialog
+
+    private var headerMessage = ""
 
 
     @Inject
@@ -81,13 +84,15 @@ class MergePromptImports : Fragment() {
             existingMembers.size
         )
 
-        importBindingOptions.summaryHeading.text = getString(
+        headerMessage = getString(
             R.string.merge_header_message,
             newRegionsText,
             newMembersText,
             existingRegionsText,
             existingMembersText
         )
+
+        importBindingOptions.summaryHeading.text = headerMessage
     }
 
 
@@ -102,6 +107,7 @@ class MergePromptImports : Fragment() {
 
         importBindingOptions.merge.setOnClickListener {
             processingDialog.show()
+            Timber.log(Log.INFO, "Choose merge option in import; $headerMessage")
             coroutineScope.launch {
                 insertNewImports()
             }
@@ -161,12 +167,13 @@ class MergePromptImports : Fragment() {
             }
 
         } catch (exception: Exception) {
+            Timber.e(exception)
+
             withContext(Dispatchers.Main) {
                 processingDialog.dismissWithAnimation()
 
                 ToastUtils.showShortToast(R.string.unable_to_import_new_entries)
                 findNavController().popBackStack()
-                exception.printStackTrace()
             }
         }
 
@@ -185,18 +192,22 @@ class MergePromptImports : Fragment() {
             )
 
             if (totalImportedMembers.isNotEmpty() || totalImportedRegions.isNotEmpty()) {
-                ToastUtils.showLongToast(
-                    getString(
-                        R.string.success_import_operation_message,
-                        regionsText,
-                        membersText
-                    )
+                val successInsertionMessage = getString(
+                    R.string.success_import_operation_message,
+                    regionsText,
+                    membersText
                 )
+                ToastUtils.showLongToast(
+                    successInsertionMessage
+                )
+
+                Timber.log(Log.INFO, "Success in insertion; $successInsertionMessage")
 
                 findNavController().popBackStack(R.id.membersFragment, false)
             } else {
                 ToastUtils.showShortToast(R.string.unable_to_import_new_entries)
                 findNavController().popBackStack()
+                Timber.log(Log.WARN, "Failed to import; $headerMessage")
             }
         }
 
@@ -216,6 +227,10 @@ class MergePromptImports : Fragment() {
                 regionsViewModel.deleteAllRegions(existingRegions)
 
                 insertNewImports()
+
+                Timber.log(
+                    Log.INFO, "Choose replace option in import with conflict; $headerMessage"
+                )
             } catch (exception: Exception) {
                 withContext(Dispatchers.Main) {
                     processingDialog.dismissWithAnimation()

@@ -31,6 +31,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.lang.Exception
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -180,24 +182,29 @@ class RegionFragment : Fragment() {
             .setConfirmText("Yes")
             .setConfirmClickListener { sDialog ->
                 coroutineScope.launch {
-                    val deletionCount = viewModel.deleteRegion(entry)
+                    try {
+                        val deletionCount = viewModel.deleteRegion(entry)
 
-                    if (deletionCount > 0) {
-                        val snack = Snackbar.make(
-                            regionFragmentBinding.root,
-                            getString(R.string.region_deleted),
-                            Snackbar.LENGTH_LONG
-                        ).setAction(R.string.undo_deletion) {
-                            lifecycleScope.launch {
-                                viewModel.createRegion(regionBackUp)
+                        if (deletionCount > 0) {
+                            val snack = Snackbar.make(
+                                regionFragmentBinding.root,
+                                getString(R.string.region_deleted),
+                                Snackbar.LENGTH_LONG
+                            ).setAction(R.string.undo_deletion) {
+                                lifecycleScope.launch {
+                                    viewModel.createRegion(regionBackUp)
+                                }
                             }
+
+                            snack.show()
+
+                        } else {
+                            ToastUtils.showShortToast(R.string.operation_not_completed)
+
                         }
-
-                        snack.show()
-
-                    } else {
+                    } catch (exception: Exception) {
+                        Timber.log(Log.ERROR, "Failed to delete region.", exception)
                         ToastUtils.showShortToast(R.string.operation_not_completed)
-
                     }
 
                 }
@@ -205,7 +212,7 @@ class RegionFragment : Fragment() {
                 sDialog.dismissWithAnimation()
             }
             .setCancelButton(
-                "Cancel"
+                getString(R.string.dialog_cancel)
             ) { sDialog -> sDialog.dismissWithAnimation() }
             .show()
     }

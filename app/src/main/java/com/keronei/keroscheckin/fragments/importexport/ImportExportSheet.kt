@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,6 +84,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                         val fileOutputStream =
                             requireContext().contentResolver.openOutputStream(createdFileUri.data!!.data!!)
                         hssfWorkbookToWriteOut.write(fileOutputStream)
+                        Timber.log(Log.INFO, "Successfully loaded data import file.")
                     } else {
                         ToastUtils.showShortToast(getString(R.string.null_uri_message_to_user_save_file))
                     }
@@ -235,6 +237,8 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                         membersPrefix
                     )
 
+                    Timber.log(Log.INFO, "At exporting data : $summary")
+
                     launchSendData(sendingIntent, preparedWorkBook, summary)
                 }
 
@@ -247,7 +251,11 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                     getString(R.string.unable_to_export_message)
                 )
 
-                exception.printStackTrace()
+                Timber.log(
+                    Log.ERROR,
+                    "Failed to export ${regions.size} regions and ${members.size} members.",
+                    exception
+                )
             }
 
         }
@@ -288,6 +296,9 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
                     confirmationPrompt.dismissWithAnimation()
 
+                    Timber.log(Log.INFO, "Preferred to send export file : $summary ")
+
+
                     sendDataIntent.action = Intent.ACTION_SEND
                     startActivity(
                         Intent.createChooser(
@@ -302,6 +313,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
                     hssfWorkbookToWriteOut = preparedWorkBook
 
+                    Timber.log(Log.INFO, "Preferred to save export file : $summary ")
 
                     val saveOptionIntent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                         addCategory(Intent.CATEGORY_OPENABLE)
@@ -318,7 +330,8 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
                 .show()
 
-        } catch (exception: java.lang.Exception) {
+        } catch (exception: Exception) {
+            Timber.log(Log.ERROR, "Attempting to export data : $summary", exception)
             SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
                 .setTitleText(getString(R.string.dialog_error_title))
                 .setContentText(
@@ -343,6 +356,10 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         val overview = importRegionMembersProcessor.readBasicInformation() //.readEntries()
 
         if (overview.appVersion == "" || overview.membersEntrySize == 0) {
+            Timber.log(
+                Log.WARN,
+                "Could not process import because app version is empty and there's no member."
+            )
             showErrorDialog(
                 getString(R.string.unable_to_import_title),
                 getString(R.string.import_error_message)
@@ -356,6 +373,14 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                 getString(R.string.version),
                 overview.appVersion
             )
+
+            Timber.log(
+                Log.WARN,
+                "Failed to import data because data is from ${overview.appVersion} and user is in ${
+                    getString(R.string.version)
+                } (versions)."
+            )
+
             SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(getString(R.string.version_mismatch_title))
                 .setContentText(versionMismatchInfo)
@@ -373,6 +398,16 @@ class ImportExportSheet : BottomSheetDialogFragment() {
             R.plurals.regions_prefix,
             overview.regionsEntrySize,
             overview.regionsEntrySize
+        )
+
+        Timber.log(
+            Log.INFO, "To import data, has preview - ${
+                getString(
+                    R.string.summary_import_confirmation_text,
+                    regionsString,
+                    membersString
+                )
+            }"
         )
 
         SweetAlertDialog(requireContext(), SweetAlertDialog.BUTTON_CONFIRM)
@@ -393,6 +428,11 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                     coroutineScope.launch {
                         val result = waitForResults(importRegionMembersProcessor)
 
+                        Timber.log(
+                            Log.INFO,
+                            "Import processor parsed ${result.keys.size} regions and ${result.values.size} members."
+                        )
+
                         withContext(Dispatchers.Main) {
                             processingDialog.dismissWithAnimation()
 
@@ -403,7 +443,15 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                         }
                     }
                 } catch (exception: Exception) {
-                    exception.printStackTrace()
+                    Timber.log(
+                        Log.ERROR, "Could not parse import file, but preview had this : ${
+                            getString(
+                                R.string.summary_import_confirmation_text,
+                                regionsString,
+                                membersString
+                            )
+                        }", exception
+                    )
                     processingDialog.dismissWithAnimation()
 
                     confirmationPrompt.dismissWithAnimation()
@@ -549,9 +597,26 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
                         )
 
+                        Timber.log(
+                            Log.INFO,
+                            "Cleaned up local data and performed insertion successfully : ${
+                                getString(
+                                    R.string.success_import_operation_message,
+                                    regionsCountString,
+                                    membersCountString
+                                )
+                            }"
+                        )
+
                         findNavController().popBackStack(R.id.membersFragment, false)
 
                     } else {
+
+                        Timber.log(
+                            Log.WARN, "Failed to perform clean up and insertion" +
+                                    " with operation clean instantly, had ${readRegionsList.size} " +
+                                    "regions and ${readMembersList.size} members."
+                        )
                         showErrorDialog(
                             getString(R.string.failed_operation_dialog_title),
                             getString(R.string.unable_to_import_new_entries)
@@ -562,12 +627,16 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
                 }
             } catch (exception: Exception) {
+                Timber.log(
+                    Log.ERROR,
+                    "Could not clean instantly for import; has ${readRegionsList.size}" +
+                            " regions and ${readMembersList.size} to import.",
+                    exception
+                )
                 withContext(Dispatchers.Main) {
                     processingDialog.dismissWithAnimation()
-
-                    exception.printStackTrace()
                     ToastUtils.showLongToast(getString(R.string.unable_to_import_new_entries))
-                    findNavController().popBackStack(R.id.membersFragment, true)
+                    findNavController().popBackStack(R.id.membersFragment, false)
                         .also { this@ImportExportSheet.dismiss() }
 
 

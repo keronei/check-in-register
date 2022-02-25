@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,6 +70,7 @@ class ReportsOutputFragment : Fragment() {
             shareSummaryIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.report_summary_heading))
             shareSummaryIntent.putExtra(Intent.EXTRA_TEXT, summaryText)
             startActivity(Intent.createChooser(shareSummaryIntent, getString(R.string.share_via)))
+            Timber.log(Log.INFO, "Shared summary report : $summaryText")
 
         }
 
@@ -81,6 +83,8 @@ class ReportsOutputFragment : Fragment() {
             clipboard.setPrimaryClip(clip)
 
             ToastUtils.showShortToastInMiddle(R.string.copied_to_clipboard)
+
+            Timber.log(Log.INFO, "Copied summary report : $summaryText")
         }
 
 
@@ -98,6 +102,8 @@ class ReportsOutputFragment : Fragment() {
 
                     openGeneratedReport(generatedReportIntent)
 
+                    Timber.log(Log.INFO, "View full report with ${attendanceListData.size} entries.")
+
                     dialog.dismissWithAnimation()
 
                 }.setConfirmButton(getString(R.string.dialog_share_option)) { dialog ->
@@ -105,6 +111,8 @@ class ReportsOutputFragment : Fragment() {
                     generatedReportIntent.action = Intent.ACTION_SEND
 
                     startActivity(Intent.createChooser(generatedReportIntent, getString(R.string.share_report_intent_message)))
+
+                    Timber.log(Log.INFO, "Going to share full report with ${attendanceListData.size} entries.")
 
                     dialog.dismissWithAnimation()
                 }
@@ -116,9 +124,10 @@ class ReportsOutputFragment : Fragment() {
     private fun openGeneratedReport(generatedReportIntent: Intent) {
         try {
             startActivity(generatedReportIntent)
+
         } catch (openingException: Exception) {
 
-            openingException.printStackTrace()
+            Timber.log(Log.ERROR, "Could not open full report", openingException)
 
             SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
                 .setTitleText(getString(R.string.error_dialog_header))
@@ -155,6 +164,8 @@ class ReportsOutputFragment : Fragment() {
 
             val kidsCeil = slider.values[0].toInt()
             val youthsCeil = slider.values[1].toInt()
+
+            Timber.log(Log.INFO, "Adjusted summary report age slider to have kids age at ${slider.values[0]} and youths age at ${slider.values[1]}")
 
             binding.kidsRangeIndicator.text = getString(
                 R.string.kids_template,

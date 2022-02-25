@@ -1,6 +1,7 @@
 package com.keronei.keroscheckin.fragments.members
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -274,28 +276,40 @@ class CreateMemberFragment : Fragment() {
 
                 var updatedMemberCount = 0
 
-                if (isEditing) {
-                    updatedMemberCount = memberViewModel.updateMember(
-                        subjectMember
-                    )
-                } else {
-                    createMemberCount = memberViewModel.createNewMember(
-                        listOf(
+                try {
+
+                    if (isEditing) {
+                        updatedMemberCount = memberViewModel.updateMember(
                             subjectMember
                         )
-                    )
-                }
+                    } else {
+                        createMemberCount = memberViewModel.createNewMember(
+                            listOf(
+                                subjectMember
+                            )
+                        )
+                    }
 
-                if (createMemberCount.isNotEmpty() || updatedMemberCount > 0) {
-                    ToastUtils.showLongToastInMiddle(if (isEditing) R.string.member_updated else R.string.member_created)
-                    findNavController().popBackStack()
+                    if (createMemberCount.isNotEmpty() || updatedMemberCount > 0) {
+                        ToastUtils.showLongToastInMiddle(if (isEditing) R.string.member_updated else R.string.member_created)
+                        findNavController().popBackStack()
 
-                } else {
-                    ToastUtils.showLongToast(
-                        if (isEditing) getString(
-                            R.string.failed_member_update_message,
-                            selectedAttendee!!.firstName
-                        ) else getString(R.string.failed_create_member_message, firstName.trim())
+                    } else {
+                        ToastUtils.showLongToast(
+                            if (isEditing) getString(
+                                R.string.failed_member_update_message,
+                                selectedAttendee!!.firstName
+                            ) else getString(
+                                R.string.failed_create_member_message,
+                                firstName.trim()
+                            )
+                        )
+                    }
+                } catch (exception: Exception) {
+                    Timber.log(
+                        Log.ERROR,
+                        if (isEditing) "While editing member" else "While creating new member",
+                        exception
                     )
                 }
             }
@@ -386,7 +400,11 @@ class CreateMemberFragment : Fragment() {
 
 
             } catch (exception: Exception) {
-                exception.printStackTrace()
+                Timber.log(
+                    Log.ERROR,
+                    "Preparing region spinner when editing member info.",
+                    exception
+                )
             }
 
 

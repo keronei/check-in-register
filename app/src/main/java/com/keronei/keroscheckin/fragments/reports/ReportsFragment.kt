@@ -22,11 +22,13 @@ import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PER
 import com.keronei.keroscheckin.models.toPresentation
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.keroscheckin.viewmodels.ReportsViewModel
+import com.keronei.utils.TAG
 import com.keronei.utils.exportDataIntoWorkbook
 import com.keronei.utils.makeShareIntent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -337,8 +339,9 @@ class ReportsFragment : Fragment() {
             findNavController().navigate(outputLauncher)
 
         } catch (exception: Exception) {
+            Timber.log(Log.ERROR, "Error generating report.", exception)
             SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("Error")
+                .setTitleText(getString(R.string.error_dialog_header))
                 .setContentText(
                     "Could not generate report. Report this error : ${exception.message}"
                 )

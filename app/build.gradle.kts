@@ -5,8 +5,8 @@ plugins {
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs.kotlin")
-    //id("kotlin-android-extensions")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -31,13 +31,13 @@ android {
                 "proguard-rules.pro"
             )
 
-            resValue("string" , "version", AppConfig.versionName)
+            resValue("string", "version", AppConfig.versionName)
         }
 
         getByName("debug") {
             isMinifyEnabled = false
 
-            resValue("string" , "version", AppConfig.versionName)
+            resValue("string", "version", AppConfig.versionName)
         }
     }
     java {
@@ -107,16 +107,17 @@ dependencies {
     //Google Analytics
     implementation(platform(Dependencies.firebase_bom))
     implementation(Dependencies.firebase_analytics)
+    implementation(Dependencies.firebase_crashlytics)
 
     implementation(Dependencies.kotlinCore)
     implementation(Dependencies.androidxAppCompat)
-    implementation (Dependencies.androidMaterial)
-    implementation (Dependencies.constrainLayout)
-    implementation (Dependencies.navigationFragment)
-    implementation (Dependencies.navigationUiKtx)
+    implementation(Dependencies.androidMaterial)
+    implementation(Dependencies.constrainLayout)
+    implementation(Dependencies.navigationFragment)
+    implementation(Dependencies.navigationUiKtx)
 
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
