@@ -13,7 +13,7 @@
     <string name="circle">Circle</string>
     <string name="rectangle">Rectangle</string>
     <string name="create_new_member_fab">Create new member fab.</string>
-    <string name="no_member_attendance_data">Looks like you haven\'t registered any member yet.</string>
+    <string name="no_member_attendance_data">Looks like you haven\'t added any member yet.</string>
 
 
     <string name="name_too_short">Name too short!</string>
@@ -201,12 +201,32 @@
     <string name="no_option_dialog">No</string>
     <string name="yes_option_dialog">Yes</string>
     <string name="all_checked_in">All members have checked In</string>
-    <string name="all_active_checked_in">All active members have checked In but you have %s marked as inactive. \n Inactive members are not shown here, you can enable this in settings.</string>
-    <string name="no_active_member">You have %s that are not being displayed. \n Inactive members are not shown here, you can enable this in settings.</string>
+    <string name="checked_in_but_marked_inactive">You have %s checked-in for this session but have been marked as inactive.</string>
+    <string name="all_active_checked_in">All active members have checked-in but you have %s marked as inactive. \n\n Inactive members are not shown here, you can enable this in settings.</string>
+    <string name="no_active_member">You have %s that %s not being displayed. \n Inactive members are not shown here, you can enable this in settings. \n\n Or add new</string>
     <string name="you_do_not_have_any_regions_you_can_add_some_using_add_region">You do not have any regions. You can add some using \'Add Region\'</string>
     <string name="region_name_hint">Region name e.g Eastern Estate</string>
     <string name="create_region_btn_text">Create</string>
     <string name="add_a_new_region">Add a new region</string>
+    <string name="auth_creation_prompt">Authentication is required to secure information to be stored in this application.</string>
+    <string name="enforce_auth_creation_header">Data Safety</string>
+    <string name="create_code_btn_text">Create</string>
+    <string name="exit_app_option">Exit</string>
+    <string name="already_checked_in_dialog_header">Already checked-In</string>
+    <string name="undo_ckeckin_btn_text">Undo Check-In</string>
+    <string name="inactive_member_dialog_header">Inactive Member</string>
+    <string name="done_dialog_btn_text">Done</string>
+    <string name="too_high_temp_warning_text">Too high</string>
+    <string name="too_low_warning_dialog_text">Too low</string>
+    <string name="provide_measured_temp_prompt_text">Provide measured temperature.</string>
+    <string name="text_is">&#160;is&#160;</string>
+    <string name="text_are">&#160;are&#160;</string>
+    <string name="all_members_tab_header">All</string>
+    <string name="yet_to_check_in_header">Yet to check in</string>
+    <string name="filter_hint">Filter %d %s.</string>
+    <string name="member_checked_in_success_header">%s checked In!</string>
+    <string name="member_last_seen_detail">%s last Checked-In %s</string>
+    <string name="member_never_checked_in">%s has never been Checked-In</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>
