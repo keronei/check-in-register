@@ -164,6 +164,17 @@ class YetToCheckInFragment : Fragment() {
 
                     yetToCheckInAdapter.modifyList(filteredList)
 
+                    val memberText = resources.getQuantityString(
+                        R.plurals.members_prefix,
+                        filteredList.size,
+                        filteredList.size
+                    )
+
+
+                    val filterHint = getString(R.string.filter_hint, memberText)
+
+                    yetToCheckInBinding.searchViewYetToCheckIn.queryHint = filterHint
+
                     if (filteredList.isEmpty()) {
                         yetToCheckInBinding.allMembersCheckedInTextview.visibility =
                             View.VISIBLE

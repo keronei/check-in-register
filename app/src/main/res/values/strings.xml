@@ -223,7 +223,7 @@
     <string name="text_are">&#160;are&#160;</string>
     <string name="all_members_tab_header">All</string>
     <string name="yet_to_check_in_header">Yet to check in</string>
-    <string name="filter_hint">Filter %d %s.</string>
+    <string name="filter_hint">Filter %s.</string>
     <string name="member_checked_in_success_header">%s checked In!</string>
     <string name="member_last_seen_detail">%s last Checked-In %s</string>
     <string name="member_never_checked_in">%s has never been Checked-In</string>

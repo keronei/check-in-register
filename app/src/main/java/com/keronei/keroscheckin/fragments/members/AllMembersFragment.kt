@@ -403,7 +403,7 @@ class AllMembersFragment : Fragment() {
                     )
 
                     searchView.queryHint =
-                        getString(R.string.filter_hint, filteredList.size, memberText)
+                        getString(R.string.filter_hint, memberText)
 
                     allMembersAdapter.modifyList(filteredList)
 
