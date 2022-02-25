@@ -72,4 +72,8 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
             checkInViewModel.customSelectedTime.emit(currentCalendar)
         }
     }
+
+    companion object {
+        const val TAG = "TimePickerFragment"
+    }
 }
