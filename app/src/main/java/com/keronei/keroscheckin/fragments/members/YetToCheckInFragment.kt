@@ -229,7 +229,7 @@ class YetToCheckInFragment : Fragment() {
                 attendeePresentation.lastCheckInStamp
             )
 
-            ToastUtils.showLongToast(
+            ToastUtils.showShortToast(
                 getString(
                     R.string.member_last_seen_detail,
                     attendeePresentation.firstName,
@@ -237,7 +237,7 @@ class YetToCheckInFragment : Fragment() {
                 )
             )
         } else {
-            ToastUtils.showLongToast(
+            ToastUtils.showShortToast(
                 getString(
                     R.string.member_never_checked_in,
                     attendeePresentation.firstName
