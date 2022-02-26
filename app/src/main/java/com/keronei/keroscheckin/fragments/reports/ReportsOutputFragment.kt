@@ -217,8 +217,6 @@ class ReportsOutputFragment : Fragment() {
         binding.childYouthAdultSlider.valueTo = lowestBirthYearAsOldest?.toFloat() ?: 100F
 
         binding.childYouthAdultSlider.valueFrom = highestBirthYearAsYoungest?.toFloat() ?: 0F
-
-        binding.childYouthAdultSlider
     }
 
     private fun splitToAgeGroups(endOfKidsAge: Int, endOfYouthAge: Int) {
@@ -228,15 +226,11 @@ class ReportsOutputFragment : Fragment() {
         }
 
         val (youths, adults) = youthsAndAdults.partition { attendee ->
-            attendee.age > endOfKidsAge && attendee.age < (endOfYouthAge + 1) && (attendee.isMarried && !binding.checkboxMarriedYouth.isChecked)
+            attendee.age in endOfKidsAge .. (endOfYouthAge + 1) &&
+                    (!attendee.isMarried || (attendee.isMarried && !binding.checkboxMarriedYouth.isChecked))
         }
 
         //post values to gender partitioner
-
-        Timber.d("kids - $kids")
-        Timber.d("youths - $youths")
-        Timber.d("adults - $adults")
-
         splitBySexOrientation(kids, youths, adults)
 
     }

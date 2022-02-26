@@ -1,6 +1,7 @@
 package com.keronei.keroscheckin.fragments.reports
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
@@ -14,8 +15,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.keronei.domain.entities.AttendanceEntity
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.ReportsFragmentBinding
+import com.keronei.keroscheckin.models.FieldsFilter
+import com.keronei.keroscheckin.models.ReportsFilter
 import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD
 import com.keronei.keroscheckin.models.toPresentation
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
@@ -39,7 +43,7 @@ class ReportsFragment : Fragment() {
         fun newInstance() = ReportsFragment()
     }
 
-    lateinit var reportsBinding: ReportsFragmentBinding
+    private lateinit var reportsBinding: ReportsFragmentBinding
     private val reportsViewModel: ReportsViewModel by activityViewModels()
     private val allMembersViewModel: AllMembersViewModel by activityViewModels()
     private val parser = SimpleDateFormat("dd - MMM - yyyy", Locale.US)
@@ -50,6 +54,11 @@ class ReportsFragment : Fragment() {
     @Inject
     lateinit var preferences: SharedPreferences
 
+    private fun resetFiltersOnViewCreated() {
+        reportsViewModel.filterModel.value = ReportsFilter()
+
+        reportsViewModel.fieldsFilterModel.value = FieldsFilter()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,6 +84,8 @@ class ReportsFragment : Fragment() {
         actionListeners()
 
         watchFab()
+
+        resetFiltersOnViewCreated()
     }
 
     private fun watchFab() {
