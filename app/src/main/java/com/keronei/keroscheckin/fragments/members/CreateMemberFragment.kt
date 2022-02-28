@@ -17,6 +17,10 @@ import androidx.navigation.fragment.navArgs
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.chivorn.smartmaterialspinner.SmartMaterialSpinner
 import com.google.android.material.snackbar.Snackbar
+import com.keronei.android.common.Constants.FEMALE_SELECTOR
+import com.keronei.android.common.Constants.MALE_SELECTOR
+import com.keronei.android.common.Constants.OTHER_SEX_SELECTOR
+import com.keronei.android.common.Constants.SHOULD_HAVE_ID_AGE
 import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
@@ -111,7 +115,7 @@ class CreateMemberFragment : Fragment() {
                         toggleMaritalStatusSelection(true)
                         layoutBinding.maritalStatus.clearCheck()
 
-                        if (approxAge > 19) {
+                        if (approxAge > SHOULD_HAVE_ID_AGE) {
                             toggleIdNumberVisibility(true)
                         } else {
                             toggleIdNumberVisibility(false)
@@ -155,9 +159,9 @@ class CreateMemberFragment : Fragment() {
         layoutBinding.firstNameEdittext.setText(selectedAttendee?.firstName)
         layoutBinding.secondNameEdittext.setText(selectedAttendee?.secondName)
         layoutBinding.otherNamesEdittext.setText(selectedAttendee?.otherNames)
-        layoutBinding.maleSelector.isChecked = selectedAttendee?.sex == 1
-        layoutBinding.femaleSelector.isChecked = selectedAttendee?.sex == 0
-        layoutBinding.otherSexSelector.isChecked = selectedAttendee?.sex == 2
+        layoutBinding.maleSelector.isChecked = selectedAttendee?.sex == MALE_SELECTOR
+        layoutBinding.femaleSelector.isChecked = selectedAttendee?.sex == FEMALE_SELECTOR
+        layoutBinding.otherSexSelector.isChecked = selectedAttendee?.sex == OTHER_SEX_SELECTOR
 
         val birthYear = Calendar.getInstance().get(Calendar.YEAR) - (selectedAttendee?.age ?: 0)
 
@@ -246,14 +250,14 @@ class CreateMemberFragment : Fragment() {
 
             lifecycleScope.launch {
 
-                var sexSelection = 1
+                var sexSelection = MALE_SELECTOR
 
                 when {
                     maleSex.isChecked -> {
-                        sexSelection = 1
+                        sexSelection = MALE_SELECTOR
                     }
-                    femaleSex.isChecked -> sexSelection = 0
-                    otherSex.isChecked -> sexSelection = 2
+                    femaleSex.isChecked -> sexSelection = FEMALE_SELECTOR
+                    otherSex.isChecked -> sexSelection = OTHER_SEX_SELECTOR
                 }
 
                 val subjectMember = MemberEntity(

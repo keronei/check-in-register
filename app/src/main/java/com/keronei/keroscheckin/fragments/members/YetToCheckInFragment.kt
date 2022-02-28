@@ -21,8 +21,10 @@ import com.keronei.keroscheckin.models.toPresentation
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -43,6 +45,13 @@ class YetToCheckInFragment : Fragment() {
 
     @Inject
     lateinit var preferences: SharedPreferences
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycleScope.launchWhenCreated {
+            watchStatuses()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +79,7 @@ class YetToCheckInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupList()
-        watchStatuses()
+
         setUpOnClickListeners()
         listenToFab()
     }
@@ -115,7 +124,7 @@ class YetToCheckInFragment : Fragment() {
         })
     }
 
-    private fun watchStatuses() {
+    private suspend fun watchStatuses() {
 
         val currentTime = Calendar.getInstance()
 
@@ -125,39 +134,38 @@ class YetToCheckInFragment : Fragment() {
 
         currentTime.set(Calendar.HOUR_OF_DAY, finalHour)
 
-        lifecycleScope.launch {
-            allMembersViewModel.allMembersData.collect { membersAttendance ->
-                if (membersAttendance.isEmpty()) {
+
+        allMembersViewModel.allMembersData.collect { membersAttendance ->
+            if (membersAttendance.isEmpty()) {
+                withContext(Dispatchers.Main) {
                     yetToCheckInBinding.allMembersCheckedInTextview.visibility = View.VISIBLE
                     yetToCheckInBinding.searchViewYetToCheckIn.visibility = View.GONE
-                } else {
+                }
+            } else {
+                val inactiveShouldBeHidden =
+                    preferences.getBoolean(
+                        getString(R.string.inactive_members_pref_key),
+                        false
+                    )
+                val finalList = membersAttendance.filter { entry ->
+                    entry.lastCheckInStamp == null || entry.lastCheckInStamp < currentTime.timeInMillis
+                }
+
+                val filteredList =
+                    if (inactiveShouldBeHidden) finalList.filter { memberEntry -> memberEntry.isActive } else finalList
+
+
+                val checkedInButMarkedInactive =
+                    membersAttendance.filter { member ->
+                        member.lastCheckInStamp != null &&
+                                member.lastCheckInStamp > currentTime.timeInMillis &&
+                                !member.isActive &&
+                                inactiveShouldBeHidden
+                    }
+
+                withContext(Dispatchers.Main) {
                     yetToCheckInBinding.allMembersCheckedInTextview.visibility = View.GONE
                     yetToCheckInBinding.searchViewYetToCheckIn.visibility = View.VISIBLE
-                    val presentationList = membersAttendance.map { entry ->
-                        entry.toPresentation(invalidationPeriod)
-
-                    }
-
-                    val finalList = presentationList.filter { entry ->
-                        entry.lastCheckInStamp == null || entry.lastCheckInStamp < currentTime.timeInMillis
-                    }
-
-                    val inactiveShouldBeHidden =
-                        preferences.getBoolean(
-                            getString(R.string.inactive_members_pref_key),
-                            false
-                        )
-
-                    val filteredList =
-                        if (inactiveShouldBeHidden) finalList.filter { memberEntry -> memberEntry.isActive } else finalList
-
-                    val checkedInButMarkedInactive =
-                        presentationList.filter { member ->
-                            member.lastCheckInStamp != null &&
-                                    member.lastCheckInStamp > currentTime.timeInMillis &&
-                                    !member.isActive &&
-                                    inactiveShouldBeHidden
-                        }
 
                     yetToCheckInAdapter.modifyList(filteredList)
 
@@ -176,7 +184,7 @@ class YetToCheckInFragment : Fragment() {
                         yetToCheckInBinding.allMembersCheckedInTextview.visibility =
                             View.VISIBLE
                         yetToCheckInBinding.searchViewYetToCheckIn.visibility = View.GONE
-                        if (finalList.isEmpty() && !inactiveShouldBeHidden && presentationList.isNotEmpty()) {
+                        if (finalList.isEmpty() && !inactiveShouldBeHidden && membersAttendance.isNotEmpty()) {
                             yetToCheckInBinding.allMembersCheckedInTextview.text =
                                 getString(R.string.all_checked_in)
                         } else if (checkedInButMarkedInactive.isNotEmpty()) {
@@ -188,7 +196,7 @@ class YetToCheckInFragment : Fragment() {
                             yetToCheckInBinding.allMembersCheckedInTextview.text =
                                 getString(R.string.checked_in_but_marked_inactive, membersText)
 
-                        } else if (presentationList.isNotEmpty() && filteredList.isEmpty() && inactiveShouldBeHidden) {
+                        } else if (membersAttendance.isNotEmpty() && filteredList.isEmpty() && inactiveShouldBeHidden) {
                             val diff = finalList - filteredList
 
                             val membersText = resources.getQuantityString(

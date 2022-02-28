@@ -32,11 +32,8 @@ import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.keroscheckin.viewmodels.CheckInViewModel
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -71,6 +68,12 @@ class AllMembersFragment : Fragment() {
         fun newInstance() = AllMembersFragment()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        watchStatuses()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -94,7 +97,6 @@ class AllMembersFragment : Fragment() {
 
         setupList()
 
-        watchStatuses()
 
         setOnClickListeners()
 
@@ -378,49 +380,52 @@ class AllMembersFragment : Fragment() {
     }
 
     private fun watchStatuses() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             allMembersViewModel.allMembersData.collect { membersAttendance ->
                 if (membersAttendance.isEmpty()) {
-                    allMembersFragmentBinding.noRegisteredMemberTextView.visibility = View.VISIBLE
-                    allMembersFragmentBinding.searchViewAllMembers.visibility = View.GONE
+                    withContext(Dispatchers.Main) {
+                        allMembersFragmentBinding.noRegisteredMemberTextView.visibility =
+                            View.VISIBLE
+                        allMembersFragmentBinding.searchViewAllMembers.visibility = View.GONE
+                    }
                 } else {
-                    allMembersFragmentBinding.noRegisteredMemberTextView.visibility = View.GONE
-                    allMembersFragmentBinding.searchViewAllMembers.visibility = View.VISIBLE
-
-                    val defaultList =
-                        membersAttendance.map { entry -> entry.toPresentation(invalidationPeriod) }
-
                     val inactiveShouldBeHidden =
                         preferences.getBoolean(getString(R.string.inactive_members_pref_key), false)
 
                     val filteredList =
-                        if (inactiveShouldBeHidden) defaultList.filter { memberEntry -> memberEntry.isActive } else defaultList
+                        if (inactiveShouldBeHidden) membersAttendance.filter { memberEntry -> memberEntry.isActive } else membersAttendance
 
-                    val memberText = resources.getQuantityString(
-                        R.plurals.members_prefix,
-                        filteredList.size,
-                        filteredList.size
-                    )
+                    withContext(Dispatchers.Main) {
+                        allMembersFragmentBinding.noRegisteredMemberTextView.visibility = View.GONE
+                        allMembersFragmentBinding.searchViewAllMembers.visibility = View.VISIBLE
 
-                    searchView.queryHint =
-                        getString(R.string.filter_hint, memberText)
 
-                    allMembersAdapter.modifyList(filteredList)
-
-                    if (filteredList.isEmpty()) {
-                        allMembersFragmentBinding.noRegisteredMemberTextView.visibility =
-                            View.VISIBLE
-                        allMembersFragmentBinding.searchViewAllMembers.visibility = View.GONE
-                        val diff = defaultList - filteredList
-                        val membersText = resources.getQuantityString(
+                        val memberText = resources.getQuantityString(
                             R.plurals.members_prefix,
-                            diff.size,
-                            diff.size
+                            filteredList.size,
+                            filteredList.size
                         )
-                        val pluralAddress =
-                            if (diff.size > 1) getString(R.string.text_are) else getString(R.string.text_is)
-                        allMembersFragmentBinding.noRegisteredMemberTextView.text =
-                            getString(R.string.no_active_member, membersText, pluralAddress)
+
+                        searchView.queryHint =
+                            getString(R.string.filter_hint, memberText)
+
+                        allMembersAdapter.modifyList(filteredList)
+
+                        if (filteredList.isEmpty()) {
+                            allMembersFragmentBinding.noRegisteredMemberTextView.visibility =
+                                View.VISIBLE
+                            allMembersFragmentBinding.searchViewAllMembers.visibility = View.GONE
+                            val diff = membersAttendance - filteredList
+                            val membersText = resources.getQuantityString(
+                                R.plurals.members_prefix,
+                                diff.size,
+                                diff.size
+                            )
+                            val pluralAddress =
+                                if (diff.size > 1) getString(R.string.text_are) else getString(R.string.text_is)
+                            allMembersFragmentBinding.noRegisteredMemberTextView.text =
+                                getString(R.string.no_active_member, membersText, pluralAddress)
+                        }
                     }
                 }
             }

@@ -9,18 +9,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.RadioButton
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.android.material.textfield.TextInputEditText
+import com.keronei.android.common.Constants.ALL_SEX_SELECTOR
+import com.keronei.android.common.Constants.FEMALE_SELECTOR
+import com.keronei.android.common.Constants.MALE_SELECTOR
+import com.keronei.android.common.Constants.OTHER_SEX_SELECTOR
 import com.keronei.domain.entities.AttendanceEntity
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.ReportsFragmentBinding
 import com.keronei.keroscheckin.models.FieldsFilter
 import com.keronei.keroscheckin.models.ReportsFilter
 import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PERIOD
+import com.keronei.keroscheckin.models.constants.ReportInclusion
 import com.keronei.keroscheckin.models.toPresentation
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.keroscheckin.viewmodels.ReportsViewModel
@@ -46,7 +54,7 @@ class ReportsFragment : Fragment() {
     private lateinit var reportsBinding: ReportsFragmentBinding
     private val reportsViewModel: ReportsViewModel by activityViewModels()
     private val allMembersViewModel: AllMembersViewModel by activityViewModels()
-    private val parser = SimpleDateFormat("dd - MMM - yyyy", Locale.US)
+    private val parser = SimpleDateFormat("dd MMMM yyyy", Locale.US)
     private var invalidationPeriod = CHECK_IN_INVALIDATE_DEFAULT_PERIOD.toInt()
 
     private var startOfDateSelectedTimeStamp = 0L
@@ -57,7 +65,7 @@ class ReportsFragment : Fragment() {
     private fun resetFiltersOnViewCreated() {
         reportsViewModel.filterModel.value = ReportsFilter()
 
-        reportsViewModel.fieldsFilterModel.value = FieldsFilter()
+        FieldsFilter.clearAllInclusions()
     }
 
     override fun onCreateView(
@@ -121,7 +129,7 @@ class ReportsFragment : Fragment() {
     }
 
     private fun displayDateSelected(date: Calendar) {
-        reportsBinding.dateSelectionTextview.text = parser.format(date.time)
+        reportsBinding.reportsDate.setText(parser.format(date.time))
     }
 
     private fun onFieldsChangedListeners() {
@@ -164,32 +172,9 @@ class ReportsFragment : Fragment() {
 
         }
 
-        reportsBinding.maleSelector.setOnCheckedChangeListener { _, checked ->
-            if (checked) {
-                lifecycleScope.launch {
-                    reportsViewModel.filterModel.emit(reportsViewModel.filterModel.value.copy(sex = 1))
-                }
-            }
-        }
-
-        reportsBinding.femaleSelector.setOnCheckedChangeListener { _, checked ->
-            if (checked) {
-                lifecycleScope.launch {
-                    reportsViewModel.filterModel.emit(reportsViewModel.filterModel.value.copy(sex = 0))
-                }
-            }
-
-        }
-
-        reportsBinding.allSexMembersSelector.setOnCheckedChangeListener { _, checked ->
-            if (checked) {
-                lifecycleScope.launch {
-                    reportsViewModel.filterModel.emit(reportsViewModel.filterModel.value.copy(sex = 2))
-                }
-
-            }
-        }
-
+        reportsBinding.maleSelector.updateSexSelection(MALE_SELECTOR)
+        reportsBinding.femaleSelector.updateSexSelection(FEMALE_SELECTOR)
+        reportsBinding.allSexMembersSelector.updateSexSelection(ALL_SEX_SELECTOR)
         reportsBinding.checkInactiveMembers.setOnCheckedChangeListener { _, checked ->
 
             lifecycleScope.launch {
@@ -203,73 +188,13 @@ class ReportsFragment : Fragment() {
             }
 
         }
-
-        reportsBinding.dateSelectionTextview.setOnClickListener {
-            showDateSelectionDialog()
-        }
-
-        reportsBinding.phoneField.setOnCheckedChangeListener { _, checked ->
-
-            lifecycleScope.launch {
-                reportsViewModel.fieldsFilterModel.emit(
-                    value = reportsViewModel.fieldsFilterModel.value.copy(
-                        includePhone = checked
-                    )
-                )
-            }
-
-        }
-        reportsBinding.idNumberField.setOnCheckedChangeListener { _, checked ->
-
-            lifecycleScope.launch {
-                reportsViewModel.fieldsFilterModel.emit(
-                    value = reportsViewModel.fieldsFilterModel.value.copy(
-                        includeIdNumber = checked
-                    )
-                )
-            }
-
-        }
-
-        reportsBinding.regionField.setOnCheckedChangeListener { _, checked ->
-            lifecycleScope.launch {
-                reportsViewModel.fieldsFilterModel.emit(
-                    value = reportsViewModel.fieldsFilterModel.value.copy(
-                        includeRegion = checked
-                    )
-                )
-            }
-        }
-
-        reportsBinding.ageField.setOnCheckedChangeListener { _, checked ->
-            lifecycleScope.launch {
-                reportsViewModel.fieldsFilterModel.emit(
-                    value = reportsViewModel.fieldsFilterModel.value.copy(
-                        includeAge = checked
-                    )
-                )
-            }
-        }
-
-        reportsBinding.temperatureField.setOnCheckedChangeListener { _, checked ->
-            lifecycleScope.launch {
-                reportsViewModel.fieldsFilterModel.emit(
-                    value = reportsViewModel.fieldsFilterModel.value.copy(
-                        includeTemperature = checked
-                    )
-                )
-            }
-        }
-
-        reportsBinding.arrivalTimeField.setOnCheckedChangeListener { _, checked ->
-            lifecycleScope.launch {
-                reportsViewModel.fieldsFilterModel.emit(
-                    value = reportsViewModel.fieldsFilterModel.value.copy(
-                        includeCheckInTime = checked
-                    )
-                )
-            }
-        }
+        reportsBinding.reportsDate.transformToDateSelector()
+        reportsBinding.phoneField.shouldInclude(ReportInclusion.PHONE)
+        reportsBinding.idNumberField.shouldInclude(ReportInclusion.ID_NUMBER)
+        reportsBinding.regionField.shouldInclude(ReportInclusion.REGION)
+        reportsBinding.ageField.shouldInclude(ReportInclusion.AGE)
+        reportsBinding.temperatureField.shouldInclude(ReportInclusion.TEMPERATURE)
+        reportsBinding.arrivalTimeField.shouldInclude(ReportInclusion.CHECK_IN_TIME)
 
         lifecycleScope.launch {
             reportsViewModel.customSelectedDate.collect { selectedDateFromCalendar ->
@@ -287,7 +212,32 @@ class ReportsFragment : Fragment() {
         }
     }
 
-    private fun showDateSelectionDialog() {
+    private fun RadioButton.updateSexSelection(sexOrientation: Int) {
+        this.setOnCheckedChangeListener { _, checked ->
+            if (checked) {
+                lifecycleScope.launch {
+                    reportsViewModel.filterModel.emit(reportsViewModel.filterModel.value.copy(sex = sexOrientation))
+                }
+            }
+        }
+
+    }
+
+    private fun CheckBox.shouldInclude(include: ReportInclusion) {
+        this.setOnCheckedChangeListener { _, checked ->
+            if (checked) {
+                FieldsFilter.addInclusion(include)
+            } else {
+                FieldsFilter.removeInclusion(include)
+            }
+        }
+    }
+
+    private fun TextInputEditText.transformToDateSelector() {
+
+        isFocusableInTouchMode = false
+        isClickable = true
+        isFocusable = false
 
         val myCalendar = Calendar.getInstance()
         val currentYear = myCalendar.get(Calendar.YEAR)
@@ -302,27 +252,29 @@ class ReportsFragment : Fragment() {
                 controlInstance.set(Calendar.MONTH, monthOfYear)
                 controlInstance.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
+                setText(parser.format(myCalendar.time))
+
                 lifecycleScope.launch {
                     reportsViewModel.customSelectedDate.emit(controlInstance)
                 }
 
             }
+        setOnClickListener {
 
+            DatePickerDialog(
+                requireContext(),
+                datePickerOnDataSetListener,
+                currentYear,
+                month,
+                day
+            ).run {
+                myCalendar.time.time.also { date ->
+                    datePicker.maxDate = date
+                }
 
-        DatePickerDialog(
-            requireContext(),
-            datePickerOnDataSetListener,
-            currentYear,
-            month,
-            day
-        ).run {
-            myCalendar.time.time.also { date ->
-                datePicker.maxDate = date
+                show()
             }
-
-            show()
         }
-
     }
 
     private fun actionListeners() {
@@ -339,7 +291,7 @@ class ReportsFragment : Fragment() {
     private fun runGenerateReports() {
         val generatedReport =
             reportsViewModel.filterModel.value.generateFinalReportWithFiltersApplied(
-                allMembersViewModel.allMembersData.value
+                allMembersViewModel.allMembersDataInEntities.value
             )
 
 
@@ -364,8 +316,7 @@ class ReportsFragment : Fragment() {
         try {
             val workBook = exportDataIntoWorkbook(
                 reportFileName,
-                generatedReport,
-                reportsViewModel.fieldsFilterModel.value
+                generatedReport
             )
 
             val openingIntent = makeShareIntent(reportFileName, workBook, requireContext())

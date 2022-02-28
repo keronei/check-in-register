@@ -2,43 +2,20 @@ package com.keronei.keroscheckin.models
 
 import com.keronei.keroscheckin.models.constants.ReportInclusion
 
-data class FieldsFilter(
-    val includePhone: Boolean = true,
-    val includeIdNumber : Boolean = false,
-    val includeRegion: Boolean = false,
-    val includeAge: Boolean = false,
-    val includeTemperature: Boolean = false,
-    val includeCheckInTime: Boolean = false
-) {
+object FieldsFilter {
     private val inclusions = mutableListOf<ReportInclusion>()
 
-    fun orderInclusions(): List<ReportInclusion> {
-        inclusions.clear()
-
-        if (includePhone) {
-            inclusions.add(ReportInclusion.PHONE)
-        }
-
-        if (includeIdNumber){
-            inclusions.add(ReportInclusion.ID_NUMBER)
-        }
-
-        if (includeRegion) {
-            inclusions.add(ReportInclusion.REGION)
-        }
-
-        if (includeAge) {
-            inclusions.add(ReportInclusion.AGE)
-        }
-
-        if (includeTemperature) {
-            inclusions.add(ReportInclusion.TEMPERATURE)
-        }
-
-        if (includeCheckInTime) {
-            inclusions.add(ReportInclusion.CHECK_IN_TIME)
-        }
-
-        return inclusions
+    fun addInclusion(entry: ReportInclusion) {
+        inclusions.add(entry)
     }
+
+    fun removeInclusion(entry: ReportInclusion) {
+        inclusions.remove(entry)
+    }
+
+    fun clearAllInclusions() {
+        inclusions.clear()
+    }
+
+    fun orderInclusions(): List<ReportInclusion> = inclusions
 }

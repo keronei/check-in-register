@@ -13,7 +13,6 @@ class ReportsViewModel : ViewModel() {
     val customSelectedDate = MutableStateFlow(value = Calendar.getInstance())
 
     val filterModel = MutableStateFlow(value = ReportsFilter())
-    val fieldsFilterModel = MutableStateFlow(value = FieldsFilter())
 
     val preparedShareReportIntent = MutableStateFlow(value = Intent())
 

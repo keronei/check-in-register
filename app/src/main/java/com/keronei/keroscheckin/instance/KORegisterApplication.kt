@@ -1,7 +1,9 @@
 package com.keronei.keroscheckin.instance
 
 import android.app.Application
+import android.os.Bundle
 import android.util.Log
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.keronei.keroscheckin.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
@@ -27,17 +29,29 @@ class KORegisterApplication : Application() {
 
     private class FirebaseCrashlyticsReportingTree : Timber.Tree() {
         override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-            if (priority == Log.VERBOSE || priority == Log.DEBUG) return
+            if (priority == Log.VERBOSE || priority == Log.DEBUG || BuildConfig.DEBUG) return
 
             val throwable = t ?: Exception(message)
 
-            FirebaseCrashlytics.getInstance().apply {
-                setCustomKey(CRASHLYTICS_KEY_PRIORITY, priority)
-                setCustomKey(CRASHLYTICS_KEY_MESSAGE, message)
-                setCustomKey(CRASHLYTICS_KEY_TAG, tag ?: "Unspecified tag.")
-            }.also {
-                it.recordException(throwable)
+            when (priority) {
+                Log.INFO -> {
+                    val bundle = Bundle()
+                    bundle.putString(tag ?: "tag", message)
+                    FirebaseAnalytics.getInstance(instance).logEvent(tag ?: "Report", bundle)
+                }
+
+                Log.ERROR -> {
+                    FirebaseCrashlytics.getInstance().apply {
+                        setCustomKey(CRASHLYTICS_KEY_PRIORITY, priority)
+                        setCustomKey(CRASHLYTICS_KEY_MESSAGE, message)
+                        setCustomKey(CRASHLYTICS_KEY_TAG, tag ?: "Unspecified tag.")
+                    }.also {
+                        it.recordException(throwable)
+                    }
+                }
             }
+
+
         }
 
         companion object {

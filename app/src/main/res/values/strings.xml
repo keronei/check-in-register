@@ -141,7 +141,8 @@
     <string name="kids_0_13">Kids 0 – 13</string>
     <string name="youth_14_35">Youth 14 – 35</string>
     <string name="adults_36_81">Adults 36 – 81</string>
-    <string name="share_or_copy_it">Share, or copy it</string>
+    <string name="share_summary_txt">Share</string>
+    <string name="copy_summary_txt">Copy</string>
     <string name="export_full_report">Export Full Report</string>
     <string name="close_report_summary_output">Close report summary output</string>
     <string name="kids_template">Kids %d – %d</string>

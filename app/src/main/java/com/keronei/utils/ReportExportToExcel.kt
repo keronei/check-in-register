@@ -30,8 +30,7 @@ private val parser = SimpleDateFormat("hh:mm a", Locale.US)
 
 fun exportDataIntoWorkbook(
     fileName: String,
-    dataList: List<AttendanceEntity>,
-    fields: FieldsFilter
+    dataList: List<AttendanceEntity>
 ): HSSFWorkbook {
     workbook = HSSFWorkbook()
 
@@ -51,15 +50,15 @@ fun exportDataIntoWorkbook(
 
     sheet.setColumnWidth(0, 15 * 400) //name - default.
 
-    val selections = fields.orderInclusions()
+    val selections = FieldsFilter.orderInclusions()
 
     for (field in selections) {
         sheet.setColumnWidth(selections.indexOf(field) + 1, 15 * 400)
 
     }
 
-    setHeaderRow(fields)
-    fillDataIntoExcel(dataList, fields)
+    setHeaderRow()
+    fillDataIntoExcel(dataList)
 
 
     return workbook as HSSFWorkbook
@@ -79,14 +78,14 @@ private fun setHeaderCellStyle() {
 /**
  * Setup Header Row
  */
-private fun setHeaderRow(fields: FieldsFilter) {
+private fun setHeaderRow() {
 
     row = sheet.createRow(0)
     cell = row.createCell(0)
     cell.setCellValue("Name")
     cell.cellStyle = cellStyle
 
-    val include = fields.orderInclusions()
+    val include = FieldsFilter.orderInclusions()
 
     val fieldsNaming = fieldsDictionary()
 
@@ -106,7 +105,7 @@ private fun setHeaderRow(fields: FieldsFilter) {
  *
  * @param dataList - List containing data to be filled into excel
  */
-private fun fillDataIntoExcel(dataList: List<AttendanceEntity>, fields: FieldsFilter) {
+private fun fillDataIntoExcel(dataList: List<AttendanceEntity>) {
     for (i in dataList.indices) {
         // Create a New Row for every new entry in list
         val rowData: Row = sheet.createRow(i + 1)
@@ -115,7 +114,7 @@ private fun fillDataIntoExcel(dataList: List<AttendanceEntity>, fields: FieldsFi
         cell = rowData.createCell(0)
         cell.setCellValue(dataList[i].memberEntity.firstName + " " + dataList[i].memberEntity.secondName + " " + dataList[i].memberEntity.otherNames)
 
-        val userSelection = fields.orderInclusions()
+        val userSelection = FieldsFilter.orderInclusions()
 
         for (selection in userSelection) {
 

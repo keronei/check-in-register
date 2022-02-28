@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="@string/edit"
             android:textColor="@android:color/white"
-            app:icon="@drawable/ic_baseline_edit_24" />
+            app:icon="@drawable/ic_baseline_mode_edit_24" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

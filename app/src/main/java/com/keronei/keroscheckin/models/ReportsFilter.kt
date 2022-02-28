@@ -1,12 +1,13 @@
 package com.keronei.keroscheckin.models
 
+import com.keronei.android.common.Constants.ALL_SEX_SELECTOR
 import com.keronei.domain.entities.AttendanceEntity
 import java.util.*
 
 data class ReportsFilter(
     val selectedDate: Calendar = Calendar.getInstance(),//default today
     val attendance: Boolean = true,//default present/checked In
-    val sex: Int = 2,//default all or 2 because 1 - male, 0 - female
+    val sex: Int = ALL_SEX_SELECTOR,//default all or 3 because 1 - male, 0 - female, 2 - other
     val includeInactive: Boolean = false//default all, active == true/1, inactive == false/0
 ) {
 
@@ -37,7 +38,7 @@ data class ReportsFilter(
         subjectListInTermsOfAttendance =
             if (attendance) listFromSelectedDateCheckedIn else listFromSelectedDateAbsent
 
-        val subjectListInTermsOfSex: List<AttendanceEntity> = if (sex == 2)
+        val subjectListInTermsOfSex: List<AttendanceEntity> = if (sex == ALL_SEX_SELECTOR)
             subjectListInTermsOfAttendance
         else subjectListInTermsOfAttendance.filter { entry -> entry.memberEntity.sex == sex }
 
