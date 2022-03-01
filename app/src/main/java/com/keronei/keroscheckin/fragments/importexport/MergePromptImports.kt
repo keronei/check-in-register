@@ -118,8 +118,8 @@ class MergePromptImports : Fragment() {
 
 
     private suspend fun insertNewImports() {
-        val totalImportedRegions = mutableListOf<Int>()
-        val totalImportedMembers = mutableListOf<Int>()
+        val totalImportedRegions = mutableListOf<Deferred<Long>>()
+        val totalImportedMembers = mutableListOf<Long>()
 
         /**
          * Since these are related entries, creating an association before insertion
@@ -135,30 +135,45 @@ class MergePromptImports : Fragment() {
 
             importExportViewModel.parsedRegionsToImport.value.forEach { importedRegion ->
 
-                val insertedRegionsIds =
-                    regionsViewModel.createRegion(listOf(RegionEntity(0, importedRegion.name)))
+                coroutineScope {
+                    val insertedRegionsId =
+                        async {
+                            regionsViewModel.createRegion(
+                                RegionEntity(
+                                    0,
+                                    importedRegion.name
+                                )
+                            )
+                        }
 
-                totalImportedRegions.addAll(insertedRegionsIds.map { generatedId -> generatedId.toInt() })
+                    totalImportedRegions.add(insertedRegionsId)
+
+                    val membersOfImportedRegion =
+                        async {
+                            importExportViewModel.parsedMembersToImport.value.filter { memberEntity ->
+                                memberEntity.regionId == importedRegion.id
+                            }
+                        }
 
 
-                val membersOfImportedRegion =
-                    importExportViewModel.parsedMembersToImport.value.filter { memberEntity ->
-                        memberEntity.regionId == importedRegion.id
-                    }
+                    val updatedMembersWithLatestRegionIds =
+                        async {
+                            membersOfImportedRegion.await().map { memberEntity ->
+                                updateRegionIDForMember(memberEntity, insertedRegionsId.await())
 
-                val updatedMembersWithLatestRegionIds =
-                    membersOfImportedRegion.map { memberEntity ->
-                        updateRegionIDForMember(memberEntity, insertedRegionsIds.first())
+                            }
+                        }
 
-                    }
+                    //only start feeding members when regions are done for dependency
+                    val insertedMembersIds =
+                        async { memberViewModel.createNewMember(updatedMembersWithLatestRegionIds.await()) }
 
-                //only start feeding members when regions are done for dependency
-                val insertedMembersIds =
-                    memberViewModel.createNewMember(updatedMembersWithLatestRegionIds)
+                    totalImportedMembers.addAll(insertedMembersIds.await())
 
-                totalImportedMembers.addAll(insertedMembersIds.map { createdId -> createdId.toInt() })
+                }
 
             }
+
 
             cleanUpDuplicateRegionsAlgo()
 

@@ -22,7 +22,7 @@ class RegionViewModel @Inject constructor(
 
     }
 
-    suspend fun createRegion(newRegion: List<RegionEntity>) : List<Long> {
+    suspend fun createRegion(newRegion: RegionEntity) : Long {
        return withContext(viewModelScope.coroutineContext) {
            regionsUseCases.createRegionUseCase(newRegion)
        }
