@@ -29,6 +29,7 @@ import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -75,7 +76,7 @@ class RegionFragment : Fragment() {
 
     private fun watchFab() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            regionFragmentBinding.nestedScrollViewRegions.setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
+            regionFragmentBinding.regionsRecycler.setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
                 with(regionFragmentBinding.addRegionFabText) {
                     visibility = when {
                         scrollY > oldScrollY -> {
@@ -192,8 +193,13 @@ class RegionFragment : Fragment() {
                                 getString(R.string.region_deleted),
                                 Snackbar.LENGTH_LONG
                             ).setAction(R.string.undo_deletion) {
-                                lifecycleScope.launch {
-                                    viewModel.createRegion(regionBackUp)
+                                coroutineScope.launch {
+                                    regionBackUp.forEach { backedUpRegion ->
+                                        async {
+                                            viewModel.createRegion(backedUpRegion)
+                                        }
+                                    }
+
                                 }
                             }
 

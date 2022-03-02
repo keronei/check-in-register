@@ -13,69 +13,51 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="4dp"
         app:cardBackgroundColor="@color/list_item_card_color"
         app:cardCornerRadius="4dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="4dp">
 
             <FrameLayout
                 android:id="@+id/member_avatar_container"
                 android:layout_width="58dp"
                 android:layout_height="55dp"
-                android:layout_gravity="center_vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_alignParentStart="true">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_profile_image"
-                    android:layout_width="46dp"
-                    android:layout_height="46dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_user"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    app:civ_border_color="@android:color/black"
+                    app:civ_border_width="1dp" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/image_user"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:civ_border_color="@android:color/black"
-                        app:civ_border_width="1dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/layout_initials"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:visibility="visible"
+                    app:cardBackgroundColor="?attr/colorPrimary"
+                    app:cardCornerRadius="26dp"
+                    app:shapeAppearance="@style/ShapeAppearance.KO.ProfileImageComponent">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/layout_initials"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="visible"
-                        app:cardBackgroundColor="?attr/colorPrimary"
-                        app:cardCornerRadius="28dp"
-                        app:shapeAppearance="@style/ShapeAppearance.KO.ProfileImageComponent">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_user_initials"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:background="@color/primaryColor"
-                            android:textColor="?attr/colorOnPrimary"
-                            android:textSize="19sp"
-                            android:textStyle="bold"
-                            tools:text="JP" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/text_user_initials"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/primaryColor"
+                        android:gravity="center"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="19sp"
+                        android:textStyle="bold"
+                        tools:text="OM" />
 
 
-                    </com.google.android.material.card.MaterialCardView>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
 
 
                 <ImageView
@@ -85,47 +67,46 @@
                     android:layout_gravity="bottom|end"
                     android:background="@drawable/circle"
                     android:contentDescription="@string/checkin_status_icon"
-                    android:src="@drawable/ic_baseline_radio_button_unchecked_24" />
+                    android:src="@drawable/ic_baseline_radio_button_unchecked_24"
+                    android:translationZ="1dp" />
 
             </FrameLayout>
 
 
             <TextView
                 android:id="@+id/attendee_name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_toStartOf="@id/attendee_arrival_time"
+                android:layout_toEndOf="@id/member_avatar_container"
+                android:fontFamily="@font/halveticaneue"
                 android:text="@{attendee.name}"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="18sp"
-                android:fontFamily="@font/halveticaneue"
-                android:textStyle="bold"
 
-                app:layout_constraintEnd_toStartOf="@+id/attendee_arrival_time"
-                app:layout_constraintStart_toEndOf="@id/member_avatar_container"
-                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 tools:text="Maina Mucheru" />
 
             <TextView
                 android:id="@+id/attendee_region"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{attendee.regionName}"
+                android:layout_below="@id/attendee_name"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/member_avatar_container"
                 android:fontFamily="@font/halveticaneue"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/attendee_name"
-                app:layout_constraintTop_toBottomOf="@id/attendee_name"
+                android:text="@{attendee.regionName}"
                 tools:text="Airport" />
 
             <TextView
                 android:id="@+id/attendee_arrival_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:text=""
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:text="7:43 AM" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.databinding.LayoutAttendeeItemBinding
 import com.keronei.keroscheckin.models.AttendeePresentation
+import timber.log.Timber
 import java.util.*
 
 
@@ -42,8 +43,8 @@ class AttendanceRecyclerAdapter(private val selectedMember: (member: AttendeePre
 
         if (!query.isNullOrEmpty()) {
             list.addAll(untouchedList.filter { item ->
-                item.name.toLowerCase(Locale.getDefault())
-                    .contains(query.toString().toLowerCase(Locale.getDefault()))
+                item.name.lowercase(Locale.getDefault())
+                    .contains(query.toString().lowercase(Locale.getDefault()))
 
             })
         } else {

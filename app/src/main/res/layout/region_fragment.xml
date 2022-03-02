@@ -48,23 +48,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nested_scroll_view_regions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="false"
-            app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_view_regions">
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/regions_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="vertical"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/search_view_regions"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_region_layout" />
-        </androidx.core.widget.NestedScrollView>
+
 
         <LinearLayout
             android:id="@+id/fab_full_btn_regions"

@@ -32,6 +32,15 @@
     <string name="checkin_status_icon">CheckIn status icon</string>
     <string name="checkin">Check-In</string>
     <string name="edit">Edit</string>
+    <string name="him_reference"> &#160;him&#160;</string>
+    <string name="her_reference"> &#160;her&#160;</string>
+    <string name="them_reference"> &#160;them&#160;</string>
+    <string name="previously_inactive_prompt">%s  was previously marked as inactive. \n
+        Would you wish to update as active and check %s In?
+    </string>
+    <string name="higher_than_accepted_temp">%s ºC is higher than accepted.</string>
+    <string name="lower_than_accepted_temp">%s ºC is lower than accepted.</string>
+    <string name="already_checked_in_prompt">%s already checked-In %s</string>
     <string name="member_updated">Member Updated!</string>
     <string name="all_regions">All Regions</string>
     <string name="no_member_in_region">No member.</string>

@@ -548,9 +548,9 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                 val idsOfCreatedMembers = mutableListOf<Long>()
 
                 readRegionsList.forEach { readRegionEntry ->
-                    val createdRegionId = regionsViewModel.createRegion(listOf(readRegionEntry))
+                    val createdRegionId = regionsViewModel.createRegion(readRegionEntry)
 
-                    idsOfCreatedRegions.addAll(createdRegionId)
+                    idsOfCreatedRegions.add(createdRegionId)
 
                     val readMembersUnderCreatedRegion =
                         readMembersList.filter { memberEntity -> memberEntity.regionId == readRegionEntry.id }
@@ -559,7 +559,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                         readMembersUnderCreatedRegion.map { memberEntity ->
                             updateRegionIDForMember(
                                 memberEntity,
-                                createdRegionId.first()
+                                createdRegionId
                             )
                         }
 

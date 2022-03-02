@@ -229,7 +229,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                     )
 
                                                 if (deletedMembersCountInDeleteAll > 0 && deletedRegionsCountInDeleteAll > 0) {
-                                                    Timber.log(Log.INFO, "User cleaned up all the data successfully.")
+                                                    Timber.log(
+                                                        Log.INFO,
+                                                        "User cleaned up all the data successfully."
+                                                    )
 
                                                     val regionsText = resources.getQuantityString(
                                                         R.plurals.regions_prefix,
@@ -253,9 +256,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                             Snackbar.LENGTH_LONG
                                                         ).setAction(R.string.undo_deletion) {
                                                             lifecycleScope.launch {
-                                                                regionsViewModel.createRegion(
-                                                                    regionsToBeDeletedBackup
-                                                                )
+
+                                                                regionsToBeDeletedBackup.forEach { region ->
+                                                                    val id = async {
+                                                                        regionsViewModel.createRegion(
+                                                                            region
+                                                                        )
+                                                                    }
+                                                                }
 
                                                                 membersViewModel.createNewMember(
                                                                     membersToBeDeletedBackUp
@@ -291,9 +299,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                         Snackbar.LENGTH_LONG
                                                     ).setAction(R.string.undo_deletion) {
                                                         lifecycleScope.launch {
-                                                            regionsViewModel.createRegion(
-                                                                regionsToBeDeletedBackup
-                                                            )
+
+                                                            regionsToBeDeletedBackup.forEach { region ->
+                                                                regionsViewModel.createRegion(
+                                                                    region
+                                                                )
+                                                            }
+
                                                         }
                                                     }
 
@@ -311,7 +323,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                 .setContentText(exception.message)
                                                 .show()
 
-                                            Timber.log(Log.ERROR, "Exception in cleaning up data.", exception)
+                                            Timber.log(
+                                                Log.ERROR,
+                                                "Exception in cleaning up data.",
+                                                exception
+                                            )
                                         }
                                     }
                                 }
@@ -351,9 +367,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 )
             ) {
                 lifecycleScope.launch {
-                    regionsViewModel.createRegion(
-                        regionsToBeDeletedBackup
-                    )
+                    regionsToBeDeletedBackup.forEach { region ->
+                        regionsViewModel.createRegion(region)
+                    }
                 }
             }
 

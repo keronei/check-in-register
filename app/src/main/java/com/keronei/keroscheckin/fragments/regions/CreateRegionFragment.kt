@@ -21,6 +21,7 @@ import com.keronei.keroscheckin.models.constants.GUEST_ENTRY
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -114,8 +115,8 @@ class CreateRegionFragment : Fragment() {
 
                         try {
                             val countId =
-                                viewModel.createRegion(listOf(RegionEntity(0, providedName.trim())))
-                            if (countId.isNotEmpty()) {
+                                viewModel.createRegion(RegionEntity(0, providedName.trim()))
+                            if (countId > 0L) {
                                 ToastUtils.showLongToastOnTop(R.string.entry_added)
 
                                 withContext(Dispatchers.Main){
@@ -123,6 +124,8 @@ class CreateRegionFragment : Fragment() {
                                 }
                             }
                         } catch (exception: Exception) {
+                            if(exception is CancellationException)
+                                throw exception
                             Timber.log(Log.ERROR, "Error creating region.", exception)
                         }
                     }

@@ -15,6 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.keronei.android.common.Constants.FEMALE_SELECTOR
+import com.keronei.android.common.Constants.MALE_SELECTOR
 import com.keronei.domain.entities.CheckInEntity
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.adapter.AttendanceRecyclerAdapter
@@ -27,13 +29,13 @@ import com.keronei.keroscheckin.models.constants.CHECK_IN_INVALIDATE_DEFAULT_PER
 import com.keronei.keroscheckin.models.constants.TEMPERATURE_CEIL
 import com.keronei.keroscheckin.models.constants.TEMPERATURE_FLOOR
 import com.keronei.keroscheckin.models.toMemberEntity
-import com.keronei.keroscheckin.models.toPresentation
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.keroscheckin.viewmodels.CheckInViewModel
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -58,6 +60,8 @@ class AllMembersFragment : Fragment() {
 
     private lateinit var checkInDialogSuccess: SweetAlertDialog
 
+    private val filteredList = mutableListOf<AttendeePresentation>()
+
     @Inject
     lateinit var coroutineScope: CoroutineScope
 
@@ -68,8 +72,8 @@ class AllMembersFragment : Fragment() {
         fun newInstance() = AllMembersFragment()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
         watchStatuses()
     }
@@ -97,7 +101,6 @@ class AllMembersFragment : Fragment() {
 
         setupList()
 
-
         setOnClickListeners()
 
         listenToFab()
@@ -105,7 +108,7 @@ class AllMembersFragment : Fragment() {
 
     private fun listenToFab() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            allMembersFragmentBinding.nestedScrollViewMembers.setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
+            allMembersFragmentBinding.recyclerAllMembers.setOnScrollChangeListener { _, scrollX, scrollY, _, oldScrollY ->
 
                 when {
                     scrollY > oldScrollY -> {
@@ -171,13 +174,23 @@ class AllMembersFragment : Fragment() {
                 providedTemperature.toDouble() > TEMPERATURE_CEIL -> {
                     SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
                         .setTitleText(getString(R.string.too_high_temp_warning_text))
-                        .setContentText("$providedTemperature ºC is higher than accepted.")
+                        .setContentText(
+                            getString(
+                                R.string.higher_than_accepted_temp,
+                                providedTemperature
+                            )
+                        )
                         .show()
                 }
                 providedTemperature.toDouble() < TEMPERATURE_FLOOR -> {
                     SweetAlertDialog(requireContext(), SweetAlertDialog.ERROR_TYPE)
                         .setTitleText(getString(R.string.too_low_warning_dialog_text))
-                        .setContentText("$providedTemperature ºC is lower than accepted.")
+                        .setContentText(
+                            getString(
+                                R.string.lower_than_accepted_temp,
+                                providedTemperature
+                            )
+                        )
                         .show()
                 }
                 else -> {
@@ -316,11 +329,12 @@ class AllMembersFragment : Fragment() {
         SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
             .setTitleText(getString(R.string.already_checked_in_dialog_header))
             .setContentText(
-                "${member.firstName} already checked-In ${
+                getString(
+                    R.string.already_checked_in_prompt, member.firstName,
                     DateUtils.getRelativeTimeSpanString(
                         member.lastCheckInStamp!!
                     )
-                }."
+                )
             )
             .setConfirmText(getString(R.string.undo_ckeckin_btn_text))
             .setConfirmClickListener { sDialog ->
@@ -348,13 +362,18 @@ class AllMembersFragment : Fragment() {
     ) {
 
         val addressing =
-            if (member.sex == 1) " him " else if (member.sex == 0) " her " else " them "
+            when (member.sex) {
+                MALE_SELECTOR -> getString(R.string.him_reference)
+                FEMALE_SELECTOR -> getString(
+                    R.string.her_reference
+                )
+                else -> getString(R.string.them_reference)
+            }
 
         SweetAlertDialog(requireContext(), SweetAlertDialog.WARNING_TYPE)
             .setTitleText(getString(R.string.inactive_member_dialog_header))
             .setContentText(
-                "${member.firstName} was previously marked as inactive. \n" +
-                        "Would you wish to update as active and check $addressing In?"
+                getString(R.string.previously_inactive_prompt, member.firstName, addressing)
             )
             .setConfirmText(getString(R.string.yes_option_dialog))
             .setConfirmClickListener { sDialog ->
@@ -380,8 +399,12 @@ class AllMembersFragment : Fragment() {
     }
 
     private fun watchStatuses() {
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             allMembersViewModel.allMembersData.collect { membersAttendance ->
+
+                filteredList.clear()
+                filteredList.addAll(membersAttendance)
+
                 if (membersAttendance.isEmpty()) {
                     withContext(Dispatchers.Main) {
                         allMembersFragmentBinding.noRegisteredMemberTextView.visibility =
@@ -392,47 +415,58 @@ class AllMembersFragment : Fragment() {
                     val inactiveShouldBeHidden =
                         preferences.getBoolean(getString(R.string.inactive_members_pref_key), false)
 
-                    val filteredList =
-                        if (inactiveShouldBeHidden) membersAttendance.filter { memberEntry -> memberEntry.isActive } else membersAttendance
+                    val filteredListDeferred =
+                        async { if (inactiveShouldBeHidden) membersAttendance.filter { memberEntry -> memberEntry.isActive } else membersAttendance }
 
-                    withContext(Dispatchers.Main) {
-                        allMembersFragmentBinding.noRegisteredMemberTextView.visibility = View.GONE
-                        allMembersFragmentBinding.searchViewAllMembers.visibility = View.VISIBLE
+                    val processedList = filteredListDeferred.await()
 
+                    launch {
+                        withContext(Dispatchers.Main) {
+                            processingDoneForDisplay(processedList)
 
-                        val memberText = resources.getQuantityString(
-                            R.plurals.members_prefix,
-                            filteredList.size,
-                            filteredList.size
-                        )
-
-                        searchView.queryHint =
-                            getString(R.string.filter_hint, memberText)
-
-                        allMembersAdapter.modifyList(filteredList)
-
-                        if (filteredList.isEmpty()) {
-                            allMembersFragmentBinding.noRegisteredMemberTextView.visibility =
-                                View.VISIBLE
-                            allMembersFragmentBinding.searchViewAllMembers.visibility = View.GONE
-                            val diff = membersAttendance - filteredList
-                            val membersText = resources.getQuantityString(
-                                R.plurals.members_prefix,
-                                diff.size,
-                                diff.size
-                            )
-                            val pluralAddress =
-                                if (diff.size > 1) getString(R.string.text_are) else getString(R.string.text_is)
-                            allMembersFragmentBinding.noRegisteredMemberTextView.text =
-                                getString(R.string.no_active_member, membersText, pluralAddress)
                         }
+
                     }
+
                 }
             }
         }
+    }
 
+    private fun processingDoneForDisplay(processedList: List<AttendeePresentation>) {
+
+        allMembersFragmentBinding.noRegisteredMemberTextView.visibility = View.GONE
+        allMembersFragmentBinding.searchViewAllMembers.visibility = View.VISIBLE
+
+        val memberText = resources.getQuantityString(
+            R.plurals.members_prefix,
+            processedList.size,
+            processedList.size
+        )
+
+        searchView.queryHint =
+            getString(R.string.filter_hint, memberText)
+
+        allMembersAdapter.modifyList(processedList)
+
+        if (processedList.isEmpty()) {
+            allMembersFragmentBinding.noRegisteredMemberTextView.visibility =
+                View.VISIBLE
+            allMembersFragmentBinding.searchViewAllMembers.visibility = View.GONE
+            val diff = filteredList - processedList
+            val membersText = resources.getQuantityString(
+                R.plurals.members_prefix,
+                diff.size,
+                diff.size
+            )
+            val pluralAddress =
+                if (diff.size > 1) getString(R.string.text_are) else getString(R.string.text_is)
+            allMembersFragmentBinding.noRegisteredMemberTextView.text =
+                getString(R.string.no_active_member, membersText, pluralAddress)
+        }
 
     }
 
-
 }
+
+
