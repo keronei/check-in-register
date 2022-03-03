@@ -10,6 +10,7 @@ object Constants {
     const val EXPORT_FILE_PICKER_REQUEST_CODE = 1
     const val EXPORT_DATA_SAVE_OPTION_REQUEST_CODE = 2
     const val TELEGRAM_SUPPORT_GROUP_LINK = "https://t.me/+LeUr_owiXBtkMDBk"
+    const val ACCEPTED_IMPORT_FILE_TYPE = "application/vnd.ms-excel"
 
     const val FEMALE_SELECTOR = 0
     const val MALE_SELECTOR = 1

@@ -67,10 +67,19 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
     private fun registerContract() {
         //TODO use lifeCycleScope to watch
-        getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri ->
-            val result = requireContext().contentResolver.openInputStream(uri)
+        getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
 
-            handleImportFileSelection(result!!)
+            if (uri != null) {
+                val result = requireContext().contentResolver.openInputStream(uri)
+                if (result != null) {
+                    handleImportFileSelection(result)
+                    displayedPrompt?.dismiss()
+                } else {
+                    ToastUtils.showShortToast(getString(R.string.did_not_select_file))
+                }
+            } else {
+                ToastUtils.showShortToast(getString(R.string.did_not_select_file))
+            }
         }
 
 
@@ -81,10 +90,19 @@ class ImportExportSheet : BottomSheetDialogFragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { createdFileUri ->
                 if (this::hssfWorkbookToWriteOut.isInitialized) {
                     if (createdFileUri?.data?.data != null) {
-                        val fileOutputStream =
-                            requireContext().contentResolver.openOutputStream(createdFileUri.data!!.data!!)
-                        hssfWorkbookToWriteOut.write(fileOutputStream)
-                        Timber.log(Log.INFO, "Successfully loaded data import file.")
+                        try {
+                            val fileOutputStream =
+                                requireContext().contentResolver.openOutputStream(createdFileUri.data!!.data!!)
+                            hssfWorkbookToWriteOut.write(fileOutputStream)
+                            Timber.log(Log.INFO, "Successfully loaded data import file.")
+                        } catch (exception: Exception) {
+                            Timber.log(
+                                Log.ERROR,
+                                "Something went wrong in creating export file",
+                                exception
+                            )
+                            ToastUtils.showShortToast(getString(R.string.failed_write_out))
+                        }
                     } else {
                         ToastUtils.showShortToast(getString(R.string.null_uri_message_to_user_save_file))
                     }
@@ -112,6 +130,20 @@ class ImportExportSheet : BottomSheetDialogFragment() {
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         unregisterContract()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //all is settled. check if there's any data to process
+        val sentData = importExportViewModel.launchedIntentInputStream.value
+
+        if (sentData != null) {
+
+            handleImportFileSelection(sentData)
+
+            displayedPrompt?.dismiss()
+        }
     }
 
     override fun onCreateView(
@@ -440,6 +472,9 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
                             promptLocalContentRetention(result.keys.first(), result.values.first())
 
+                            //reset if this was via open with
+                            importExportViewModel.launchedIntentInputStream.value = null
+
                         }
                     }
                 } catch (exception: Exception) {
@@ -504,30 +539,41 @@ class ImportExportSheet : BottomSheetDialogFragment() {
     private fun promptLocalContentRetention(
         readRegionsList: List<RegionEntity>,
         readMembersList: List<MemberEntity>
-    ) {
-        val regions = runBlocking {
-            regionsViewModel.queryAllRegions().first()
+    ) {//TODO remove runBlocking and use async
+        processingDialog?.show()
+        coroutineScope.launch {
+
+            val regions = async {
+                regionsViewModel.queryAllRegions().first()
+            }
+
+
+            val members = async { memberViewModel.queryAllMembers().first() }
+
+            withContext(Dispatchers.Main) {
+
+                val allRegions = regions.await()
+                val allMembers = members.await()
+
+                processingDialog?.dismissWithAnimation()
+
+                importExportViewModel.parsedRegionsToImport.value =
+                    readRegionsList as MutableList<RegionEntity>
+
+                importExportViewModel.parsedMembersToImport.value =
+                    readMembersList as MutableList<MemberEntity>
+
+                if (allMembers.size < 2 || allRegions.size < 2) {
+                    processingDialog.show()
+
+                    cleanUpAndAddImports(readRegionsList, readMembersList)
+                } else {
+                    findNavController().navigate(R.id.action_settingsFragment_to_mergePromptImports)
+                        .also { this@ImportExportSheet.dismiss() }
+                }
+            }
+
         }
-
-
-        val members = runBlocking { memberViewModel.queryAllMembers().first() }
-
-        importExportViewModel.parsedRegionsToImport.value =
-            readRegionsList as MutableList<RegionEntity>
-
-        importExportViewModel.parsedMembersToImport.value =
-            readMembersList as MutableList<MemberEntity>
-
-        if (members.size < 2 || regions.size < 2) {
-            processingDialog.show()
-
-            cleanUpAndAddImports(readRegionsList, readMembersList)
-        } else {
-            findNavController().navigate(R.id.action_settingsFragment_to_mergePromptImports)
-                .also { this@ImportExportSheet.dismiss() }
-        }
-
-
     }
 
     private fun cleanUpAndAddImports(

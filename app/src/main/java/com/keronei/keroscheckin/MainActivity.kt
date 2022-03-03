@@ -1,24 +1,29 @@
 package com.keronei.keroscheckin
 
+import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.guardanis.applock.AppLock
 import com.guardanis.applock.dialogs.LockCreationDialogBuilder
-import com.guardanis.applock.dialogs.UnlockDialogBuilder
+import com.keronei.android.common.Constants.ACCEPTED_IMPORT_FILE_TYPE
 import com.keronei.data.remote.Constants.IS_FIRST_TIME_KEY
 import com.keronei.keroscheckin.databinding.ActivityMainBinding
+import com.keronei.keroscheckin.fragments.importexport.ImportExportSheet
+import com.keronei.keroscheckin.viewmodels.ImportExportViewModel
+import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import com.keronei.utils.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.TimeUnit
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -35,6 +40,11 @@ class MainActivity : AppCompatActivity() {
     private var lockCreator: LockCreationDialogBuilder? = null
 
     private var dismissedWithAuth = false
+
+    private val importExportViewModel: ImportExportViewModel by viewModels()
+
+    private val memberViewModel: MemberViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +64,45 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_main)
                 ?.findNavController()
 
+        handleOpenedFileIfFromOpenWith()
+    }
 
+
+    private fun handleOpenedFileIfFromOpenWith() {
+        val launcherIntentAction = intent.action
+
+        val launcherIntentType = intent.type
+
+        if (Intent.ACTION_VIEW == launcherIntentAction && launcherIntentType != null) {
+            if (launcherIntentType == ACCEPTED_IMPORT_FILE_TYPE) {
+                startImportAttempt()
+            } else {
+                ToastUtils.showLongToast(getString(R.string.bad_intent))
+            }
+        }
+    }
+
+    private fun startImportAttempt() {
+        val data = intent.data
+
+        try {
+            val inputStream = this.contentResolver.openInputStream(data!!)
+
+            importExportViewModel.launchedIntentInputStream.value = inputStream
+
+        } catch (exception: Exception) {
+            Timber.log(
+                Log.ERROR,
+                "User attempted to open import file directly from files.",
+                exception
+            )
+            SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                .setContentText("Could not handle this file correctly, use import option in settings and select this file to retry.")
+                .setTitleText("Import Failed")
+                .show()
+
+            exception.printStackTrace()
+        }
     }
 
 

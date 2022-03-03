@@ -250,6 +250,9 @@
     <string name="no_app_to_open_report">No app found in your phone that can open this Excel report. You can install WPS Office and try again.</string>
     <string name="duplicate_region">Duplicate</string>
     <string name="duplicate_region_message">%s seems to be existing already. Please search for it instead.</string>
+    <string name="bad_intent">Cannot handle this file a the moment.</string>
+    <string name="did_not_select_file">Did you select a file?</string>
+    <string name="failed_write_out">Something went wrong there.</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>

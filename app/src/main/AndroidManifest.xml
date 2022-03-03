@@ -4,10 +4,10 @@
     package="com.keronei.keroscheckin">
 
     <application
+        android:name="com.keronei.keroscheckin.instance.KORegisterApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.keronei.keroscheckin.instance.KORegisterApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KIRegister">
@@ -19,6 +19,12 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/vnd.ms-excel" />
             </intent-filter>
         </activity>
 
@@ -35,19 +41,19 @@
         <activity
             android:name="com.guardanis.applock.activities.LockCreationActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:exported="false"
-            tools:node="merge"
-            android:theme="@style/applock__theme_activity" />
+            android:theme="@style/applock__theme_activity"
+            tools:node="merge" />
         <activity
             android:name="com.guardanis.applock.activities.UnlockActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            tools:node="merge"
-            android:theme="@style/applock__theme_activity" />
+            android:theme="@style/applock__theme_activity"
+            tools:node="merge" />
     </application>
 
 </manifest>

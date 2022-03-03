@@ -24,6 +24,7 @@ import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.keroscheckin.R
 import com.keronei.keroscheckin.fragments.importexport.ImportExportSheet
+import com.keronei.keroscheckin.viewmodels.ImportExportViewModel
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
 import com.keronei.keroscheckin.viewmodels.RegionViewModel
 import com.keronei.utils.ToastUtils
@@ -47,6 +48,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val regionsViewModel: RegionViewModel by activityViewModels()
 
     private val membersViewModel: MemberViewModel by activityViewModels()
+
+    private val importExportViewModel: ImportExportViewModel by activityViewModels()
+
 
     @Inject
     lateinit var memberEntityMapper: MemberLocalEntityMapper
@@ -77,7 +81,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     ): View {
         val originalView = super.onCreateView(inflater, container, savedInstanceState)
 
-        val interceptedLayout = inflater.inflate(R.layout.settings_layout, container, false) as ViewGroup
+        val interceptedLayout =
+            inflater.inflate(R.layout.settings_layout, container, false) as ViewGroup
 
         interceptedLayout.addView(originalView)
 
@@ -96,6 +101,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
         } else {
             //ToastUtils.showShortToast("No Tool ")
 
+        }
+
+        //all is settled. check if there's any data to process
+        val sentData = importExportViewModel.launchedIntentInputStream.value
+
+        if (sentData != null) {
+            val importExportSelectionSheet = ImportExportSheet()
+
+            //importExportSelectionSheet.show(childFragmentManager, ImportExportSheet.TAG)
+
+            val settingsImportExport =
+                SettingsFragmentDirections.actionSettingsFragmentToImportExportSheet()
+
+            findNavController().navigate(settingsImportExport)
         }
     }
 
