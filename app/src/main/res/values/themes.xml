@@ -13,7 +13,6 @@
 
         <!-- Customize your theme here. -->
 
-        <item name="preferenceTheme">@style/PrefsTheme</item>
 
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.KO.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.KO.MediumComponent</item>
@@ -39,9 +38,6 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
-    <style name="PrefsTheme" parent="PreferenceThemeOverlay.v14.Material">
-        <item name="android:layout">@layout/settings_layout</item>
-    </style>
 
     <style name="Theme.KIRegister.NoActionBar">
         <item name="windowActionBar">false</item>

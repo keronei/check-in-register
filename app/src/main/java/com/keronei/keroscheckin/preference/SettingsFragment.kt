@@ -5,7 +5,9 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -15,7 +17,6 @@ import androidx.preference.PreferenceFragmentCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.guardanis.applock.dialogs.LockCreationDialogBuilder
 import com.guardanis.applock.dialogs.UnlockDialogBuilder
 import com.keronei.android.common.Constants.TELEGRAM_SUPPORT_GROUP_LINK
 import com.keronei.data.repository.mapper.MemberLocalEntityMapper
@@ -67,6 +68,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         wipeAllData()
 
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val originalView = super.onCreateView(inflater, container, savedInstanceState)
+
+        val interceptedLayout = inflater.inflate(R.layout.settings_layout, container, false) as ViewGroup
+
+        interceptedLayout.addView(originalView)
+
+        return interceptedLayout
     }
 
 
