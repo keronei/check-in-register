@@ -29,7 +29,6 @@ class BaseFragment : Fragment() {
             DataBindingUtil.inflate(inflater, R.layout.base_fragment, container, false)
 
         setUpBottomNav()
-
         return baseMembersBinding.root
     }
 
@@ -43,6 +42,31 @@ class BaseFragment : Fragment() {
                 if (item.itemId != baseMembersBinding.bottomNavigation.selectedItemId)
                     NavigationUI.onNavDestinationSelected(item, navC)
                 true
+            }
+        }
+
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        showBottomNavOnlyWhenRequired()
+
+    }
+
+    private fun showBottomNavOnlyWhenRequired() {
+        navController?.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id !in listOf(
+                    R.id.membersFragment,
+                    R.id.regionsFragment,
+                    R.id.reportsFragment
+                )
+            ) {
+                baseMembersBinding.bottomNavigation.visibility = View.GONE
+            } else {
+                baseMembersBinding.bottomNavigation.visibility = View.VISIBLE
+
             }
         }
     }
