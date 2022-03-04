@@ -137,44 +137,48 @@ class MergePromptImports : Fragment() {
 
             importExportViewModel.parsedRegionsToImport.value.forEach { importedRegion ->
 
-                coroutineScope {
-                    val insertedRegionsId =
-                        async {
-                            regionsViewModel.createRegion(
-                                RegionEntity(
-                                    0,
-                                    importedRegion.name
+                coroutineScope.launch {
+                                            val insertedRegionsId =
+                            async {
+                                regionsViewModel.createRegion(
+                                    RegionEntity(
+                                        0,
+                                        importedRegion.name
+                                    )
                                 )
-                            )
-                        }
-
-                    totalImportedRegions.value.add(insertedRegionsId)
-
-                    val membersOfImportedRegion =
-                        async {
-                            importExportViewModel.parsedMembersToImport.value.filter { memberEntity ->
-                                memberEntity.regionId == importedRegion.id
                             }
-                        }
 
+                        totalImportedRegions.value.add(insertedRegionsId)
 
-                    val updatedMembersWithLatestRegionIds =
-                        async {
-                            membersOfImportedRegion.await().map { memberEntity ->
-                                updateRegionIDForMember(memberEntity, insertedRegionsId.await())
-
+                        val membersOfImportedRegion =
+                            async {
+                                importExportViewModel.parsedMembersToImport.value.filter { memberEntity ->
+                                    memberEntity.regionId == importedRegion.id
+                                }
                             }
-                        }
 
-                    //only start feeding members when regions are done for dependency
-                    val insertedMembersIds =
-                        async { memberViewModel.createNewMember(updatedMembersWithLatestRegionIds.await()) }
 
-                    totalImportedMembers.value.addAll(insertedMembersIds.await())
+                        val updatedMembersWithLatestRegionIds =
+                            async {
+                                membersOfImportedRegion.await().map { memberEntity ->
+                                    updateRegionIDForMember(memberEntity, insertedRegionsId.await())
+
+                                }
+                            }
+
+                        //only start feeding members when regions are done for dependency
+                        val insertedMembersIds =
+                            async {
+                                memberViewModel.createNewMember(
+                                    updatedMembersWithLatestRegionIds.await()
+                                )
+                            }
+
+                        totalImportedMembers.value.addAll(insertedMembersIds.await())
+
+                    }
 
                 }
-
-            }
 
 
             cleanUpDuplicateRegionsAlgo()
@@ -184,7 +188,7 @@ class MergePromptImports : Fragment() {
             }
 
         } catch (exception: Exception) {
-            Timber.e(exception)
+            Timber.log(Log.ERROR, "Insertion of new imports failed",exception)
 
             withContext(Dispatchers.Main) {
                 processingDialog.dismissWithAnimation()
