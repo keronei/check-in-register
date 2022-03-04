@@ -132,6 +132,10 @@
         android:id="@+id/importExportSheet"
         android:name="com.keronei.keroscheckin.fragments.importexport.ImportExportSheet"
        tools:layout="@layout/fragment_import_export_layout"
-        android:label="ImportExportSheet" />
+        android:label="ImportExportSheet" >
+        <action
+            android:id="@+id/action_importExportSheet_to_mergePromptImports"
+            app:destination="@id/mergePromptImports" />
+    </dialog>
 
 </navigation>

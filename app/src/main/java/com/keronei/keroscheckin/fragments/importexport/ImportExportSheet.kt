@@ -1,5 +1,6 @@
 package com.keronei.keroscheckin.fragments.importexport
 
+import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -50,8 +51,6 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
     private val importExportViewModel: ImportExportViewModel by activityViewModels()
 
-    private var displayedPrompt: androidx.appcompat.app.AlertDialog? = null
-
     private var selection = SELECTION.UNSELECTED
 
     lateinit var getContent: ActivityResultLauncher<String>
@@ -61,6 +60,9 @@ class ImportExportSheet : BottomSheetDialogFragment() {
     private lateinit var processingDialog: SweetAlertDialog
 
     private lateinit var hssfWorkbookToWriteOut: HSSFWorkbook
+
+    private var isFromOpenWithOption = false
+
 
     @Inject
     lateinit var coroutineScope: CoroutineScope
@@ -73,7 +75,6 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                 val result = requireContext().contentResolver.openInputStream(uri)
                 if (result != null) {
                     handleImportFileSelection(result)
-                    displayedPrompt?.dismiss()
                 } else {
                     ToastUtils.showShortToast(getString(R.string.did_not_select_file))
                 }
@@ -130,19 +131,26 @@ class ImportExportSheet : BottomSheetDialogFragment() {
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         unregisterContract()
+        isFromOpenWithOption = false
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
         //all is settled. check if there's any data to process
         val sentData = importExportViewModel.launchedIntentInputStream.value
 
-        if (sentData != null) {
+        //Let this be created on the main thread first so it's ready when triggered from background thread,
+        //this has something so do with lazily initializing viewModels
+        memberViewModel
+        regionsViewModel
+
+        if (sentData != null && !importExportViewModel.openWithDataHasBeenProcessed.value) {
 
             handleImportFileSelection(sentData)
 
-            displayedPrompt?.dismiss()
+            isFromOpenWithOption = true
+
         }
     }
 
@@ -223,7 +231,6 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                         .setMessage(getString(R.string.empty_export_message))
                         .setPositiveButton(getString(R.string.dialog_cancel)) { dialog, _ ->
                             dialog.dismiss()
-                            displayedPrompt?.dismiss()
                         }
                         .show()
                     return@withContext
@@ -291,9 +298,6 @@ class ImportExportSheet : BottomSheetDialogFragment() {
             }
 
         }
-
-        displayedPrompt?.dismiss()
-
     }
 
     private suspend fun createExportFile(
@@ -377,8 +381,6 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
     private fun importData() {
         getContent.launch("application/vnd.ms-excel")
-
-        displayedPrompt?.dismiss()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -386,6 +388,8 @@ class ImportExportSheet : BottomSheetDialogFragment() {
         val importRegionMembersProcessor = ImportRegionMembersProcessor(file)
 
         val overview = importRegionMembersProcessor.readBasicInformation() //.readEntries()
+
+        importExportViewModel.openWithDataHasBeenProcessed.value = true
 
         if (overview.appVersion == "" || overview.membersEntrySize == 0) {
             Timber.log(
@@ -539,8 +543,8 @@ class ImportExportSheet : BottomSheetDialogFragment() {
     private fun promptLocalContentRetention(
         readRegionsList: List<RegionEntity>,
         readMembersList: List<MemberEntity>
-    ) {//TODO remove runBlocking and use async
-        processingDialog?.show()
+    ) {
+        processingDialog.show()
         coroutineScope.launch {
 
             val regions = async {
@@ -555,7 +559,7 @@ class ImportExportSheet : BottomSheetDialogFragment() {
                 val allRegions = regions.await()
                 val allMembers = members.await()
 
-                processingDialog?.dismissWithAnimation()
+                processingDialog.dismissWithAnimation()
 
                 importExportViewModel.parsedRegionsToImport.value =
                     readRegionsList as MutableList<RegionEntity>
@@ -568,8 +572,14 @@ class ImportExportSheet : BottomSheetDialogFragment() {
 
                     cleanUpAndAddImports(readRegionsList, readMembersList)
                 } else {
-                    findNavController().navigate(R.id.action_settingsFragment_to_mergePromptImports)
-                        .also { this@ImportExportSheet.dismiss() }
+                    //TODO this branching still doesn't make much sense, needs refinement.
+                    if (isFromOpenWithOption) {
+                        findNavController().navigate(R.id.action_importExportSheet_to_mergePromptImports)
+                            .also { this@ImportExportSheet.dismiss() }
+                    } else {
+                        findNavController().navigate(R.id.action_settingsFragment_to_mergePromptImports)
+                            .also { this@ImportExportSheet.dismiss() }
+                    }
                 }
             }
 

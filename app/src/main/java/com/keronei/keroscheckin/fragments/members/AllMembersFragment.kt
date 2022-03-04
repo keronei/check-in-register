@@ -32,6 +32,7 @@ import com.keronei.keroscheckin.models.toMemberEntity
 import com.keronei.keroscheckin.viewmodels.AllMembersViewModel
 import com.keronei.keroscheckin.viewmodels.CheckInViewModel
 import com.keronei.keroscheckin.viewmodels.MemberViewModel
+import com.keronei.utils.dismissKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
@@ -218,12 +219,20 @@ class AllMembersFragment : Fragment() {
                         memberAtCheckIn!!.toMemberEntity()
                     )
 
+                    clearSearchFocusAndDismissKeyboard()
+
                     checkInPrompt.dismiss()
 
                     showCheckedInSuccess()
                 }
             }
         }
+    }
+
+    private fun clearSearchFocusAndDismissKeyboard() {
+        activity?.dismissKeyboard()
+
+        searchView.clearFocus()
     }
 
     private fun showCheckedInSuccess() {
@@ -295,6 +304,8 @@ class AllMembersFragment : Fragment() {
         selectedAttendeeOptions.editAttendee.setOnClickListener {
             val navigateToEdit =
                 MembersFragmentDirections.actionMembersFragmentToCreateMemberFragment(true, member)
+
+            clearSearchFocusAndDismissKeyboard()
 
             findNavController().navigate(navigateToEdit)
 

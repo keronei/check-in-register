@@ -43,9 +43,6 @@ class MainActivity : AppCompatActivity() {
 
     private val importExportViewModel: ImportExportViewModel by viewModels()
 
-    private val memberViewModel: MemberViewModel by viewModels()
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -97,8 +94,8 @@ class MainActivity : AppCompatActivity() {
                 exception
             )
             SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                .setContentText("Could not handle this file correctly, use import option in settings and select this file to retry.")
-                .setTitleText("Import Failed")
+                .setContentText(getString(R.string.exception_message_in_open_with))
+                .setTitleText(getString(R.string.import_failed_title))
                 .show()
 
             exception.printStackTrace()

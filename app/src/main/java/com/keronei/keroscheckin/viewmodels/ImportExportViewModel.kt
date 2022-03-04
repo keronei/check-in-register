@@ -12,4 +12,7 @@ class ImportExportViewModel : ViewModel() {
     val parsedMembersToImport = MutableStateFlow(value = mutableListOf<MemberEntity>())
 
     val launchedIntentInputStream = MutableStateFlow<InputStream?>(value = null)
+
+    val openWithDataHasBeenProcessed = MutableStateFlow( value = false)
+
 }

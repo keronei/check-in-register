@@ -185,7 +185,7 @@
     <string name="failed_operation_dialog_title">Failed</string>
     <string name="unable_to_import_new_entries">Unable to import new entries.</string>
     <string name="unable_to_import_found_entries_message">Something unexpected happened.</string>
-    <string name="close_nerge_options_btn_text">Close merge options button</string>
+    <string name="close_nerge_options_btn_text">Close merge options</string>
     <string name="here_s_what_we_can_do">Here\'s what we can do</string>
     <string name="merge_option_icon_safer">Merge option icon - safer.</string>
     <string name="merge">Merge</string>
@@ -253,6 +253,11 @@
     <string name="bad_intent">Cannot handle this file a the moment.</string>
     <string name="did_not_select_file">Did you select a file?</string>
     <string name="failed_write_out">Something went wrong there.</string>
+    <string name="merge_entries">Merge entries</string>
+    <string name="replace_entries">Replace entries</string>
+    <string name="exception_message_in_open_with">Could not handle this file correctly, use import option in settings and select this file to retry.</string>
+    <string name="import_failed_title">Import Failed</string>
+    <string name="import_progress_text">Imported %s.</string>
     <plurals name="reports_generated">
         <item quantity="one">Report Generated [%d entry]</item>
         <item quantity="other">Report Generated [%d entries]</item>

@@ -1,6 +1,7 @@
 package com.keronei.utils.import
 
 
+import android.util.Log
 import com.keronei.android.common.Constants.THREE_HASHES
 import com.keronei.android.common.Constants.TOTAL_FIX
 import com.keronei.android.common.Constants.VERSION_FIX
@@ -35,13 +36,16 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
             membersSheet = importedWorkbook.getSheetAt(1)
 
         } catch (ioException: IOException) {
+            Timber.log(Log.ERROR, "IO exception loading workbook for import", ioException)
             ioException.printStackTrace()
         } catch (exception: Exception) {
+            Timber.log(Log.ERROR, "General exception opening workbook", exception)
             exception.printStackTrace()
         } finally {
             try {
                 fileInputStream?.close()
             } catch (exception: Exception) {
+                Timber.log(Log.ERROR, "Closing inputStream for import", exception)
                 exception.printStackTrace()
             }
         }
@@ -117,9 +121,7 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
                         pointerRow.getCell(0).stringCellValue.toInt(),
                         pointerRow.getCell(1).stringCellValue
                     )
-
-                    Timber.d("Read -> ${pointerRow.rowNum} with $builtEntityObject")
-
+                    
                     regionsList.add(builtEntityObject)
 
                 }
@@ -127,6 +129,7 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
             }
 
         } catch (exception: Exception) {
+            Timber.log(Log.ERROR, "Error reading region object", exception)
             exception.printStackTrace()
         }
 
@@ -168,9 +171,7 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
                 if (pointerRow.rowNum > 1) {//skip header row
 
                     val cellIterator = pointerRow.cellIterator()
-
-                    Timber.d("Reading member -> ${pointerRow.rowNum} ")
-
+                    
                     val builtEntityObject = MemberEntity(
                         pointerRow.getCell(2).stringCellValue.toInt(),
                         pointerRow.getCell(1).stringCellValue,
@@ -184,16 +185,14 @@ class ImportRegionMembersProcessor(loadedFile: InputStream) {
                         pointerRow.getCell(4).stringCellValue.toBoolean(),
                         pointerRow.getCell(8).stringCellValue.toInt()
                     )
-
-                    Timber.d("Iterating through cell ${cellIterator.next().columnIndex}")
-
+                    
                     readList.add(builtEntityObject)
-
-                    Timber.d("Built object $builtEntityObject")
+                    
                 }
 
             }
         } catch (exception: Exception) {
+            Timber.log(Log.ERROR, "Error parsing import member object", exception)
             exception.printStackTrace()
         }
 

@@ -20,6 +20,8 @@ import com.keronei.utils.ToastUtils
 import com.keronei.utils.updateRegionIDForMember
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
 import javax.inject.Inject
@@ -118,8 +120,8 @@ class MergePromptImports : Fragment() {
 
 
     private suspend fun insertNewImports() {
-        val totalImportedRegions = mutableListOf<Deferred<Long>>()
-        val totalImportedMembers = mutableListOf<Long>()
+        val totalImportedRegions = MutableStateFlow(value = mutableListOf<Deferred<Long>>())
+        val totalImportedMembers = MutableStateFlow(value = mutableListOf<Long>())
 
         /**
          * Since these are related entries, creating an association before insertion
@@ -146,7 +148,7 @@ class MergePromptImports : Fragment() {
                             )
                         }
 
-                    totalImportedRegions.add(insertedRegionsId)
+                    totalImportedRegions.value.add(insertedRegionsId)
 
                     val membersOfImportedRegion =
                         async {
@@ -168,7 +170,7 @@ class MergePromptImports : Fragment() {
                     val insertedMembersIds =
                         async { memberViewModel.createNewMember(updatedMembersWithLatestRegionIds.await()) }
 
-                    totalImportedMembers.addAll(insertedMembersIds.await())
+                    totalImportedMembers.value.addAll(insertedMembersIds.await())
 
                 }
 
@@ -197,16 +199,16 @@ class MergePromptImports : Fragment() {
 
             val regionsText = resources.getQuantityString(
                 R.plurals.regions_prefix,
-                totalImportedRegions.size,
-                totalImportedRegions.size
+                totalImportedRegions.value.size,
+                totalImportedRegions.value.size
             )
             val membersText = resources.getQuantityString(
                 R.plurals.members_prefix,
-                totalImportedMembers.size,
-                totalImportedMembers.size
+                totalImportedMembers.value.size,
+                totalImportedMembers.value.size
             )
 
-            if (totalImportedMembers.isNotEmpty() || totalImportedRegions.isNotEmpty()) {
+            if (totalImportedMembers.value.isNotEmpty() || totalImportedRegions.value.isNotEmpty()) {
                 val successInsertionMessage = getString(
                     R.string.success_import_operation_message,
                     regionsText,

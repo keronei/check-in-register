@@ -100,7 +100,7 @@ class MembersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (importExportViewModel.launchedIntentInputStream.value != null) {
+        if (importExportViewModel.launchedIntentInputStream.value != null && !importExportViewModel.openWithDataHasBeenProcessed.value) {
             //navigate to settings, then pick import and start process.
             val autoLaunch = MembersFragmentDirections.actionMembersFragmentToSettingsFragment()
             findNavController().navigate(autoLaunch)
