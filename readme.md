@@ -8,7 +8,7 @@ An app to simplify check in process for periodical sessions where particulars su
 
 <img src="screenshots/settings_dark.png" width="220" height="470"/> <img src="screenshots/import_export.png" width="220" height="470"/> <img src="screenshots/import_conflict.png" width="220" height="470"/>
 
-<img src="screenshots/checkin_dialog.png" width="220" height="470"/> <img src="screenshots/temp_input.png" width="220" height="470"/>
+<img src="screenshots/checkin_dialog.png" width="220" height="470"/> <img src="screenshots/temp_input.png" width="220" height="470"/> <img src="screenshots/checked_in_success" width="220" height="470"/>
 
 <img src="screenshots/home_reports.png" width="220" height="470"/> <img src="screenshots/report_summary.png" width="220" height="470"/>
 
