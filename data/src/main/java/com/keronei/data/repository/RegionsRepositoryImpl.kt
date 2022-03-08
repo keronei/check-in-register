@@ -9,6 +9,10 @@ import com.keronei.domain.entities.MemberEntity
 import com.keronei.domain.entities.RegionEmbedEntity
 import com.keronei.domain.entities.RegionEntity
 import com.keronei.domain.repository.RegionsRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -19,7 +23,7 @@ class RegionsRepositoryImpl(
     private val memberDBOToEntityMapper: MemberDBOToEntityMapper,
     private val regionEmbedToRegionEmbedEntityMapper: RegionEmbedToRegionEmbedEntityMapper
 ) : RegionsRepository {
-    override suspend fun createNewRegion(regionEntity: RegionEntity) : Long {
+    override suspend fun createNewRegion(regionEntity: RegionEntity): Long {
         return regionsDao.createRegion(regionEntityToRegionDBOMapper.map(regionEntity))
     }
 
@@ -47,6 +51,7 @@ class RegionsRepositoryImpl(
         return try {
             regionsDao.deleteRegion(regionEntityToRegionDBOMapper.map(regionEntity))
         } catch (exception: Exception) {
+            //TODO use Either to return count of deleted items or exception
             exception.printStackTrace()
             0
         }
@@ -55,8 +60,24 @@ class RegionsRepositoryImpl(
     override suspend fun deleteAllRegions(deletableRegions: List<RegionEntity>): Int {
         return try {
             val regionsDbo = regionEntityToRegionDBOMapper.mapList(deletableRegions)
-            regionsDao.deleteAllRegions(regionsDbo.map { regionDBO -> regionDBO.id })
+
+            val listOfCounts = mutableListOf<Deferred<Int>>()
+
+            regionsDbo.forEach { region ->
+                coroutineScope {
+                    val deletedCount = async {
+                        regionsDao.deleteRegion(region)
+                    }
+                    listOfCounts.add(deletedCount)
+
+                }
+
+            }
+
+            listOfCounts.size
+
         } catch (exception: Exception) {
+            //TODO use Either to return count of deleted items or exception
             exception.printStackTrace()
             0
         }

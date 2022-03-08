@@ -28,6 +28,10 @@ interface RegionsDao {
     @Delete
     suspend fun deleteRegion(regionDBO: RegionDBO) : Int
 
+    /**
+     * This is not functional when the list is long, 1k+.
+     */
     @Query("DELETE FROM RegionDBO WHERE id in (:regionsIds)")
-    suspend fun deleteAllRegions(regionsIds: List<Int>) : Int
+    suspend fun _deleteAllRegions(regionsIds: List<Int>) : Int
+
 }
