@@ -13,6 +13,8 @@ An app to simplify check in process for periodical sessions where particulars su
 <img src="screenshots/report_summary.png" width="250" height="470"/>
 <img src="screenshots/settings_dark.png" width="250" height="470"/>
 
+see more in [screenshots folder](screenshots/)
+
 
 ## To run
 You will need a `google-services.json` file
