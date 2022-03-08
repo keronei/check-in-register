@@ -6,7 +6,6 @@ import com.keronei.domain.entities.SyncSuccessEntity
 import com.keronei.domain.entities.UserEntity
 import com.keronei.domain.exception.Failure
 import com.keronei.domain.usecases.base.Either
-import kotlinx.coroutines.flow.Flow
 
 interface AttendanceDataRepository {
 

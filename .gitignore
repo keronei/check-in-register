@@ -14,6 +14,7 @@
 .cxx
 local.properties
 .idea/misc.xml
+.idea/other.xml
 app/libs/
 .idea/deploymentTargetDropDown.xml
 .idea/codeStyles/
