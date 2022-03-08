@@ -97,20 +97,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         if (toolbar != null) {
             configureToolBar(toolbar)
-            //ToastUtils.showShortToast("Tool found")
-        } else {
-            //ToastUtils.showShortToast("No Tool ")
-
         }
 
         //all is settled. check if there's any data to process
         val sentData = importExportViewModel.launchedIntentInputStream.value
 
         if (sentData != null) {
-            val importExportSelectionSheet = ImportExportSheet()
-
-            //importExportSelectionSheet.show(childFragmentManager, ImportExportSheet.TAG)
-
             val settingsImportExport =
                 SettingsFragmentDirections.actionSettingsFragmentToImportExportSheet()
 
@@ -214,6 +206,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                             }
 
                                         } catch (exception: Exception) {
+                                            Timber.log(Log.ERROR, "Error deleting regions", exception)
                                             SweetAlertDialog(
                                                 requireContext(),
                                                 SweetAlertDialog.ERROR_TYPE
@@ -280,70 +273,79 @@ class SettingsFragment : PreferenceFragmentCompat() {
                                                     )
                                                     withContext(Dispatchers.Main) {
 
-                                                        val snack = Snackbar.make(
-                                                            this@SettingsFragment.requireView(),
-                                                            getString(
-                                                                R.string.delete_all_snack_message,
-                                                                regionsText,
-                                                                membersText
-                                                            ),
-                                                            Snackbar.LENGTH_LONG
-                                                        ).setAction(R.string.undo_deletion) {
-                                                            lifecycleScope.launch {
+                                                        val snack =
+                                                            this@SettingsFragment.view?.let { it1 ->
+                                                                Snackbar.make(
+                                                                    it1,
+                                                                    getString(
+                                                                        R.string.delete_all_snack_message,
+                                                                        regionsText,
+                                                                        membersText
+                                                                    ),
+                                                                    Snackbar.LENGTH_LONG
+                                                                ).setAction(R.string.undo_deletion) {
+                                                                    lifecycleScope.launch {
 
-                                                                regionsToBeDeletedBackup.forEach { region ->
-                                                                    val id = async {
+                                                                        regionsToBeDeletedBackup.forEach { region ->
+                                                                            val id = async {
+                                                                                regionsViewModel.createRegion(
+                                                                                    region
+                                                                                )
+                                                                            }
+                                                                        }
+
+                                                                        membersViewModel.createNewMember(
+                                                                            membersToBeDeletedBackUp
+                                                                        )
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        snack?.show()
+                                                    }
+
+                                                } else if (deletedMembersCountInDeleteAll > 0) {
+                                                    val snack =
+                                                        this@SettingsFragment.view?.let { it1 ->
+                                                            Snackbar.make(
+                                                                it1,
+                                                                getMemberDeletionCountString(
+                                                                    deletedMembersCountInDeleteAll
+                                                                ),
+                                                                Snackbar.LENGTH_LONG
+                                                            ).setAction(R.string.undo_deletion) {
+                                                                lifecycleScope.launch {
+                                                                    membersViewModel.createNewMember(
+                                                                        membersToBeDeletedBackUp
+                                                                    )
+                                                                }
+                                                            }
+                                                        }
+
+                                                    snack?.show()
+                                                } else if (deletedRegionsCountInDeleteAll > 0) {
+                                                    val snack =
+                                                        this@SettingsFragment.view?.let { it1 ->
+                                                            Snackbar.make(
+                                                                it1,
+                                                                getRegionDeletionCountString(
+                                                                    deletedRegionsCountInDeleteAll
+                                                                ),
+                                                                Snackbar.LENGTH_LONG
+                                                            ).setAction(R.string.undo_deletion) {
+                                                                lifecycleScope.launch {
+
+                                                                    regionsToBeDeletedBackup.forEach { region ->
                                                                         regionsViewModel.createRegion(
                                                                             region
                                                                         )
                                                                     }
+
                                                                 }
-
-                                                                membersViewModel.createNewMember(
-                                                                    membersToBeDeletedBackUp
-                                                                )
                                                             }
                                                         }
 
-                                                        snack.show()
-                                                    }
-
-                                                } else if (deletedMembersCountInDeleteAll > 0) {
-                                                    val snack = Snackbar.make(
-                                                        this@SettingsFragment.requireView(),
-                                                        getMemberDeletionCountString(
-                                                            deletedMembersCountInDeleteAll
-                                                        ),
-                                                        Snackbar.LENGTH_LONG
-                                                    ).setAction(R.string.undo_deletion) {
-                                                        lifecycleScope.launch {
-                                                            membersViewModel.createNewMember(
-                                                                membersToBeDeletedBackUp
-                                                            )
-                                                        }
-                                                    }
-
-                                                    snack.show()
-                                                } else if (deletedRegionsCountInDeleteAll > 0) {
-                                                    val snack = Snackbar.make(
-                                                        this@SettingsFragment.requireView(),
-                                                        getRegionDeletionCountString(
-                                                            deletedRegionsCountInDeleteAll
-                                                        ),
-                                                        Snackbar.LENGTH_LONG
-                                                    ).setAction(R.string.undo_deletion) {
-                                                        lifecycleScope.launch {
-
-                                                            regionsToBeDeletedBackup.forEach { region ->
-                                                                regionsViewModel.createRegion(
-                                                                    region
-                                                                )
-                                                            }
-
-                                                        }
-                                                    }
-
-                                                    snack.show()
+                                                    snack?.show()
                                                 } else {
                                                     ToastUtils.showLongToast(getString(R.string.none_was_deleted))
                                                 }
@@ -391,24 +393,26 @@ class SettingsFragment : PreferenceFragmentCompat() {
             regionsViewModel.deleteAllRegions(unusedRegions)
 
         withContext(Dispatchers.Main) {
-            val regionsDeletionSnackbar = Snackbar.make(
-                this@SettingsFragment.requireView(),
-                getRegionDeletionCountString(deletionCount),
-                Snackbar.LENGTH_SHORT
-            ).setAction(
-                getString(
-                    R.string.undo_deletion
-                )
-            ) {
-                lifecycleScope.launch {
-                    regionsToBeDeletedBackup.forEach { region ->
-                        regionsViewModel.createRegion(region)
+            val regionsDeletionSnackbar = this@SettingsFragment.view?.let {
+                Snackbar.make(
+                    it,
+                    getRegionDeletionCountString(deletionCount),
+                    Snackbar.LENGTH_SHORT
+                ).setAction(
+                    getString(
+                        R.string.undo_deletion
+                    )
+                ) {
+                    lifecycleScope.launch {
+                        regionsToBeDeletedBackup.forEach { region ->
+                            regionsViewModel.createRegion(region)
+                        }
                     }
                 }
             }
 
             if (deletionCount > 0) {
-                regionsDeletionSnackbar.show()
+                regionsDeletionSnackbar?.show()
             } else {
                 ToastUtils.showLongToast(getString(R.string.none_was_deleted))
             }
@@ -447,24 +451,26 @@ class SettingsFragment : PreferenceFragmentCompat() {
             membersViewModel.deleteAllMembers()
 
         withContext(Dispatchers.Main) {
-            val membersDeletedSnackBar = Snackbar.make(
-                this@SettingsFragment.requireView(),
-                getMemberDeletionCountString(deletedMembersCount),
-                Snackbar.LENGTH_SHORT
-            ).setAction(
-                getString(
-                    R.string.undo_deletion
-                )
-            ) {
-                lifecycleScope.launch {
-                    membersViewModel.createNewMember(
-                        membersBackup
+            val membersDeletedSnackBar = this@SettingsFragment.view?.let {
+                Snackbar.make(
+                    it,
+                    getMemberDeletionCountString(deletedMembersCount),
+                    Snackbar.LENGTH_SHORT
+                ).setAction(
+                    getString(
+                        R.string.undo_deletion
                     )
+                ) {
+                    lifecycleScope.launch {
+                        membersViewModel.createNewMember(
+                            membersBackup
+                        )
+                    }
                 }
             }
 
             if (deletedMembersCount > 0) {
-                membersDeletedSnackBar.show()
+                membersDeletedSnackBar?.show()
             } else {
                 ToastUtils.showLongToast(getString(R.string.none_was_deleted))
             }
