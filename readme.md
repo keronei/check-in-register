@@ -4,7 +4,7 @@ An app to simplify check in process for periodical sessions where particulars su
 <a href='https://play.google.com/store/apps/details?id=com.keronei.keroscheckin'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="50px"/></a>
 
 ## Screenshots
-<img src="screenshots/home_members_dark.png" width="220" height="470"/>    <img src="screenshots/temp_input.png" width="220" height="470"/>    <img src="screenshots/settings_dark.png" width="220" height="470"/>
+<img src="screenshots/home_members_dark.png" width="220" height="470"/>&nbsp;&nbsp;<img src="screenshots/temp_input.png" width="220" height="470"/>&nbsp;&nbsp;<img src="screenshots/settings_dark.png" width="220" height="470"/>
 
 see more in [screenshots folder](screenshots/)
 
